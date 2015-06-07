@@ -2,63 +2,63 @@
 
 .. _django-basics:
 
-Django Basics
+Основы работы с Django 
 =============
-Let's get started with Django! In this chapter, we'll be giving you an overview of the how to get started with Django. You'll be setting up a new project and a new web application. By the end of this chapter, you will have a simple Django-power webpage up and running!
+Давайте начнем работать с Django! В этой главе мы дадим краткий обзор основ работы с Django. Вы настроите новый проект и новое веб приложение. В конце этой главы Вы будете иметь простую работающую веб страницу, созданную с помощью Django!
 
-Testing your Setup
+Проверка Вашей конфигурации
 ------------------
-Let's start by checking that your Python and Django installations are installed correctly, and are at the correct version for this tutorial. To do this, open a new terminal instance and issue the following command.
+Давайте начнем, проверив, что Вы правильно установили Python и Django, и что они имеют подходящую версию для этого учебного пособия. Для этого запустите новую копию терминала и выполните следующую команду.
 
 ::
 	
 	$ python --version
 	2.7.5
 
-This print the Python version number and exit. If the version displayed is anything but ``2.7.5``, you will need to go back to Section :ref:`installing-software` and verify you have completed all the relevant steps for your operating system.
+Она выведет на экран номер версии устанолвенного интерпретатора Python. Если версия, изображенная на экране отличается от ``2.7.5``, Вам необходимо вернуться к Разделу :ref:`installing-software` и проверить, что Вы выполнили все необходимые шаги по установке для Вашей операционной системы.
 
-After verifying your Python installation, check your Django installation by issuing the following command.
+После проверки версии Python, проверьте Вашу версию установки Django, выполнив следующую команду.
 
 ::
 	
 	$ python -c "import django; print(django.get_version())"
 	1.7
 
-The command again executes the code within the string provided as part of the ``-c`` switch. After importing Django, you should see ``1.7`` printed underneath. If you see a different set of numbers or are greeted with a Python ``ImportError``, go back to Section :ref:`installing-software` or consult the `Django Documentation on Installing Django <https://docs.djangoproject.com/en/1.7/topics/install/>`_ for more information. If you find that you have got a different version of Django, it is possible that you will come across problems at some point. It's definitely worth making sure you have Django 1.7 installed. 
+Команда опять выполнит код внутри строки, которая вводится за ключем ``-c``. После импорта Django, Вы должны увидеть в терминале ``1.7`` на следующей строке. Если Вы видите другой набор чисел или выводится ``ImportError`` интерпретатором Python, вернитесь в Раздел :ref:`installing-software` или обратитесь к `Документации Django по установке Django <https://docs.djangoproject.com/en/1.7/topics/install/>`_ за дальнейшей информацией. Если Вы обнаружили, что импользуете другую версию Django, то у Вас могут возникнуть проблемы в дальнейшем. Из-за этого стоит удостовериться, что у Вас установлена версия Django 1.7. 
 
-Creating your Django Project
+Создание Вашего Django проекта
 ----------------------------
-To create a new Django Project, go to your ``code`` directory (i.e. your ``<workspace>`` directory), and issue the following command:
+Чтобы создать новый Django проект, перейдите в каталог, который Вы используете для создания ``кода`` (т. е., в Ваш ``<рабочий>`` каталог), и выполните следующую команду:
 
 ``$ django-admin.py startproject tango_with_django_project``
 
-.. note:: On Windows you may have to use the full path to the django-admin.py script. i.e. ``python c:\python27\scripts\django-admin.py startproject tango_with_django_project`` as suggested on `StackOverflow <http://stackoverflow.com/questions/8112630/cant-create-django-project-using-command-prompt>`_.
+.. note:: В Windows может потребоваться задавать полный путь к скрипту django-admin.py, т. е. ``python c:\python27\scripts\django-admin.py startproject tango_with_django_project`` как предложено в ссылке `StackOverflow <http://stackoverflow.com/questions/8112630/cant-create-django-project-using-command-prompt>`_.
 
-This command will invoke the ``django-admin.py`` script, which will set up a new Django project called ``tango_with_django_project`` for you. Typically, we append ``_project`` to the end of our Django project directories so we know exactly what they contain - but the naming convention is entirely up to you.
+Эта команда вызовет скрипт ``django-admin.py``, который настроит новый Django проект под названием ``tango_with_django_project`` для Вас. Обычно мы добавляем слово ``_project`` в конец названий каталогов наших Django проектов, чтобы точно знать, что они содержат - однако названия Ваших проектов полностью зависят от Вас.
 
-You'll now notice within your workspace is a directory set to the name of your new project, ``tango_with_django_project``. Within this newly created directory, you should see two items:
+Теперь в вашем рабочем каталоге должен появиться каталог, название которого совпадает с названием Вышего нового проекта ``tango_with_django_project``. Внутри этого только что созданного каталога, вы должны увидеть:
 
-* another directory with the same name as your project, ``tango_with_django_project``; and
-* a Python script called ``manage.py``.
+* другой каталог с таким же названием как и Ваш проект, ``tango_with_django_project``; и
+* скрипт на языке Python, который называется ``manage.py``.
 
-For the purposes of this tutorial, we call this nested directory the *project configuration directory*. Within this directory, you will find four Python scripts. We will discuss this scripts in detail later on, but for now you should see:
+В этом учебном пособии мы будем называть этот вложенный каталог, *каталогом для настройки проекта*. Внутри этого каталога, находятся четыре Python скрипта. Мы подробно рассмотрим эти скрипты позднее, но пока Вы должны увидеть:
 
-* ``__init__.py``, a blank Python script whose presence indicates to the Python interpreter that the directory is a Python package;
-* ``settings.py``, the place to store all of your Django project's settings;
-* ``urls.py``, a Python script to store URL patterns for your project; and
-* ``wsgi.py``, a Python script used to help run your development server and deploy your project to a production environment.
+* ``__init__.py``, пустой Python скрипт, наличие которого говорит интерпретатору Python, что этот каталог является Python пакетом;
+* ``settings.py``, файл, где хранятся все Ваши настройки Django проекта;
+* ``urls.py``, Python скрипт для хранения URL шаблонов Вашего проекта; и 
+* ``wsgi.py``, Python скрипт, который поможет запустить Выш сервер для разработки приложения и развернуть Ваш проект на сервере, который будет использоваться для работы приложения.
 
-.. note:: The project configuration directory has been created with new Django projects since version 1.4. Having two directories with the same name may seem quite a bit odd, but the change was made to separate out project-related components from its individual applications.
+.. note:: Каталог для настройки проекта создается для новых Django проектов, начиная с версии 1.4. Некоторым создание двух каталогов с одинаковыми именами может показаться странным, но это было сделано для того, чтобы отделить компоненты, связанные с проектом от входящих в него отдельных приложений.
 
-In the project directory, you will see there is a file called ``manage.py``. We will be calling this script time and time again as we develop our project, as it provides you with a series of commands you can run to maintain your Django project. For example, ``manage.py`` allows you to run the built-in Django development server to test your work and run database commands. You'll be using this script a lot throughout the development cycle.
+В каталоге проекта, Вы должны увидеть файл, который называется ``manage.py``. Мы будем постоянно вызывать этот скрипт при разработке нашего проекта, поскольку он содержит ряд команд, которые Вы можете использовать, для развития Вашего Django проекта. Например, ``manage.py`` позволяет Вам запустить встроенный в Django сервер разработки для проверки, проделанной Вами работы, и выполнения команд, связанных с базой данных. Вы будете очень часто использовать этот скрипт во время цикла разработки приложения.
 
-.. note:: See the Django documentation for more details about the `Admin and Manage scripts <https://docs.djangoproject.com/en/1.7/ref/django-admin/#django-admin-py-and-manage-py>`_.
+.. note:: Смотри Django документацию, чтобы узнать больше о `скриптах django-admin.py и manage.py <https://docs.djangoproject.com/en/1.7/ref/django-admin/#django-admin-py-and-manage-py>`_.
 
-You can try using the ``manage.py`` script now, by issuing the following command.
+Теперь попытайтесь использовать скрипт ``manage.py``, выполнив следующую команду.
 
 ``$ python manage.py runserver``
 
-Executing this command will instruct Django to initiate its lightweight development server. You should see the output in your terminal similar to the example shown below:
+Выполнение этой команды приведет к тому, что Django инициализирует свой "облегченный" сервер для разработки. Вы должны увидеть в окне Вашего терминала текст, подобный указанному ниже:
 
 ::
 	
@@ -94,30 +94,30 @@ Executing this command will instruct Django to initiate its lightweight developm
 	
 	
 
-Now open up your favourite web browser and enter the URL http://127.0.0.1:8000/ [#f1]_. You should see a webpage similar to the one shown in Figure :num:`fig-django-dev-server-firstrun`. 
+Теперь откройте Ваш любимый веб-браузер и введите URL http://127.0.0.1:8000/ [#f1]_. Вы должны увидеть веб страницу подобную той, который показана на Рисунке :num:`fig-django-dev-server-firstrun`. 
 
 .. _fig-django-dev-server-firstrun:
 
 .. figure:: ../images/django-dev-server-firstrun.png
 	:figclass: align-center
 	
-	A screenshot of the initial Django page you will see when running the development server for the first time.
+	Снимок экрана начальной страницы Django, которую Вы видите при запуске сервера для разработки первый раз.
 
-You can stop the development server at anytime by pushing ``CTRL + C`` in your terminal window. If you wish to run the development server on a different port, or allow users from other machines to access it, you can do so by supplying optional arguments. Consider the following command:
+Вы можете остановить сервер для разработки в любой момент, нажав ``CTRL + C`` в Вашем окне терминала. Если Вы хотите запустить сервер для разработки на другом порте или открыть доступ к нему пользователям на других машинах, Вы можете сделать это, введя необязательные вспомогательные параметры. Рассмотрим следующую команду:
 
-``$ python manage.py runserver <your_machines_ip_address>:5555``
+``$ python manage.py runserver <ip_адрес_Вашей_машины>:5555``
 
-Executing this command will force the development server to respond to incoming requests on TCP port 5555. You will need to replace ``<your_machines_ip_address>`` with your computer's IP address. 
+Выполнение этой команды приведет к тому, что сервер для разработки будет отвечать на входящие запросы по TCP порту 5555. Также необходимо заменить <ip_адресс_Вашей_машины> на IP адрес Вашего компьютера. 
 
-When setting ports, it is unlikely that you will be able to use TCP port 80 as this is traditionally reserved for HTTP traffic. Also, any port below 1024 is considered to be `privileged <http://www.w3.org/Daemon/User/Installation/PrivilegedPorts.html>`_ by your operating system.
+При выборе порта, вероятно Вы не сможете использовать TCP порт 80, поскольку он обычно зарезервирован для HTTP траффика. Также любой порт меньше 1024 считается `привилегированным <http://www.w3.org/Daemon/User/Installation/PrivilegedPorts.html>`_ Вашей операционной системой.
 
-While you won't be using the lightweight development server to deploy your application, sometimes it is nice to be able to demo your application on a computer of a colleague. Running the server with your machine's IP address will enable others to enter in ``http://<your_machines_ip_address>:<port>/`` and view your web application. Of course, this will depend on how your network is configured. There may be proxy servers or firewalls in the way which would need to be configured before this would work. Check with the administrator of the network you are using if you can't view the development server remotely.
+Хотя Вы не будете использовать облегченный сервер для разработки при развертывании Вашего приложения, иногда желательно иметь возможность продемонстрировать Ваше приложение на компьютере коллеги. Запуская сервер с IP адресом Вашей машины, позволит другим обратиться к нему как ``http://<your_machines_ip_address>:<port>/`` и просмотреть Ваше веб приложение. Конечно такая возможность будет зависеть от того как настроена Ваша локальная сеть. Существующие прокси серверы или файрволы должны быть настроены соответствующим образом, чтобы такой способ работал. Обратитесь к администратору локальной сети, которую Вы используте, если Вы не можете получить доступ к серверу для разработки удаленно.
 
-.. note:: The ``django-admin.py`` and ``manage.py`` scripts provides a lot of useful, time-saving functionality for you. ``django-admin.py`` allows you to start new projects and apps, along with other commands. Within your project directory, ``manage.py`` allows you to perform administrative tasks within the scope of your project only. Simply execute the relevant script name without any arguments to see what you can do with each. The `official Django documentation provides a detailed list and explanation of each possible command <https://docs.djangoproject.com/en/1.7/ref/django-admin/>`_ you can supply for both scripts.
+.. note:: Скрипты ``django-admin.py`` и ``manage.py`` содержат множество полезных, экономящих время функцональных возможностей. ``django-admin.py`` позволяет создавать новые проекты и приложения наряду с другими командами. Внутри Вашего каталога с проектом, ``manage.py`` позволяет решать задачи администрирования только внутри Вашего проекта. Чтобы узнать возможности каждого скрипта, просто выполните его без каких-либо аргументов. В  `официальной документации по Django дается подробный список и пояснение к каждой возможной команде <https://docs.djangoproject.com/en/1.7/ref/django-admin/>`_, которую Вы можете вводить для этих скриптов.
 
-If you are using version control, now may be a good time to commit the changes you have made to your workspace. Refer to the :ref:`crash course on GIT <git-crash-course>` if you can't remember the commands and steps involved in doing this.
+Если Вы используете систему контроля версий, сейчас стоит осуществить коммит тех изменений, которые Вы сделали в вашем рабочем каталоге. RОбратитесь к ссылке :ref:`Краткий курс по GIT <git-crash-course>`, если Вы забыли команды и последовательность шагов, которые необходимо осуществить для этого.
 
-Creating a Django Application
+Создание Django приложения
 -----------------------------
 A Django project is a collection of *configurations* and *applications* that together make up a given web application or website. One of the intended outcomes of using this approach is to promote good software engineering practices. By developing a small series of applications, the idea is that you can theoretically drop an existing application into a different Django project and have it working with minimal effort. Why reinvent the wheel if it's already there? [#f2]_
 
@@ -156,13 +156,13 @@ Before you can get started with creating your own models and views, you must fir
 
 Verify that Django picked up your new application by running the development server again. If you can start the server without errors, your application was picked up and you will be ready to proceed to the next step.
 
-Creating a View
+Создание Представления
 ---------------
 With our Rango application created, let's now create a simple view. For our first view, let's just send some simple text back to the client - we won't concern ourselves about using models or templates just yet.
 
 In your favourite IDE, open the file ``views.py``, located within your newly created ``rango`` application directory. Remove the comment ``# Create your views here.`` so that you now have a blank file.
 
-You can now add in the following code.
+Теперь добавьте следующий код.
 
 .. code-block:: python
 
@@ -204,7 +204,7 @@ You may have seen that within your project configuration directory a ``urls.py``
 
 This means we need to configure the ``urls.py`` of our project ``tango_with_django_project`` and connect up our main project with our Rango application.
 
-How do we do this? It's quite simple. Open the project's ``urls.py`` file which is located inside your project configuration directory. As a relative path from your workspace directory, this would be the file ``<workspace>/tango_with_django_project/tango_with_django_project/urls.py``. Update the ``urlpatterns`` tuple as shown in the example below.
+How do we do this? It's quite simple. Open the project's ``urls.py`` file which is located inside your project configuration directory. As a relative path from your workspace directory, this would be the file ``<workspace>/tango_with_django_project/tango_with_django_project/urls.py``. Измените кортеж ``urlpatterns`` как показано ниже.
 
 .. code-block:: python
 	
@@ -220,7 +220,7 @@ How do we do this? It's quite simple. Open the project's ``urls.py`` file which 
 
 The added mapping looks for url strings that match the patterns ``^rango/``. When a match is made the remainder of the url string is then passed onto and handled by ``rango.urls`` (which we have already configured). This is done with the help of the ``include()`` function from within ``django.conf.urls``. Think of this as a chain that processors the URL string - as illustrated in Figure :num:`fig-url-chain`. In this chain, the domain is stripped out and the remainder of the url string (``rango/``) is passed on to tango_with_django project, where it finds a match and strips away ``rango/`` leaving and empty string to be passed on to the application rango. Rango now tries to match the empty string, which it does, and this then dispatches the ``index()`` view that we created.
 
-Restart the Django development server and visit ``http://127.0.0.1:8000/rango``. If all went well, you should see the text ``Rango says hello world!``. It should look just like the screenshot shown in Figure :num:`fig-rango-hello-world`.
+Перезапустите сервер для разработки Django и откройте страницу ``http://127.0.0.1:8000/rango``. Если Вы сделали всё правильно, выдолжны увидеть текст ``Rango says hello world!``. Он должен выглядеть как на снимке экрана, показанном на Рисунке :num:`fig-rango-hello-world`.
 
 .. _fig-url-chain:
 
@@ -234,7 +234,7 @@ Restart the Django development server and visit ``http://127.0.0.1:8000/rango``.
 .. figure:: ../images/rango-hello-world.png
 	:figclass: align-center
 
-	A screenshot of Google Chrome displaying our first Django-powered webpage. Hello, Rango!
+	Снимок экрана браузера Google Chrome, в котором показана наша первая веб страница, созданная с помощью Django. Hello, Rango!
 
 Within each application, you will create a number of URL to view mappings. This initial mapping is quite simple. As we progress, we will create more sophisticated mappings that using allow the URLs to be parameterised.
 
@@ -246,11 +246,11 @@ Basic Workflows
 ---------------
 What you've just learnt in this chapter can be succinctly summarised into a list of actions. Here, we provide these lists for the two distinct tasks you have performed. You can use this section for a quick reference if you need to remind yourself about particular actions.
 
-Creating a new Django Project
+Создание нового Django проекта
 .............................
-#. To create the project run, ``python django-admin.py startproject <name>``, where ``<name>`` is the name of the project you wish to create.
+#. Чтобы создать проект, выполните команду ``python django-admin.py startproject <name>``, где ``<name>`` - это название проекта, который Вы хотите создать.
 
-Creating a new Django application
+Создание нового Django приложения
 .................................
 #. To create a new application run, ``$ python manage.py startapp <appname>``, where ``<appname>`` is the name of the application you wish to create.
 #. Tell your Django project about the new application by adding it to the ``INSTALLED_APPS`` tuple in your project's ``settings.py`` file.
@@ -258,7 +258,7 @@ Creating a new Django application
 #. In your application's directory, create a ``urls.py`` file to direct incoming URL strings to views.
 #. In your application's ``view.py``, create the required views ensuring that they return a ``HttpResponse`` object.
 
-Exercises
+Упражнения
 ---------
 Congratulations! You have got Rango up and running. This is a significant landmark in working with Django. Creating views and mapping URLs to views is the first step towards developing more complex and usable web applications. Now try the following exercises to reinforce what you've learnt.
 
@@ -269,7 +269,7 @@ Congratulations! You have got Rango up and running. This is a significant landma
 * In the ``HttpResponse`` in the ``about`` view include a link back to the main page.
 * If you haven't done so already, it is a good point to go off an complete part one of the official `Django Tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_. 
 
-Hints
+Подсказки к упражнениям
 .....
 If you're struggling to get the exercises done, the following hints will hopefully provide you with some inspiration on how to progress.
 
@@ -277,7 +277,7 @@ If you're struggling to get the exercises done, the following hints will hopeful
 * The regular expression to match ``about/`` is ``r'^about/'`` - this will be handy when thinking about your URL pattern.
 * The HTML to link back to the index page is ``<a href="/rango/">Index</a>``. The link uses the same structure as the link to the ``about`` page shown above.
 
-.. rubric:: Footnotes
-.. [#f1] This assumes that you are using the IP address 127.0.0.1 and port 8000 when running your Django development web server. If you do not explicitly provide a port to run the development server on, Django defaults to port 8000 for you.
+.. rubric:: Примечания
+.. [#f1] Предполагается, что вы используете IP адресс 127.0.0.1 и порт 8000 при запуске Вашего Django веб-сервера для разработки. Если Вы явно не указываете порт, который будет использоваться для запуска сервера для разработки, Django по умолчанию использует порт 8000.
 
 .. [#f2] There are many applications available out there that you can use in your project. Take a look at `PyPI <https://pypi.python.org/pypi?%3Aaction=search&term=django&submit=search>`_ and `Django Packages <https://www.djangopackages.com/>`_ to search for reusable apps which you can drop into your projects.
