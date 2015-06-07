@@ -1,46 +1,46 @@
 .. _overview-label:
 
-Overview
+Вступление
 ========
-The aim of this book is to provide you with a practical guide to web development using *Django 1.7.* The book is designed primarily for students, providing a walkthrough of the steps involved in getting your first web applications up and running, as well as deploying them to a web server.
+Цель этой книги - стать практическим руководством по веб разработке, используя *Django 1.7.* Эта книга создана главным образом для студентов, обеспечивая пошаговое руководство, необходимое для создания и запуска Ваших первых веб приложений, а также развертывания их на веб-сервере.
 
-This book seeks to complement the `official Django Tutorials <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_ and many of the other excellent tutorials available online. By putting everything together in one place, this book fills in many of the gaps in the official Django documentation providing an example-based design driven approach to learning the Django framework. Furthermore, this book provides an introduction to many of the aspects required to master web application development.
+Эта книга создана, чтобы дополнить `официальное руководство по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_ и многие другие прекрасные руководства доступные онлайн. Собрав всё необходимое в одном месте, эта книга заполняет многие пробелы в официальной документации по Django, что позволяет изучить фреймворк Django, используя метод обучения, основанный на примерах. Более того, эта книга является введением во многие особенности, необходимые, чтобы стать специалистом в области разработки веб приложений.
 
-Why Work with this Book?
+Почему стоит использовать эту книгу?
 ------------------------
-**This book will save you time.** On many occasions we've seen clever students get stuck, spending hours trying to fight with Django and other aspects of web development. More often than not, the problem was usually because a key piece of information was not provided, or something was not made clear. While the occasional blip might set you back 10-15 minutes, sometimes they can take hours to resolve. We've tried to remove as many of these hurdles as possible. This will mean you can get on with developing your application, and not have to sit there scratching your head.
+**Эта книга съэкономит Ваше время.** On many occasions we've seen clever students get stuck, spending hours trying to fight with Django and other aspects of web development. More often than not, the problem was usually because a key piece of information was not provided, or something was not made clear. While the occasional blip might set you back 10-15 minutes, sometimes they can take hours to resolve. We've tried to remove as many of these hurdles as possible. This will mean you can get on with developing your application, and not have to sit there scratching your head.
 
 **This book will lower the learning curve.** Web application frameworks can save you a lot of hassle and lot of time. Well, that is if you know how to use them in the first place! Often the learning curve is steep. This book tries to get you going - and going fast. By showing you how to put together a web application with all the bells and whistle from the onset, the book shortens the learning curve. 
 
 **This book will improve your workflow.** Using web application frameworks requires you to pick up and run with a particular design pattern - so you only have to fill in certain pieces in certain places. After working with many students, we heard lots of complaints about using web application frameworks - specifically about how they take control away from them (i.e. inversion of control).  To help you, we've created a number of workflows to focus your development process so that you can regain that sense of control and build your web application in a disciplined manner.
 
-**This book is not designed to be read.** Whatever you do, do not read this book! It is a hands-on guide to building web applications in Django. Reading is not doing. To increase the value you gain from this experience, go through and develop the application. When you code up the application, *do not just cut and paste the code.* Type it in, think about what it does, then read the explanations we have provided to describe what is going on. If you still do not understand, then check out the Django documentation, go to `Stack Overflow <http://stackoverflow.com/questions/tagged/django>`_ or other helpful websites and fill in this gap in your knowledge. If you think it is worth mentioning, please get in touch with us so that we can improve the book - we already have a number of contributors and we will happily acknowledge your contribution!
+**Эта книга не создана ТОЛЬКО для чтения.** Whatever you do, do not read this book! It is a hands-on guide to building web applications in Django. Reading is not doing. To increase the value you gain from this experience, go through and develop the application. When you code up the application, *do not just cut and paste the code.* Type it in, think about what it does, then read the explanations we have provided to describe what is going on. If you still do not understand, then check out the Django documentation, go to `Stack Overflow <http://stackoverflow.com/questions/tagged/django>`_ or other helpful websites and fill in this gap in your knowledge. If you think it is worth mentioning, please get in touch with us so that we can improve the book - we already have a number of contributors and we will happily acknowledge your contribution!
 
-What You will Learn
+Чему Вы научитесь
 -------------------
-In this book, we will be taking an exampled-based approach (or inquiry-based learning). The book will show you how to design a web application called *Rango* (see the Design Brief in Section :ref:`overview-design-brief-label` below). Along the way, we'll show you how to perform the following tasks.
+In this book, we will be taking an exampled-based approach (or inquiry-based learning). В этой книге будет показано как спроектировать веб приложение, названное *Rango* (смотри Design Brief в разделе :ref:`overview-design-brief-label` ниже). По ходу повествования, мы покажем как решить следующие задачи.
 
-* Setup a development environment - including how to use the terminal, the Pip installer, how to work with Git, etc.
-* Setup a Django project and create a basic Django application.
+* Настроить среду окружения - включая то как использовать терминал, Pip инсталятор, как работать с Git и т. д..
+* Настроить Django проект и создать базовое Django приложение.
 * Configure the Django project to serve static media and other media files.
-* Work with Django's *Model-View-Template* design pattern.
+* Работать с шаблоном проектирования Django's *Модель-Представление-Шаблон*.
 * Create database models and use the object relational mapping functionality provided by Django.
-* Create forms that can utilise your database models to create dynamically generated webpages.
-* Use the User Authentication services provided by Django.
-* Incorporate external services into the application.
-* Include *Cascading Styling Sheets (CSS)* and *JavaScript* within a web application.
-* Design and apply CSS to improve the look and feel of the web application.
-* Work with cookies and sessions with Django.
+* Создавать формы, которые могут использовать Ваши модели из базы данных, чтобы создавать динамически генерируемые страницы.
+* Использовать службы аутентификации пользователя, существующие в Django.
+* Добавлять внешние службы в приложение.
+* Включать *Каскадные таблицы стилей (CSS)* и *JavaScript* в веб приложение.
+* Проектировать и применять CSS, чтобы улучшить внешний вид и представление о веб приложении.
+* Работать с cookies и сессиями в Django.
 * Include more advanced functionality like *AJAX* into your application.
-* Deploy your application to a web server using *PythonAnywhere.*
+* Развернуть Ваше приложение на веб сервере, используя *PythonAnywhere.*
 
-At the end of each chapter, we have included a number of exercises designed to push you harder and to see if you can apply what you have learned. The later chapters of the book provide a number of open development exercises along with coded solutions and explanations. Finally, all the code is available from *GitHub* at https://github.com/leifos/tango_with_django.
+At the end of each chapter, we have included a number of exercises designed to push you harder and to see if you can apply what you have learned. The later chapters of the book provide a number of open development exercises along with coded solutions and explanations. Наконец, весь код доступен из *GitHub* по адресу https://github.com/leifos/tango_with_django.
 
-To see a fully-functional version of the application, you can also visit the `How to Tango with Django <http://www.tangowithdjango.com/>`_ website at http://www.tangowithdjango.com/rango/.
+Чтобы увидеть законеченную, работоспособную версию приложения, Вы можете также посетить веб-сайт `How to Tango with Django <http://www.tangowithdjango.com/>`_ по адресу http://www.tangowithdjango.com/rango/.
 
-Technologies and Services
+Технологии и службы
 -------------------------
-Through the course of this book, we will used various technologies and external services, including:
+При изучении этой книги мы будем использовать различные технологии и внешние службы, включая:
 
 * Python, http://www.python.org
 * Pip, http://www.pip-installer.org
@@ -309,38 +309,38 @@ We suggest undertaking the `Official Django Tutorials <https://docs.djangoprojec
 		<table>
 			
 			<tr>
-				<th style="width: 20%;">Tango with Django</th>
-				<th style="width: 20%;">Django Tutorial</th>
+				<th style="width: 20%;">Танго с Django</th>
+				<th style="width: 20%;">Учеюное пособие по Django</th>
 			</tr>
 			
 			<tr>
-				<td>Chapter 3</td>
-				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial01/">Part 1 - Models</a></td>
+				<td>Глава 3</td>
+				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial01/">Часть 1 - Модели</a></td>
 			</tr>
 			
 			<tr>
-				<td>Chapter 5</td>
-				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial02/">Part 2 - The Admin Interface</a></td>
+				<td>Глава 5</td>
+				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial02/">Часть 2 - Интерфейс администратора</a></td>
 			</tr>
 			
 			<tr>
-				<td>Chapter 6</td>
-				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial03/">Part 3 - URLs and Views</a></td>
+				<td>Глава 6</td>
+				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial03/">Часть 3 - URLы и Представления</a></td>
 			</tr>
 			
 			<tr>
-				<td>Chapter 7</td>
-				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial04/">Part 4 - Templates</a></td>
+				<td>Глава 7</td>
+				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial04/">Часть 4 - Шаблоны</a></td>
 			</tr>
 			
 			<tr>
-				<td>Chapter 18</td>
-				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial05/">Part 5 - Testing</a></td>
+				<td>Часть 18</td>
+				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial05/">Часть 5 - Тестирование</a></td>
 			</tr>
 			
 			<tr>
-				<td>Chapter 11</td>
-				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial06/">Part 6 - CSS</a></td>
+				<td>Часть 11</td>
+				<td><a href="https://docs.djangoproject.com/en/1.7/intro/tutorial06/">Часть 6 - CSS</a></td>
 			</tr>
 	
 		</table>
