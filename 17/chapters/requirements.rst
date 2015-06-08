@@ -1,46 +1,56 @@
 .. _requirements-label:
 
-Getting Ready to Tango
+Подготовка к Танго
 ======================
-Let's get set up! To tango with Django, you'll need to ensure that you have everything you need installed on your computer and that you have a sound understanding of your development environment. This chapter walks you through what you need and what you need to know.
+Давайте произведем настройку! Чтобы станцевать танго с Django, Вам необходимо убедиться, что Вы установили всё что необходимо на Ваш компьютер и что Вы четко понимаете для чего нужна каждая составляющая Вашей среды разработки. В этой главе пошагово рассматриваются необходимые Вам инструменты и обсуждается то, что Вы должны знать.
 
-For this tutorial, you'll require the following key pieces of software.
+Для этого учебного пособия, Вам потребуется следующее программное обеспечение, без которого не возможна работа с этой книгой.
 
-* Python version 2.7.5+
-* Django version 1.7
+* Python версии 2.7.5+
+* Django версии 1.7
 
-As Django is a web application framework written in the Python programming language, you will be required to have a working knowledge of Python. If you haven't used Python before or you simply wish to brush up on your skills, then we highly recommend that you check out and work through one or more of the following guides.
+Поскольку Django является фреймфорком для создания веб приложений, написанном на языке программирования Python, Вы должны иметь практические навыки программирования на этом языке. Если Вы не использовали язык Python до этого или просто хотите освежить свои знания, то мы настоятельно рекомендуем просмотреть и поработать с одним или несколькими из следующих руководств.
 
-* **A quick tutorial** - Learn Python in 10 Minutes by Stavros, http://www.korokithakis.net/tutorials/python/.
-* **The Official Python Tutorial** at http://docs.python.org/2/tutorial/.
-* **A brilliant book**: Think Python: How to Think like a Computer Scientist by Allen B. Downey, available online at http://www.greenteapress.com/thinkpython/.
-* **An amazing online course**: Learn to Program, by Jennifer Campbell and Paul Gries at https://www.coursera.org/course/programming1.
+* **Краткое руководство** - Learn Python in 10 Minutes от Stavros, http://www.korokithakis.net/tutorials/python/.
+* **Официальное руководство по Python** по адресу http://docs.python.org/2/tutorial/.
+* **Блестящая книга**: Think Python: How to Think like a Computer Scientist, автор Allen B. Downey, доступная онлайн по адресу http://www.greenteapress.com/thinkpython/.
+* **Изумительный онлайн курс**: Learn to Program, by Jennifer Campbell и Paul Gries по адресу https://www.coursera.org/course/programming1.
 
-Using the Terminal
+Использование терминала
 ------------------
-In order to set up your environment learning how to use the *Command Line Interpreter (CLI)* provided by your Operating System is really important. Through the course of this tutorial, you will be interacting with the CLI routinely. If you are already familiar with using the command line interface you can skip directly to :ref:`Installing the Software <installing-software>` section.
+Чтобы настроить Вашу среду разработки, действительно важно знать как использовать *Интерпретатор Командной Строки - ИКС (Command Line Interpreter - CLI)*, входящий в состав Вашей операционной системы. Во время работы с этим учебным пособием, вы будете постоянно взаимодействовать с ИКС. Если Вы уже знаете как использовать интерфейс командной строки, вы можете перейти непосредственно к разделу :ref:`Установка программного обеспечения <installing-software>`.
 
-UNIX-based operating systems all use a similar-looking `terminal <http://www.ee.surrey.ac.uk/Teaching/Unix/unixintro.html>`_. Descendants, derivatives and clones of UNIX include `Apple's OS X <http://en.wikipedia.org/wiki/OS_X>`_ and the `many available Linux distributions <http://en.wikipedia.org/wiki/List_of_Linux_distributions>`_ available today. All of these operating systems contain a core set of commands which help you navigate through your filesystem and launch programs, all without the need of any graphical interface. This section provides the key commands you should familiarise yourself with.
+Все операционные системы на основе UNIX используют приблизительно одинаковый `терминал <http://www.ee.surrey.ac.uk/Teaching/Unix/unixintro.html>`_. На сегодняшний день доступны потомки, производные и клоны UNIX, включая `Apple's OS X <http://en.wikipedia.org/wiki/OS_X>`_  и `многие доступные дистрибутивы Linux <http://en.wikipedia.org/wiki/List_of_Linux_distributions>`_. Все эти операционные системы содержат базовый набор команд, которые помогут Вам перемещаться по Вашей файловой системе и запускать программы без использования графического интерфейса. В этом разделе приведены основные команды, с которыми Вы должны ознакомиться.
 
-.. note:: This tutorial is focused towards users of UNIX-based or UNIX-derived operating systems. While Python and Django can run in a Windows-based environment, many of the commands that we use in this book are for  UNIX-based terminals. These commands can however be replicated in Windows by using the graphical user interface, `using the relevant command in a Windows Command Prompt <http://www.ai.uga.edu/mc/winforunix.html>`_, or using `Windows PowerShell <http://technet.microsoft.com/en-us/library/bb978526.aspx>`_ which provides an CLI like similar to a UNIX terminal.
+.. note:: Это учебное пособие ориентировано на пользователей операционных систем, основанных на UNIX или UNIX-подобных. Хотя Python и Django могут работать в среде Windows, многие команды, которые мы будем использовать в этой книге предназначены для терминалов, основанных на UNIX. Тем не менее, эти команды могут быть воспроизведены в Windows, используя графический интерфейс пользователя, `применяя соответствующую команду в командной строке Windows <http://www.ai.uga.edu/mc/winforunix.html>`_ или применяя `Windows PowerShell <http://technet.microsoft.com/en-us/library/bb978526.aspx>`_, который предоставляет ИКС подобный UNIX терминалу.
 
-Upon launching a new terminal instance, you'll typically be presented with something like:
+.. Примечание переводчика:: Командную строку в Windows 7 можно вызвать следующим образом. Откройте меню Пуск и в строке *Найти программы и файлы* введите cmd.exe.
+
+После запуска нового окна терминала, Вы обычно видите что-то подобное:
 
 .. code-block:: guess
 	
 	sibu:~ leif$
 
-This is called the *prompt*, and indicates when the system is waiting to execute your every command. The prompt you see varies depending on the operating system you are using, but all look generally very similar. In the example above, there are three key pieces of information to observe:
+Это называется *приглашением командной строки*, и обозначает, что система ждет и готова к выполнению любой Вашей команды. Приглашение командной строки, которое Вы видите, может меняться в зависимости от используемой операционной системы, но все они похожи друг на друга. В вышеприведенном примере, обратите внимание на следующие три основных элемента:
 
-* your username and computer name (username of ``leif`` and computer name of ``sibu``);
-* your *current working directory* (the tilde, or ``~``); and
-* the privilege of your user account (the dollar sign, or ``$``).
+* Ваше имя пользователя и имя компьютера (имя пользователя ``leif`` и имя компьютера ``sibu``);
+* Ваш *текущий рабочий каталог* (тильда или ``~``); и
+* привилегия учетной записи пользователя (знак доллара или ``$``).
 
-The dollar sign (``$``) typically indicates that the user is a standard user account. Conversely, a hash symbol (``#``) may be used to signify the user logged in has `root privileges <http://en.wikipedia.org/wiki/Superuser>`_. Whatever symbol is present is used to signify that the computer is awaiting your input. 
+Знак доллара (``$``) обычно обозначает, что пользователь использует стандартную пользовательскую учетную запись. Напротив, символ решетки (``#``) используется для обозначения того, что пользователь, вошедший в систему, имеет `привелегии типа root или суперпользователя <http://en.wikipedia.org/wiki/Superuser>`_. Не зависимо от того такой символ изображен, он используется, чтобы показать, что компьютер ожидает Вашего ввода. 
 
-Open up a terminal window and see what your prompt looks like.
+Откройте окно терминала и посмотрите как выглядит Ваше приглашение командной строки.
 
-When you are using the terminal, it is important to know where you are in the file system. To find out where you are, you can issue the command ``pwd``. This will display your present working directory. For example, check the example terminal interactions below.
+.. Примечание переводчика:: В ИКС cmd.exe приглашение командной строки выглядит как:
+
+.. code-block:: guess
+
+	Текущий рабочий каталог>
+
+Изменить вид приглашения командной строки можно с помощью команды ``prompt``, например, ``prompt $$`` меняет вид приглашения на знак доллара.
+
+Когда Вы используете терминал, важно знать в каком каталоге файловой системы Вы находитесь. Чтобы это узнать, Вы можете выполнить команду ``pwd``. Она отобразит Ваш текущий рабочий каталог. В качестве примера рассмотрим работу с терминалом, показанную ниже.
 
 .. code-block:: guess
 	
@@ -49,25 +59,25 @@ When you are using the terminal, it is important to know where you are in the fi
 	/Users/leif
 	sibu:~ leif$
 
-You can see that the present working directory in this example is: ``/Users/leif``.
+В этом примере текущий рабочий каталог - это: ``/Users/leif``.
 
-You'll also note that the prompt indicates that my present working directory is ~. This is because the tilde (``~``) represents your *home directory*. The base directory in any UNIX-based file system is the *root directory*. The path of the root directory is denoted by a single forward slash (``/``).
+Вы должны были также заметить, что приглашение указывает, что мой текущий рабочий каталог - это ~. Это связано с тем, что тильда (``~``) представляет Ваш *домашний каталог*. Основной каталог в любой файловой системе, основанной на UNIX, - это *корневой каталог*. Путь к корневому каталогу обозначается одним прямым слэшем (``/``).
 
-If you are not in your home directory you can change directory (``cd``) to your home directory by issuing the following command.
+Если вы находитесь не в своём домашнем каталоге, Вы можеет изменить каталог (``cd``) на домашний, выполнив следующую команду.
 
 .. code-block:: guess
 	
 	$ cd ~
 
-Let's create a directory called ``code``. To do thus, use the make directory command (``mkdir``), as shown below.
+Давайте создадим каталог под названием ``code``. Для этого используйте команду (``mkdir``), как показано ниже.
 
 .. code-block:: guess
 	
 	$ mkdir code
-	
-To move to the newly-created ``code`` directory, enter ``cd code``. If you now check your current working directory, you'll notice that you will be in ``~/code/``. This may also be reflected by your prompt. Note in the example below that the current working directory is printed after the ``sibu`` computer name.
 
-.. note:: Whenever we refer to ``<workspace>``, we'll be referring to your ``code`` directory.
+Чтобы перейти в только что созданный каталог ``code``, введите ``cd code``. Если теперь просмотреть Ваш текущий рабочий каталог, то он изменится на ``~/code/``. Это также может быть отражено в Вашем приглашении. Заметьте, что в приведенном ниже примере, текущий рабочий каталог выводится после имени компьютера ``sibu``.
+
+.. Замечание:: Всякий раз говоря о ``<рабочем пространстве>``, мы будем иметь в виду Ваш каталог ``code``.
 
 .. code-block:: guess
 	
@@ -77,9 +87,9 @@ To move to the newly-created ``code`` directory, enter ``cd code``. If you now c
 	sibu:code leif$ pwd
 	/Users/leif/code
 
-To list the files that are in a directory, you can issue the command ``ls``. You can also see hidden files or directories - if you have any - you can issue the command ``ls -a``, where ``a`` stands for *all.* If you ``cd`` back to your home directory (``cd ~``) and then issue ``ls``, you'll see that you have something called ``code`` in your home directory.
+Чтобы получить список файлов, которые находятся в каталоге, Вы можете выполнить команду ``ls``. Чтобы увидеть скрытые файлы или каталоги - если таковые существуют - выполните команду ``ls -a``, где ключ ``a`` первая буква слова *all (все).* Если вернуться обратно в Ваш домашний каталог (``cd ~``) и затем выполнить ``ls``, Вы увидите, что существует нечто под названием ``code`` в Вашем домашнем каталоге.
 
-To find out a bit more about what is in your directory, issue ``ls -l``. This will provide a more detailed *listing* of your files and whether it is a directory or not (denoted by a ``d`` at the start of the line).
+Чтобы получить больше информации о том, что находится в Вашем каталоге, введите ``ls -l``. Эта команда выдает более подробный *список* Ваших файлов, а также информацию о том является ли файл каталогом или нет (для этого используется символ ``d`` в начале строки).
 
 .. code-block:: guess
 	
@@ -88,56 +98,60 @@ To find out a bit more about what is in your directory, issue ``ls -l``. This wi
 	
 	drwxr-xr-x   36 leif  staff    1224 23 Sep 10:42 code
 
-The output also contains information on the `permissions associated to the directory <http://www.elated.com/articles/understanding-permissions/>`_, who created it (``leif``), the group (``staff``), the size, the date/time the file was modified at, and, of course, the name.
+Выводимый текст также содержит информацию о `правах доступа связанных с каталогом <http://www.elated.com/articles/understanding-permissions/>`_, кто его создал (``leif``), группе пользователей (``staff``), размере, дате/времени, когда файл был изменен и, конечно, его название.
 
-You may also find it useful to be able to edit files within your terminal. There are many editors which you can use - some of which may already be installed on your computer. The `nano <http://www.nano-editor.org/>`_ editor for example is a straightforward editor - unlike `vi <http://en.wikipedia.org/wiki/Vi>`_ which can take some time to learn. Below are a list of commonly-used UNIX commands that you will find useful.
+.. Примечание переводчика:: В ИКС cmd.exe для просмотра содержимого каталога используйте команду ``dir``.
 
-Core Commands
+Также полезно иметь возможность редактировать файлы, используя Ваш терминал. Существует много редакторов, которые Вы можете использовать - причем некоторые из них могут быть уже установлены на Вашем компьютере. Редактор `nano <http://www.nano-editor.org/>`_, например, является простым редактором, в отличие от `vi <http://en.wikipedia.org/wiki/Vi>`_, для изучения которого потребуется некоторое время. Ниже приводится список часто используемых UNIX команд, которые могут оказаться полезны.
+
+Основные команды
 *************
-All UNIX-based operating systems come with a series of built-in commands - with most focusing exclusively on file management. The commands you will use most frequently are listed below, each with a short explanation on what they do and how to use them.
+Все операционные системы, основанные на UNIX, содержат список встроенных команд - большинство из которых предназначено исключительно для работы с файлами. Команды, которые Вы будете использовать чаще всего, приведены ниже, с коротким пояснением того, что они деляют и как их использовать.
 
-- ``pwd``: *Prints* your current *working directory* to the terminal. The full path of where you are presently is displayed.
-- ``ls``: Prints a list of files in the current working directory to the terminal. By default, you do not see the sizes of files - this can be achieved by appending ``-lh`` to ``ls``, giving the command ``ls -lh``.
-- ``cd``: In conjunction with a path, allows you to *change* your current working *directory*. For example, the command ``cd /home/leif/`` changes the current working directory to ``/home/leif/``. You can also move up a directory level without having to provide the `absolute path <http://www.uvsc.edu/disted/decourses/dgm/2120/IN/steinja/lessons/06/06_04.html>`_ by using two dots, e.g. ``cd ..``.
-- ``cp``: Copies files and/or directories. You must provide the *source* and the *target*. For example, to make a copy of the file ``input.py`` in the same directory, you could issue the command ``cp input.py input_backup.py``.
-- ``mv``: Moves files/directories. Like ``cp``, you must provide the *source* and *target*. This command is also used to rename files. For example, to rename ``numbers.txt`` to ``letters.txt``, issue the command ``mv numbers.txt letters.txt``. To move a file to a different directory, you would supply either an absolute or relative path as part of the target - like ``mv numbers.txt /home/david/numbers.txt``.
-- ``mkdir``: Creates a directory in your current working directory. You need to supply a name for the new directory after the ``mkdir`` command. For example, if your current working directory was ``/home/david/`` and you ran ``mkdir music``, you would then have a directory ``/home/david/music/``. You will need to then ``cd`` into the newly created directory to access it.
-- ``rm``: Shorthand for *remove*, this command removes or deletes files from your filesystem. You must supply the filename(s) you wish to remove. Upon issuing a ``rm`` command, you will be prompted if you wish to delete the file(s) selected. You can also remove directories `using the recursive switch <http://www.computerhope.com/issues/ch000798.htm>`_. Be careful with this command - recovering deleted files is very difficult, if not impossible!
-- ``rmdir``: An alternative command to remove directories from your filesystem. Provide a directory that you wish to remove. Again, be careful: you will not be prompted to confirm your intentions.
-- ``sudo``: A program which allows you to run commands with the security privileges of another user. Typically, the program is used to run other programs as ``root`` - the `superuser <http://en.wikipedia.org/wiki/Superuser>`_ of any UNIX-based or UNIX-derived operating system.
+- ``pwd``: Выводит на экран терминала Ваш текущий *рабочий каталог*. Отображается полный путь того каталога, в котором Вы сейчас находитесь.
+- ``ls``: Выводит список файлов в текущем рабочем каталоге на экран терминала. По умолчанию, размер файлов не выводится - если он необходим необходимо добавить к команде ``ls`` ключ ``-lh``, т. е. ввести команду ``ls -lh``.
+- ``cd``: Позволяет Вам *изменить* Ваш текущий рабочий *каталог* с учетом пути. Например, команда ``cd /home/leif/`` изменяет текущий рабочий каталог на ``/home/leif/``. Вы также можете перемещаться на один уровень каталогов вверх без указания `полного пути <http://www.uvsc.edu/disted/decourses/dgm/2120/IN/steinja/lessons/06/06_04.html>`_, используя две точки, например ``cd ..``.
+- ``cp``: Копирует файлы и/или каталоги. Вы должны указать *источник* (откуда копировать) и *назначение* (куда копировать). Например, чтобы скопировать файл ``input.py`` в тот же каталог, Вы можете ввести команду ``cp input.py input_backup.py``.
+- ``mv``: Перемещает файлы/каталоги. Как и ``cp``, Вы должны указать *источник* и *назначение*. Эта команда также используется для переименовывания файлов. Например, чтобы переименовать ``numbers.txt`` в ``letters.txt``, выполните команду ``mv numbers.txt letters.txt``. Чтобы переместить файл в другой каталог, необходимо указать абсолютный или относительный путь как часть назначения - например, ``mv numbers.txt /home/david/numbers.txt``.
+- ``mkdir``: Создает каталог в текущем рабочем каталоге. Вы должны указать название нового каталога после команды ``mkdir``. Например, если Выш текущий рабочий каталог - это ``/home/david/`` и Вы ввели ``mkdir music``, то будет создан каталог ``/home/david/music/``. Выполните команду ``cd имя каталога``, чтобы перейти в только что созданный каталог.
+- ``rm``: сокращение от *remove (удалить)*, эта команда удаляет файлы из Вашей файловой системы. Вы должны указать имя файла(ов), которые хотите удалить. При выполнении команды ``rm``, появляется предупреждающее сообщение о том, действительно ли Вы хотите удалить выбранный файл(ы). Вы также можете удалять каталоги, `используя рекурсивный ключ <http://www.computerhope.com/issues/ch000798.htm>`_. Будьте осторожны при использовании этой команды - восстановить удаленные файлы очень сложно, если вообще возможно!
+- ``rmdir``: Альтернативная команда для удаления каталогов из Вашей файловой системы. Нужно указать каталог, который Вы хотите удалить. Опять, будьте осторожны: система не предложит подтвердить свои намерения.
+- ``sudo``: Программа, которая позволяет Вам запускать команды с привилегиями безопасности другого пользователя. Обычно она используется для запуска других программ от имени ``root`` - `суперпользователя <http://en.wikipedia.org/wiki/Superuser>`_ любой операционной системы, основанной на UNIX или UNIX-подобной.
 
-.. note:: This is only a brief list of commands. Check out ubuntu's documentation on `Using the Terminal <https://help.ubuntu.com/community/UsingTheTerminal>`_  for a more detailed overview, or the `Cheat Sheet 
- <http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/>`_ by FOSSwire for a quick reference guide.
+.. Замечание:: Это только краткий список команд. Просмотрите документацию Ubuntu `Использование терминала <https://help.ubuntu.com/community/UsingTheTerminal>`_  для более подробного обзора или `Шпаргалку 
+ <http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/>`_ от FOSSwire для краткого справочного руководства.
+
+ .. Примечание переводчика:: В ИКС cmd.exe для копирования файлов используйте команду ``copy``, перемещения файлов/каталогов - ``move``, удаления файлов - ``del``. Полную справку по всем командам можно найти `по адресу <http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/cmd.mspx?mfr=true>`_
 
 .. _installing-software:
 
-Installing the Software
+Установка программного обеспечения
 -----------------------
-Now that you have a decent understanding of how to interact with the terminal, you can begin to install the software required for this tutorial.
+Теперь, когда Вы достаточно понимаете как взаимодействовать с терминалом, Вы можете начать устанавливать программное обеспечение, требуемое для этого учебного пособия.
 
-Installing Python
+Установка Python
 *****************
-So, how do you go about installing Python 2.7.5 on your computer? You may already have Python installed on your computer - and if you are using a Linux distribution or OS X, you will definitely have it installed. Some of your operating system's functionality `is implemented in Python <http://en.wikipedia.org/wiki/Yellowdog_Updater,_Modified>`_, hence the need for an interpreter!
+Итак, как насчет того, чтобы установить Python 2.7.5 на Ваш компьютер? Возможно Python уже установлен на Вашем компьютере - а, если Вы используете дистрибутив Linux или OS X, то безусловно он установлен. Это связано с тем, что некоторые функциональные возможности Вашей операционной системы `реализованы на Python <http://en.wikipedia.org/wiki/Yellowdog_Updater,_Modified>`_, поэтому возникает необходимость использования интерпретатора!
 
-Unfortunately, nearly all modern operating systems utilise a version of Python that is older than what we require for this tutorial. There's many different ways in which you can install Python, and many of them are sadly rather tricky to accomplish. We demonstrate the most commonly used approaches, and provide links to additional reading for more information.
+К сожалению, почти все современные операционные системы используют более старую версию Python, чем мы требуем для этого учебного пособия. Существует множество способов установки Python и многие из них к сожалению сложно в реализации. Мы покажем наиболее часто используемые способы и дадим ссылки, которые можно использовать для получения дополнительной информации.
 
-.. warning:: This section will detail how to run Python 2.7.5 *alongside* your current Python installation. It is regarded as poor practice to remove your operating system's default Python installation and replace it with a newer version. Doing so could render aspects of your operating system's functionality broken!
+.. Предупреждение:: В этом разделе будет подробно описано как запустить Python 2.7.5 *не зависимо от* Вашей текущей установки Python. Считается прохой практикой удалять установку Python по умолчанию, произведенную Вашей операционной системой и заменять её новой версией. Это может вывести из строя некоторые компоненты Вашей операционной системы!
 
 Apple OS X
 ..........
-The most simple way to get Python 2.7.5 installed on your Mac is to download and run the simple installer provided on the official Python website. You can download the installer by visiting the webpage at http://www.python.org/getit/releases/2.7.5/.
+Самый простой способ установить Python 2.7.5 на Ваш Mac - это скачать и запустить простой установщик с официального веб сайта Python. Вы можете скачать установшик, посетив веб страницу по адресу http://www.python.org/getit/releases/2.7.5/.
 
-.. warning:: Ensure that you download the ``.dmg`` file that is relevant to your particular OS X installation!
+.. Предупреждение:: Убедитесь, что Вы скачали ``.dmg`` файл, который подходит для Вашей конкретной версии установки OS X!
 
-#. Once you have downloaded the ``.dmg`` file, double-click it in the Finder.
-#. The file mounts as a separate disk and a new Finder window is presented to you.
-#. Double-click the file ``Python.mpkg``. This will start the Python installer.
-#. Continue through the various screens to the point where you are ready to install the software. You may have to provide your password to confirm that you wish to install the software.
-#. Upon completion, close the installer and eject the Python disk. You can now delete the downloaded ``.dmg`` file.
+#. После того как Вы скачали ``.dmg`` файл, дважды щелкните на нём в Finder.
+#. Файл смонируется как отдельный диск и появится новое окно Finder.
+#. Дважды щелкните на файле ``Python.mpkg``. Это запустит установщик Python.
+#. Следуйте дальнейшим инструкциям на экране, пока не дойдете до места, где программа будет готова к установке программного обеспечения. Введите свой пароль для подтвердждения того, чтоы Вы хотите установить программное обеспечение.
+#. После завершения, закройте установщик и извлеките диск с Python. Теперь Вы можете удалить загруженный ``.dmg`` файл.
 
-You should now have an updated version of Python installed, ready for Django! Easy, huh?
+Теперь у Вас должна быть установлена обновленная версия Python и можно начинать установку Django! Легко, не правда ли?
 
-Linux Distributions
+Дистрибутивы Linux
 ...................
 Unfortunately, there are many different ways in which you can download, install and run an updated version of Python on your Linux distribution. To make matters worse, methodologies vary from distribution to distribution. For example, the instructions for installing Python on `Fedora <https://github.com/yyuu/pyenv>`_ may differ from those to install it on an `Ubuntu <http://www.ubuntu.com/>`_ installation.
 
@@ -265,8 +279,10 @@ Replace ``<PATH_TO_SITE-PACKAGES>`` with the path to your ``site-packages`` dire
 
 On a Windows-based computer, you must follow the instructions shown in Section :num:`requirements-install-python-windows` to bring up the environment variables settings dialog. Add a ``PYTHONPATH`` variable with the value being set to your ``site-packages`` folder, which is typically ``C:\Python27\Lib\site-packages\``.
 
-Using Setuptools and Pip
+Использование Setuptools и Pip
 ************************
+Установка и настройка Вашей среды разработки действительно важная часть любого проекта. 
+
 Installing and setting up your development environment is a really important part of any project. While it is possible to install Python Packages such as Django separately, this can lead to numerous problems and hassles later on. For example, how would you share your setup with another developer? How would you set up the same environment on your new machine? How would you upgrade to the latest version of the package? Using a package manager removes much of the hassle involved in setting up and configuring your environment. It will also ensure that the package you install is the correct for the version of Python you are using, along with installing any other packages that are dependent upon the one you want to install.
 
 In this book, we will be using *Pip*. Pip is a user-friendly wrapper over the *Setuptools* Python package manager. Because Pip depends on Setuptools, we are required to ensure that both are installed on your computer.
@@ -300,7 +316,7 @@ Upon seeing this output, you should be able to launch Pip from your terminal. To
 
 .. note:: With Windows-based computers, follow the same basic process. You won't need to enter the ``sudo`` command, however.
 
-Installing Django
+Установка Django
 *****************
 Once the Python package manager Pip is successfully installed on your computer, installing Django is easy. Open a Command Prompt or terminal window, and issue the following command.
 
@@ -324,7 +340,7 @@ During the course of building Rango, we will be uploading and handling images. T
 	
 	$ pip install pillow
 
-Again, use ``sudo`` if required. 
+Опять используйте ``sudo`` при необходимости. 
 
 
 Installing Other Python Packages
@@ -384,7 +400,7 @@ If you are using a linux/unix based OS, then to use the wrapper you need to call
 
 It is a good idea to add this to your bash/profile script. So you dont have to run it each and every time you want to use virtualenvironments.
 
-However, if you are using windows, then install the `virtualenvwrapper-win <https://pypi.python.org/pypi/virtualenvwrapper-win>`_ package:
+Однако, если Вы используете Windows, то установите пакет `virtualenvwrapper-win <https://pypi.python.org/pypi/virtualenvwrapper-win>`_:
 
 
 ::
@@ -410,18 +426,16 @@ Your prompt with change and the current virtual environment will be displayed, i
 
 Later on when we go to deploy the application, we will go through a similar process see Chapter :ref:`Deploying your Application<virtual-environment>` and set up a virtual environment on PythonAnywhere.
 
-Code Repository
+Репозиторий с кодом
 ***************
-We should also point out that when you develop code, you should always house your code within a version-controlled repository such as `SVN <http://subversion.tigris.org/>`_ or `GIT <http://git-scm.com/>`_. We won't be going through this right now so that we can get stuck into developing an application in Django. We have however provided a :ref:`crash course on GIT <git-crash-course>`. We highly recommend that you set up a GIT repository for your own projects. Doing so could save you from disaster.
+Мы также должны отметить, что при разработке кода, Вы должны всегда хранить свой код в репозитории системы контроля версий, такой как `SVN <http://subversion.tigris.org/>`_ или `GIT <http://git-scm.com/>`_. Мы не будем уделять этому время сейчас, так как это помешает приступить к немедленной разработке приложения в Django. Однако, мы даем ссылку на :ref:`краткий курс по GIT <git-crash-course>`. Мы настоятельно рекомендуем, чтобы Вы настроили GIT репозиторий для Ваших собственных проектов. Это может спасти Вас от многих проблем.
 
 
-
-
-Exercises
+Упражнения
 ---------
 To get comfortable with your environment, try out the following exercises.
 
-* Install Python 2.7.5+ and Pip.
+* Установите Python 2.7.5+ и Pip.
 * Play around with your CLI and create a directory called ``code``, which we use to create our projects in.
 * Install the Django and Pillow packages.
 * Setup your Virtual Environment
