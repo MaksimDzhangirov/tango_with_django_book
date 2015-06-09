@@ -1,13 +1,13 @@
 .. _overview-label:
 
 Вступление
-========
+===========
 Цель этой книги - стать практическим руководством по веб разработке, используя *Django 1.7.* Эта книга создана главным образом для студентов, обеспечивая пошаговое руководство, необходимое для создания и запуска Ваших первых веб приложений, а также развертывания их на веб-сервере.
 
 Эта книга создана, чтобы дополнить `официальное руководство по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_ и многие другие прекрасные руководства доступные онлайн. Собрав всё необходимое в одном месте, эта книга заполняет многие пробелы в официальной документации по Django, что позволяет изучить фреймворк Django, используя метод обучения, основанный на примерах. Более того, эта книга является введением во многие особенности, необходимые, чтобы стать специалистом в области разработки веб приложений.
 
 Почему стоит использовать эту книгу?
-------------------------
+-------------------------------------
 **Эта книга съэкономит Ваше время.** On many occasions we've seen clever students get stuck, spending hours trying to fight with Django and other aspects of web development. More often than not, the problem was usually because a key piece of information was not provided, or something was not made clear. While the occasional blip might set you back 10-15 minutes, sometimes they can take hours to resolve. We've tried to remove as many of these hurdles as possible. This will mean you can get on with developing your application, and not have to sit there scratching your head.
 
 **This book will lower the learning curve.** Web application frameworks can save you a lot of hassle and lot of time. Well, that is if you know how to use them in the first place! Often the learning curve is steep. This book tries to get you going - and going fast. By showing you how to put together a web application with all the bells and whistle from the onset, the book shortens the learning curve. 
