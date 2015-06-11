@@ -3,11 +3,11 @@
 .. _django-basics:
 
 Основы работы с Django 
-========================
+======================
 Давайте начнем работать с Django! В этой главе мы дадим краткий обзор основ работы с Django. Вы настроите новый проект и новое веб приложение. В конце этой главы Вы будете иметь простую работающую веб страницу, созданную с помощью Django!
 
 Проверка Вашей конфигурации
------------------------------
+---------------------------
 Давайте начнем, проверив, что Вы правильно установили Python и Django, и что они имеют подходящую версию для этого учебного пособия. Для этого запустите новую копию терминала и выполните следующую команду.
 
 ::
@@ -15,7 +15,7 @@
 	$ python --version
 	2.7.5
 
-Она выведет на экран номер версии устанолвенного интерпретатора Python. Если версия, изображенная на экране отличается от ``2.7.5``, Вам необходимо вернуться к Разделу :ref:`installing-software` и проверить, что Вы выполнили все необходимые шаги по установке для Вашей операционной системы.
+Она выведет на экран номер версии установленного интерпретатора Python. Если версия, изображенная на экране отличается от ``2.7.5``, Вам необходимо вернуться к Разделу :ref:`installing-software` и проверить, что Вы выполнили все необходимые шаги по установке для Вашей операционной системы.
 
 После проверки версии Python, проверьте Вашу версию установки Django, выполнив следующую команду.
 
@@ -24,10 +24,10 @@
 	$ python -c "import django; print(django.get_version())"
 	1.7
 
-Команда опять выполнит код внутри строки, которая вводится за ключем ``-c``. После импорта Django, Вы должны увидеть в терминале ``1.7`` на следующей строке. Если Вы видите другой набор чисел или выводится ``ImportError`` интерпретатором Python, вернитесь в Раздел :ref:`installing-software` или обратитесь к `Документации Django по установке Django <https://docs.djangoproject.com/en/1.7/topics/install/>`_ за дальнейшей информацией. Если Вы обнаружили, что импользуете другую версию Django, то у Вас могут возникнуть проблемы в дальнейшем. Из-за этого стоит удостовериться, что у Вас установлена версия Django 1.7. 
+Команда опять выполнит код внутри строки, которая вводится за ключем ``-c``. После импорта Django, Вы должны увидеть в терминале ``1.7`` на следующей строке. Если Вы видите другой набор чисел или выводится ``ImportError`` интерпретатором Python, вернитесь в Раздел :ref:`installing-software` или обратитесь к `Документации Django по установке Django <https://docs.djangoproject.com/en/1.7/topics/install/>`_ за дальнейшей информацией. Если Вы обнаружили, что используете другую версию Django, то у Вас могут возникнуть проблемы в дальнейшем. Из-за этого стоит удостовериться, что у Вас установлена версия Django 1.7. 
 
 Создание Вашего Django проекта
--------------------------------
+------------------------------
 Чтобы создать новый Django проект, перейдите в каталог, который Вы используете для создания ``кода`` (т. е., в каталог Вашего ``<рабочего пространства>``), и выполните следующую команду:
 
 ``$ django-admin.py startproject tango_with_django_project``
@@ -36,7 +36,7 @@
 
 Эта команда вызовет скрипт ``django-admin.py``, который настроит новый Django проект под названием ``tango_with_django_project`` для Вас. Обычно мы добавляем слово ``_project`` в конец названий каталогов наших Django проектов, чтобы точно знать, что они содержат - однако названия Ваших проектов полностью зависят от Вас.
 
-Теперь в вашем рабочем пространстве должен появиться каталог, название которого совпадает с названием Вышего нового проекта ``tango_with_django_project``. Внутри этого только что созданного каталога, вы должны увидеть:
+Теперь в вашем рабочем пространстве должен появиться каталог, название которого совпадает с названием Вашего нового проекта ``tango_with_django_project``. Внутри этого только что созданного каталога, вы должны увидеть:
 
 * другой каталог с таким же названием как и Ваш проект, ``tango_with_django_project``; и
 * скрипт на языке Python, который называется ``manage.py``.
@@ -46,7 +46,7 @@
 * ``__init__.py``, пустой Python скрипт, наличие которого говорит интерпретатору Python, что этот каталог является Python пакетом;
 * ``settings.py``, файл, где хранятся все Ваши настройки Django проекта;
 * ``urls.py``, Python скрипт для хранения URL шаблонов Вашего проекта; и 
-* ``wsgi.py``, Python скрипт, который поможет запустить Выш сервер для разработки приложения и развернуть Ваш проект на сервере, который будет использоваться для работы приложения.
+* ``wsgi.py``, Python скрипт, который поможет запустить Ваш сервер для разработки приложения и развернуть Ваш проект на сервере, который будет использоваться для работы приложения.
 
 .. note:: Каталог для настройки проекта создается для новых Django проектов, начиная с версии 1.4. Некоторым создание двух каталогов с одинаковыми именами может показаться странным, но это было сделано для того, чтобы отделить компоненты, связанные с проектом от входящих в него отдельных приложений.
 
@@ -111,36 +111,36 @@
 
 При выборе порта, вероятно Вы не сможете использовать TCP порт 80, поскольку он обычно зарезервирован для HTTP траффика. Также любой порт меньше 1024 считается `привилегированным <http://www.w3.org/Daemon/User/Installation/PrivilegedPorts.html>`_ Вашей операционной системой.
 
-Хотя Вы не будете использовать облегченный сервер для разработки при развертывании Вашего приложения, иногда желательно иметь возможность продемонстрировать Ваше приложение на компьютере коллеги. Запуская сервер с IP адресом Вашей машины, позволит другим обратиться к нему как ``http://<your_machines_ip_address>:<port>/`` и просмотреть Ваше веб приложение. Конечно такая возможность будет зависеть от того как настроена Ваша локальная сеть. Существующие прокси серверы или файрволы должны быть настроены соответствующим образом, чтобы такой способ работал. Обратитесь к администратору локальной сети, которую Вы используте, если Вы не можете получить доступ к серверу для разработки удаленно.
+Хотя Вы не будете использовать облегченный сервер для разработки при развертывании Вашего приложения, иногда желательно иметь возможность продемонстрировать Ваше приложение на компьютере коллеги. Запуская сервер с IP адресом Вашей машины, позволит другим обратиться к нему как ``http://<your_machines_ip_address>:<port>/`` и просмотреть Ваше веб приложение. Конечно такая возможность будет зависеть от того как настроена Ваша локальная сеть. Существующие прокси серверы или файрволы должны быть настроены соответствующим образом, чтобы такой способ работал. Обратитесь к администратору локальной сети, которую Вы используете, если Вы не можете получить доступ к серверу для разработки удаленно.
 
-.. note:: Скрипты ``django-admin.py`` и ``manage.py`` содержат множество полезных, экономящих время функцональных возможностей. ``django-admin.py`` позволяет создавать новые проекты и приложения наряду с другими командами. Внутри Вашего каталога с проектом, ``manage.py`` позволяет решать задачи администрирования только внутри Вашего проекта. Чтобы узнать возможности каждого скрипта, просто выполните его без каких-либо аргументов. В  `официальной документации по Django дается подробный список и пояснение к каждой возможной команде <https://docs.djangoproject.com/en/1.7/ref/django-admin/>`_, которую Вы можете вводить для этих скриптов.
+.. note:: Скрипты ``django-admin.py`` и ``manage.py`` содержат множество полезных, экономящих время функциональных возможностей. ``django-admin.py`` позволяет создавать новые проекты и приложения наряду с другими командами. Внутри Вашего каталога с проектом, ``manage.py`` позволяет решать задачи администрирования только внутри Вашего проекта. Чтобы узнать возможности каждого скрипта, просто выполните его без каких-либо аргументов. В  `официальной документации по Django дается подробный список и пояснение к каждой возможной команде <https://docs.djangoproject.com/en/1.7/ref/django-admin/>`_, которую Вы можете вводить для этих скриптов.
 
 Если Вы используете систему контроля версий, сейчас стоит осуществить коммит тех изменений, которые Вы сделали в вашем рабочем пространстве. Обратитесь к ссылке :ref:`Ускоренный курс по GIT <git-crash-course>`, если Вы забыли команды и последовательность шагов, которые необходимо осуществить для этого.
 
 Создание Django приложения
------------------------------
-A Django project is a collection of *configurations* and *applications* that together make up a given web application or website. One of the intended outcomes of using this approach is to promote good software engineering practices. By developing a small series of applications, the idea is that you can theoretically drop an existing application into a different Django project and have it working with minimal effort. Why reinvent the wheel if it's already there? [#f2]_
+--------------------------
+Django проект является совокупностью *конфигураций* и *приложений*, которые вместе составляют требуемое веб приложение или веб сайт. Одним из предполагаемых результатов использования такого метода является поощрение хороших методов разработки программного обеспечения. Идея разработки небольших приложений заключается в том, что Вы теоретически можете переместить существующее приложение в другой Django проект и оно заработает с минимальными усилиями. Зачем изобретать велосипед? [#f2]_
 
-A Django application exists to perform a particular task. You need to create specific applications that are responsible for providing your site with particular kinds of functionality. For example, we could imagine that a project might consist of several applications including a polling app, a registration app, and a specific content related app. In another project, we may wish to re-use the polling and registration apps and use them with to dispatch different content. There are many Django applications you can `download <https://code.djangoproject.com/wiki/DjangoResources#Djangoapplicationcomponents>`_ and use in your projects. Since we are getting started, we'll kick off by walking through how to create your own application.
+Приложение Django используется для выполнения определенной задачи. Вам необходимо будет создавать конкретные приложения, которые отвечают за работу Вашего сайта определенным образом. Например, представим, что проект состоит из нескольких приложений, включая приложение для голосования, регистрации и приложение, связанное с содержимым, характерным для этого проекта. В другом проекте мы можем захотеть повторно использовать приложения для голосования и регистрации и применять их для отправки другого содержимого. Существует много Django приложений, которые Вы можете `загрузить <https://code.djangoproject.com/wiki/DjangoResources#Djangoapplicationcomponents>`_ и использовать в Ваших проектах. поскольку мы учимся работать с Django, рассмотрим последовательность действий, которая необходима для создания Вашего собственного приложения.
 
-To start, create a new application called *Rango*. From within your Django project directory (e.g. ``<workspace>/tango_with_django_project``), run the following command.
+Для начала создадим новое приложение под названием *Rango*. Внутри каталога с Вашим Django проектом (например, ``<рабочее пространство>/tango_with_django_project``), выполните следующую команду.
 
 ::
 	
 	$ python manage.py startapp rango
 
-The ``startapp`` command creates a new directory within your project's root. Unsurprisingly, this directory is called ``rango`` - and contained within it are another five Python scripts:
+Команда ``startapp`` создает новый каталог внутри корневого каталога Вашего проекта. Он называется ``rango`` и содержит внутри следующие пять Python скриптов:
 
-- another ``__init__.py``, serving the exact same purpose as discussed previously;
-- models.py, a place to store your application's data models - where you specify the entities and relationships between data;
-- tests.py, where you can store a series of functions to test your application's code; and
-- views.py, where you can store a series of functions that take a clients's requests and return responses.
-- admin.py, where you can register your models so that you can benefit from some Django machinery which creates an admin interface for you (see #TODO(leifos):add link to admin chapter)
+- ещё один ``__init__.py``, использующийся для той же цели, о которой говорилось ранее;
+- models.py, место для хранения моделей данных Вашего приложения - где Вы указываете сущности и связи между данными;
+- tests.py, где Вы можете хранить ряд функций для тестирования кода Вашего приложения; и
+- views.py, где Вы можете хранить ряд функций, которые принимают запросы от клиентов и возвращают ответы на них.
+- admin.py, где Вы можете зарегистрировать Ваши модели и воспользоваться средствами автоматизации Django, которые создают интерфейс администратора за Вас (смотри #TODO(leifos):add link to admin chapter)
 
 
-``views.py`` and ``models.py`` are the two files you will use for any given application, and form part of the main architectural design pattern employed by Django, i.e. the *Model-View-Template* pattern. You can check out `the official Django documentation <https://docs.djangoproject.com/en/1.7/intro/overview/>`_ to see how models, views and templates relate to each other in more detail.
+``views.py`` и ``models.py`` - два файла, которые используются при создании любого приложения и являются частью основного архитектурного шаблона проектирования, используемого Django, т. е. шаблона *Модель-Представление-Шаблон*. Вы можете просмотреть `официальную документацию по Django <https://docs.djangoproject.com/en/1.7/intro/overview/>`_, что получить больше информации о том как модели, представления и шаблоны связаны друг с другом.
 
-Before you can get started with creating your own models and views, you must first tell your Django project about your new application's existence. To do this, you need to modify the ``settings.py`` file, contained within your project's configuration directory. Open the file and find the ``INSTALLED_APPS`` tuple. Add the ``rango`` application to the end of the tuple, which should then look like the following example.
+Прежде чем начинать создавать свои собственные модели и представления, необходимо сообщить Вашему Django проекту о существовании Вашего нового приложения. Для этого необходимо изменить файл ``settings.py`` находящийся внутри каталога конфигурации Вашего проекта. Откройте файл и найдите кортеж ``INSTALLED_APPS``. Добавьте приложение ``rango`` в конец кортежа, после чего он должен выглядеть как показано ниже.
 
 .. code-block:: python
 
@@ -154,13 +154,13 @@ Before you can get started with creating your own models and views, you must fir
 	    'rango',
 	)
 
-Verify that Django picked up your new application by running the development server again. If you can start the server without errors, your application was picked up and you will be ready to proceed to the next step.
+Убедитесь, что Django подключил Ваше новое приложение опять запустив сервер для разработки. Если Вам удалось запустить сервер без ошибок, Ваше приложение было подключено и можно приступать к следующему шагу.
 
 Создание Представления
----------------
-With our Rango application created, let's now create a simple view. For our first view, let's just send some simple text back to the client - we won't concern ourselves about using models or templates just yet.
+----------------------
+После создания нашего приложения Rango, давайте теперь создадим простое представление. В качестве нашего первого представления, давайте просто пошлем какой-то простой текст клиенту - мы пока не будем касаться использования моделей или шаблонов.
 
-In your favourite IDE, open the file ``views.py``, located within your newly created ``rango`` application directory. Remove the comment ``# Create your views here.`` so that you now have a blank file.
+В вашей любимой интегрированной среде разработки откройте файл ``views.py``, расположенный внутри только что созданного каталога приложения ``rango``. Удалите комментарий ``# Create your views here.``, чтобы файл стал пустым.
 
 Теперь добавьте следующий код.
 
@@ -171,18 +171,18 @@ In your favourite IDE, open the file ``views.py``, located within your newly cre
 	def index(request):
 	    return HttpResponse("Rango says hey there world!")
 
-Breaking down the three lines of code, we observe the following points about creating this simple view.
+Рассмотрим три строчки кода и отметим важные моменты при создании этого простого представления.
 
-* We first import the `HttpResponse <https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpResponse>`_ object from the ``django.http`` module.
-* Each view exists within the ``views.py`` file as a series of individual functions. In this instance, we only created one view - called ``index``.
-* Each view takes in at least one argument - a `HttpRequest <https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpRequest>`_ object, which also lives in the ``django.http`` module.  Convention dictates that this is named ``request``, but you can rename this to whatever you want if you so desire.
-* Each view must return a HttpResponse object. A simple HttpResponse object takes a string parameter representing the content of the page we wish to send to the client requesting the view.
+* Сначала мы импортируем объект `HttpResponse <https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpResponse>`_ из модуля ``django.http``.
+* Каждое представление внутри файла ``views.py`` существует в виде набора отдельных функций. В этом случае, мы создали только одно представление под названием ``index``.
+* Каждое представление принимает по крайней мере один аргумент - объект `HttpRequest <https://docs.djangoproject.com/en/1.7/ref/request-response/#django.http.HttpRequest>`_, который также находится в модуле ``django.http``. По принятым соглашениям он называется ``request``, но Вы можете переименовать его как угодно, если хотите.
+* Каждое представление должно возвращать объект HttpResponse. Простой объект HttpResponse принимает строковый параметр, представляющий содержимое страницы, которое мы хотим послать клиенту, запросившему представление.
 
-With the view created, you're only part of the way to allowing a user to access it. For a user to see your view, you must map a `Uniform Resources Locator (URL) <http://en.wikipedia.org/wiki/Uniform_resource_locator>`_ to the view.
+Создание представления - это только половина работы, которую необходимо проделать, чтобы пользователь смог получить к нему доступ. Чтобы пользователь увидел ваше представление, Вы должны сопоставить представлению Единообразный Локатор Ресурса (URL) <http://en.wikipedia.org/wiki/Uniform_resource_locator>`_.
 
-Mapping URLs
-------------
-Within the ``rango`` application directory, we now need to create a new file called ``urls.py``. The contents of the file will allow you to map URLs for your application (e.g. ``http://www.tangowithdjango.com/rango/``) to specific views. Check out the simple ``urls.py`` file below.
+Настройка URLов
+---------------
+Внутри каталога приложения ``rango`` теперь нужно создать новый файл под названием ``urls.py``. Содержимое файла позволит сопоставить URLы для Вашего приложения (например, ``http://www.tangowithdjango.com/rango/``) с конкретными представлениями. Просмотрите простой ``urls.py`` файл, показанный ниже.
 
 .. code-block:: python
 
@@ -192,19 +192,19 @@ Within the ``rango`` application directory, we now need to create a new file cal
 	urlpatterns = patterns('',
 		url(r'^$', views.index, name='index'))
 
-This code imports the relevant Django machinery that we use to create URL mappings. Importing the ``views`` module from ``rango`` also provides us with access to our simple view implemented previously, allowing us to reference the view in the URL mapping we will create.
+Этот код импортирует необходимые Django механизмы, которые используются для создания URL сопоставлений. Импортирование модуля ``views`` из ``rango`` дает доступ к нашему простому представлению, реализованному выше, что позволяет сослаться на представление в URL сопоставлении, которое мы создадим.
 
-To create our mappings, we use a `tuple <http://en.wikipedia.org/wiki/Tuple>`_. For Django to pick your mappings up, this tuple *must* be called ``urlpatterns``. The ``urlpatterns`` tuple contains a series of calls to the ``django.conf.urls.url()`` function, with each call handling a unique mapping. In the code example above, we only use ``url()`` once, so we have therefore defined only one URL mapping. The first parameter we provide to the ``django.conf.urls.url()`` function is the regular expression ``^$``, which matches to an empty string. Any URL supplied by the user that matches this pattern means that the view ``views.index()`` would be invoked by Django. The view would be passed a ``HttpRequest`` object as a parameter, containing information about the user's request to the server. We also make use of the optional parameter to the ``url()`` function, ``name``, using the string ``'index'`` as the associated value.
+Для создания наших сопоставлений, мы используем `кортеж <http://en.wikipedia.org/wiki/Tuple>`_. Чтобы Djnago подхватил Ваши сопоставления, этот кортеж *должен* называться ``urlpatterns``. Кортеж ``urlpatterns`` состоит из набора вызовов функции ``django.conf.urls.url()``, причем каждый вызов обрабатывает одно сопоставление. В вышеприведенном коде примера мы используем ``url()`` один раз, таким образом, определяя только одно URL сопоставление. Первый параметр, передаваемый в функцию ``django.conf.urls.url()``, - это регулярное выражение ``^$``, которое соответствует пустой строке. Любой URL, вводимый пользователем, который соответствует этому шаблону, приведет к тому что Django вызовет представление ``views.index()``. Представлению будет передан объект ``HttpRequest`` в качестве параметра, содержащий информацию о запросе пользователя серверу. Мы также используем необязательный параметр функции ``url()`` - ``name`` - со значением в виде строки ``'index'``.
 
-.. note:: You might be thinking that matching a blank URL is pretty pointless - what use would it serve? When the URL pattern matching takes place, only a portion of the original URL string is considered. This is because our Django project will first process the original URL string (i.e. ``http://www.tangowithdjango.com/rango/``). Once this has been processed, it is removed, with the remained being passed for pattern matching. In this instance, there would be nothing left - so an empty string would match!
+.. note:: Может показаться, что сопоставление пустому URL бессмысленно - для чего его можно использовать? При сопоставлении URL шаблонов сравнивается только часть исходной URL строки. Это связано с тем, что наш Django проект сначала обрабатывает исходную URL строку (т. е., ``http://www.tangowithdjango.com/rango/``). После её обработки, она удаляется и оставшаяся часть передается для сравнения с шаблонами. В нашем случае, от исходной строки ничего не останется, поэтому она совпадет с пустой строкой!
 
-.. note:: The ``name`` parameter is optional to the ``django.conf.urls.url()`` function. This is provided by Django to allow you to distinguish one mapping from another. It is entirely plausible that two separate URL mappings expressions could end calling the same view. ``name`` allows you to differentiate between them - something which is useful for *reverse URL matching.* Check out `the Official Django documentation on this topic <https://docs.djangoproject.com/en/1.7/topics/http/urls/#naming-url-patterns>`_ for more information.
+.. note:: Параметр ``name`` является необязательным для функции ``django.conf.urls.url()``. Он используется в Django, чтобы Вы могли отличать одно сопоставление от другого. Вполне возможно, что два разных выражения для URL сопоставления могут приводить к вызову одного и того же представления. ``name`` позволяет различать их, что используется для *обратного сравнения c URL.* Чтобы узнать больше, смотри `официальную Django документацию по этой теме <https://docs.djangoproject.com/en/1.7/topics/http/urls/#naming-url-patterns>`_.
 
-You may have seen that within your project configuration directory a ``urls.py`` file already exists. Why make another? Technically, you can put *all* the URLs for your project's applications within this file. However, this is considered bad practice as it increases coupling on your individual applications. A separate ``urls.py`` file for each application allows you to set URLs for individual applications. With minimal coupling, you can then join them up to your project's master ``urls.py`` file later.
+Возможно Вы видели, что внутри Вашего каталога конфигурации проекта уже существует файл ``urls.py``. Зачем создавать ещё один? Формально Вы можете поместить *все* URLы приложений Вашего проекта внутри этого файла. Но это считается плохой практикой, поскольку усиливает связь между Вашими отдельными приложениями. Отдельный ``urls.py`` файл для каждого приложения позволяет Вам настроить URLы для отдельных приложений. После этого Вы можете добавить их к основному файлу ``urls.py`` Вашего проекта с минимальной связью.
 
-This means we need to configure the ``urls.py`` of our project ``tango_with_django_project`` and connect up our main project with our Rango application.
+Это означает, что нужно настроить ``urls.py`` нашего проекта ``tango_with_django_project`` и связать наш основной проект с нашим приложением Rango.
 
-How do we do this? It's quite simple. Open the project's ``urls.py`` file which is located inside your project configuration directory. As a relative path from your workspace directory, this would be the file ``<workspace>/tango_with_django_project/tango_with_django_project/urls.py``. Измените кортеж ``urlpatterns`` как показано ниже.
+Как это сделать? Достаточно просто. Откройте файл ``urls.py`` проекта, который расположен внутри Вашего каталога конфигурации проекта. Используя относительный путь из Вашего каталога рабочего пространства, это будет файл ``<рабочее пространство>/tango_with_django_project/tango_with_django_project/urls.py``. Измените кортеж ``urlpatterns`` как показано ниже.
 
 .. code-block:: python
 	
@@ -218,66 +218,65 @@ How do we do this? It's quite simple. Open the project's ``urls.py`` file which 
 	    url(r'^rango/', include('rango.urls')), # ADD THIS NEW TUPLE!
 	)
 
-The added mapping looks for url strings that match the patterns ``^rango/``. When a match is made the remainder of the url string is then passed onto and handled by ``rango.urls`` (which we have already configured). This is done with the help of the ``include()`` function from within ``django.conf.urls``. Think of this as a chain that processors the URL string - as illustrated in Figure :num:`fig-url-chain`. In this chain, the domain is stripped out and the remainder of the url string (``rango/``) is passed on to tango_with_django project, where it finds a match and strips away ``rango/`` leaving and empty string to be passed on to the application rango. Rango now tries to match the empty string, which it does, and this then dispatches the ``index()`` view that we created.
+Добавленное сопоставление ищет url строки, которые соответствуют шаблону ``^rango/``. Когда найдено совпадение, оставшаяся часть url строки передается и обрабатывается ``rango.urls`` (который мы уже настроили). Передача осуществляется с помощью функции ``include()`` из ``django.conf.urls``. Представьте себе цепочку, которая обрабатывает URL строку, которая показана на Рисунке :num:`fig-url-chain`. В этой цепочке доменное имя удаляется и оставшаяся часть url строки (``rango/``) передается проекту tango_with_django, которое находит соответствие и удаляет ``rango/``, передавая пустую строку приложению rango. Rango теперь ищет совпадения с пустой строкой, находят и отправляет обратно, созданное нами, представление ``index()``.
 
-Перезапустите сервер для разработки Django и откройте страницу ``http://127.0.0.1:8000/rango``. Если Вы сделали всё правильно, выдолжны увидеть текст ``Rango says hello world!``. Он должен выглядеть как на снимке экрана, показанном на Рисунке :num:`fig-rango-hello-world`.
+Перезапустите сервер для разработки Django и откройте страницу ``http://127.0.0.1:8000/rango``. Если Вы сделали всё правильно, Вы должны увидеть текст ``Rango says hello world!``. Он должен выглядеть как на снимке экрана, показанном на Рисунке :num:`fig-rango-hello-world`.
 
 .. _fig-url-chain:
 
 .. figure:: ../images/url-chain.svg
 	:figclass: align-center
 	
-	An illustration of a URL, showing how the different parts of the URL are the responsibility of different ``url.py`` files.
+	Пример обработки URL, показывающий как за различные части URL отвечают разные ``url.py`` файлы.
 
 .. _fig-rango-hello-world:
 
 .. figure:: ../images/rango-hello-world.png
 	:figclass: align-center
 
-	Снимок экрана браузера Google Chrome, в котором показана наша первая веб страница, созданная с помощью Django. Hello, Rango!
+	Снимок экрана браузера Google Chrome, в котором показана наша первая веб страница, созданная с помощью Django. Наше приложение здоровается - давайте ответим ему - Hello, Rango!
 
-Within each application, you will create a number of URL to view mappings. This initial mapping is quite simple. As we progress, we will create more sophisticated mappings that using allow the URLs to be parameterised.
+В каждом приложении Вы будете создавать множество сопоставлений URL-представление. Это первое сопоставление достаточно простое. В дальнейшем мы будем создавать более сложные сопоставления, использование которых позволяет извлекать параметры из URL.
 
-It's important to have a good understanding of how URLs are handled in Django. If you are still bit confused or would like to know more check out the `official Django documentation on URLs <https://docs.djangoproject.com/en/1.7/topics/http/urls/>`_ for further details and further examples.
+Очень важно хорошо понимать как URLы обрабатываются в Django. Если Вам ещё что-то не понятно или Вы хотите знать больше, обратитесь к `официальная Django документация по URLам <https://docs.djangoproject.com/en/1.7/topics/http/urls/>`_ за дополнительной информацией и примерами.
 
-.. note:: The URL patterns use `regular expressions <http://en.wikipedia.org/wiki/Regular_expression>`_ to perform the matching. It is worthwhile familiarising yourself on how to use regular expressions in Python. The official Python documentation contains a `useful guide on regular expressions <http://docs.python.org/2/howto/regex.html>`_ , while regexcheatsheet.com provides a `neat summary of regular expressions <http://regexcheatsheet.com/>`_.
+.. note:: URL шаблоны используют `регулярные выражения <http://en.wikipedia.org/wiki/Regular_expression>`_ для поиска совпадений. Из-за этого стоит знать как использовать регулярные выражения в Python. Официальная документация Python содержит `полезное руководство по регулярным выражениям <http://docs.python.org/2/howto/regex.html>`_ , тогда как на сайте regexcheatsheet.com дается `короткая шпаргалка по регулярным выражениям <http://regexcheatsheet.com/>`_.
 
-Basic Workflows
----------------
-What you've just learnt in this chapter can be succinctly summarised into a list of actions. Here, we provide these lists for the two distinct tasks you have performed. You can use this section for a quick reference if you need to remind yourself about particular actions.
+Основные последовательности действий
+------------------------------------
+То, что Вы только что изучили в этой главе можно кратко изложить в виде списка действий. Здесь мы предоставим эти списки для двух различных задач, которые Вы выполняли. Вы можете использовать этот раздел для быстрого напоминания о том как сделать определенное действие.
 
 Создание нового Django проекта
-.............................
+..............................
 #. Чтобы создать проект, выполните команду ``python django-admin.py startproject <name>``, где ``<name>`` - это название проекта, который Вы хотите создать.
 
 Создание нового Django приложения
 .................................
-#. To create a new application run, ``$ python manage.py startapp <appname>``, where ``<appname>`` is the name of the application you wish to create.
-#. Tell your Django project about the new application by adding it to the ``INSTALLED_APPS`` tuple in your project's ``settings.py`` file.
-#. In your project ``urls.py`` file, add a mapping to the application.
-#. In your application's directory, create a ``urls.py`` file to direct incoming URL strings to views.
-#. In your application's ``view.py``, create the required views ensuring that they return a ``HttpResponse`` object.
+#. Чтобы создать новое приложение, выполните команду ``$ python manage.py startapp <appname>``, где ``<appname>`` - это название приложения, которое Вы хотите создать.
+#. Сообщите Вашему Django проекту о новом приложении, добавив его в кортеж ``INSTALLED_APPS`` Вашего файла проекта ``settings.py``.
+#. В Вашем файле проекта ``urls.py``, добавьте сопоставление для приложения.
+#. В Вашем каталоге приложения создайте файл ``urls.py`` для непосредственного направления входящих URL строк к представлениям.
+#. В Вашем файле приложения ``view.py`` создайте необходимые представления и убедитесь, что они возвращают объект ``HttpResponse``.
 
 Упражнения
----------
-Congratulations! You have got Rango up and running. This is a significant landmark in working with Django. Creating views and mapping URLs to views is the first step towards developing more complex and usable web applications. Now try the following exercises to reinforce what you've learnt.
+----------
+Поздравляем! Вы создали и запустили Rango. Это значительное достижение при работе с Django. Создание представлений и сопоставление URL представлениям - это первый шаг к разработке более сложных и практичных веб приложений. Теперь попытайтесь выполнить следующие упражнения, чтобы закрепить то, что Вы изучили.
 
-* Revise the procedure and make sure you follow how the URLs are mapped to views.
-* Now create a new view called ``about`` which returns the following: ``Rango says here is the about page.``
-* Now map the this view to ``/rango/about/``. For this step, you'll only need to edit the ``urls.py`` of the rango application.
-* Revise the ``HttpResponse`` in the ``index`` view to include a link to the about page.
-* In the ``HttpResponse`` in the ``about`` view include a link back to the main page.
-* If you haven't done so already, it is a good point to go off an complete part one of the official `Django Tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_. 
+* Повторно просмотрите процедуру сопоставления URL представлениям и убедитесь, что Вы её понимаете.
+* Теперь создайте новое представление под названием ``about``, которое будет возвращать следующее: ``Rango says here is the about page.``
+* Теперь свяжите это представление с URL ``/rango/about/``. Для этого Вам нужно только отредактировать ``urls.py`` приложения rango.
+* Измените ``HttpResponse`` в представлении ``index``, чтобы он включал ссылку на страницу about.
+* В ``HttpResponse`` в представлении ``about`` включите ссылку обратно на главную страницу.
+* Если Вы ещё этого не сделали, самое время прочитать и выполнить первую часть официального `Django учебного пособия <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_. 
 
 Подсказки к упражнениям
-.....
-If you're struggling to get the exercises done, the following hints will hopefully provide you with some inspiration on how to progress.
+.......................
+Если у Вас что-то не получается при выполнении упражнений, мы надеемся, что следующие подсказки помогут Вам.
 
-* Your ``index`` view should be updated to include a link to the ``about`` view. Keep it simple for now - something like ``Rango says: Hello world! <br/> <a href='/rango/about'>About</a>`` will suffice. We'll be going back later to improve the presentation of these pages.
-* The regular expression to match ``about/`` is ``r'^about/'`` - this will be handy when thinking about your URL pattern.
-* The HTML to link back to the index page is ``<a href="/rango/">Index</a>``. The link uses the same structure as the link to the ``about`` page shown above.
+* Ваше представление ``index`` необходимо обновить, чтобы в нём была ссылка на представление ``about``. Сейчас достаточно осуществить это примерно следующим образом: ``Rango says: Hello world! <br/> <a href='/rango/about'>About</a>``. Позже мы изменим внешний вид этих страниц.
+* Регулярное выражение соответствующее ``about/`` равно ``r'^about/'`` - это поможет Вам при создании URL шаблона.
+* HTML код, который нужно использовать для ссылки на главную страницу, - ``<a href="/rango/">Index</a>``. В ссылке используется та же структура, что и в ссылке на страницу ``about``, показанную выше.
 
 .. rubric:: Примечания
-.. [#f1] Предполагается, что вы используете IP адресс 127.0.0.1 и порт 8000 при запуске Вашего Django веб-сервера для разработки. Если Вы явно не указываете порт, который будет использоваться для запуска сервера для разработки, Django по умолчанию использует порт 8000.
-
-.. [#f2] There are many applications available out there that you can use in your project. Take a look at `PyPI <https://pypi.python.org/pypi?%3Aaction=search&term=django&submit=search>`_ and `Django Packages <https://www.djangopackages.com/>`_ to search for reusable apps which you can drop into your projects.
+.. [#f1] Предполагается, что Вы используете IP адресс 127.0.0.1 и порт 8000 при запуске Вашего Django веб-сервера для разработки. Если Вы явно не указываете порт, который будет использоваться для запуска сервера для разработки, Django по умолчанию использует порт 8000.
+.. [#f2] Существует множество доступных приложений, которые Вы можете использовать в Вашем проекте. Посетите `PyPI <https://pypi.python.org/pypi?%3Aaction=search&term=django&submit=search>`_ и  сайт с `Django пакетами <https://www.djangopackages.com/>`_, чтобы найти повторно используемые приложения, которые Вы можете вставлять в Ваши проекты.
