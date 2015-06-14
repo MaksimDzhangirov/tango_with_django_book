@@ -1,27 +1,27 @@
 .. _model-label:
 
-Models and Databases
+Модели и базы данных
 ====================
-Working with databases often requires you to get your hands dirty messing about with SQL. In Django, a lot of this hassle is taken care of for you by Django's *object relational mapping (ORM)* functions, and how Django encapsulates databases tables through models. Essentially, a model is a Python object that describes your data model/table. Instead of directly working on the database table via SQL, all you have to do is manipulate the corresponding Python object. In this chapter, we'll walkthrough how to setup a database and the models required for Rango.
+При работе с базой данных часто необходимо использовать SQL. Django берет большую часть этой работы на себя, используя функции *объектно-реляционного отображения (ORM)* и инкапсулируя таблицы базы данных с помощью моделей. По сути, модель - это Python объект, который описывает Вашу модель данных/таблицу. Вместо того чтобы непосредственно работать с таблицей базы данных через SQL, Вы изменяете соответствующий Python объект. В этой главе мы шаг за шагом рассмотрим, как настроить базу данных и модели, требуемые для Rango.
 
-Rango's Requirements
---------------------
-First, let's go over the data requirements for Rango. The following list provides the key details of Rango's data requirements.
+Требования приложения Rango
+---------------------------
+Сначала давайте рассмотрим требования к данным для Rango. Ниже приведены основные сведения, касающиеся требованиям к данным для Rango.
 
-* Rango is a essentially a *web page directory* - a site containing links to other websites. 
-* There are a number of different *webpage categories*, and each category houses a number of links. We assumed in Chapter :ref:`overview-label` that this is a one-to-many relationship. See the Entity Relationship Diagram below.
-* A category has a name, number of visits, and number of likes.
-* A page refers to a category, has a title, URL and a number of views.
+* Rango является по сути *каталогом с веб страницами* - сайтом, содержащим ссылки на другие веб сайты.
+* Существует множество различных *категорий с веб страницами* и каждая категория сожержит множество ссылок. Мы предположили в Главе :ref:`overview-label`, что это связь один-ко-многим.  Смотри диаграмму сущность-связь ниже.
+* Категория имеет название, число посещений и количество лайков.
+* Страница ссылается на категорию, имеет заголовок, URL и число просмотров.
 
 .. figure:: ../images/rango-erd.svg
 	:scale: 100%
 	:figclass: align-center
 
-	The Entity Relationship Diagram of Rango's two main entities.
+	Диаграмма сущность-связь для двух основных сущностей Rango.
 
-Telling Django About Your Database
-----------------------------------
-Before we can create any models, the database configuration needs to be setup. In Django 1.7, when you create a project, Django automatically populates the  dictionary called ``DATABASES``, which is located in your ``settings.py``. It will contain something like:
+Сообщаем Django о Вашей базе данных
+-----------------------------------
+Прежде чем мы сможем создать какие-либо модели, необходимо настроить базу данных. В Django 1.7, когда Вы создаете проект, Django автоматически заполняет словарь под названием ``DATABASES``, который расположен в Вашем файле ``settings.py``. Он будет содержать примерно следующее:
 
 .. code-block:: python
 	
@@ -34,24 +34,24 @@ Before we can create any models, the database configuration needs to be setup. I
 
 
 	
+Как видно в качестве СУБД по умолчанию выбирается бэкенд базы данных SQLite3. Это дает нам доступ к упрощенной Python базе данных `SQLite <http://www.sqlite.org/>`_, которую удобно использовать для разработки.
+Единственное второе значение, которое нужно настроить - это ``NAME`` - пара ключ/значение, которой мы присвоили значение os.path.join(BASE_DIR, 'db.sqlite3'). Можно также ввести переменную ``DATABASE_PATH`` выше этого словаря и присвоить os.path.join(BASE_DIR, 'db.sqlite3') ей. Тогда в качестве значения для ключа ``NAME`` нужно указать ``DATABASE_PATH``. Для иных СУБД в словарь могут также добавляться другие ключи, например, ``USER``, ``PASSWORD``, ``HOST`` и ``PORT``.
 
-As you can see the default engine will be a SQLite3 backend. This provides us with access to the lightweight python database, `SQLite <http://www.sqlite.org/>`_, which is great for development purposes. 
-The only other value we need to set is the ``NAME`` key/value pair, which we have set to ``DATABASE_PATH``. For other database engines, other keys like ``USER``, ``PASSWORD``, ``HOST`` and ``PORT`` can also be added to the dictionary.
+.. note:: Хотя для целей этого учебного пособия достаточно использовать СУБД SQLite, это не лучшее решение при развертывании Вашего приложения. Вместо этого лучше использовать более надежную и масштабируемую СУБД. Django поддерживает несколько других популярных СУБД, таких как `PostgreSQL <http://www.postgresql.org/>`_ и `MySQL <http://www.mysql.com/>`_. Чтобы узнать больше, смотри `официальную Django документацию по настройке СУБД <https://docs.djangoproject.com/en/1.7/ref/settings/#std:setting-DATABASE-ENGINE>`_. Вы можете также просмотреть `эту прекрасную статью <http://www.sqlite.org/whentouse.html>`_ на сайте SQLite, в которой поясняется когда стоит, а когда нет использовать упрощенную СУБД 
+SQLite.
 
-.. note:: While using an SQLite engine for this tutorial is fine, it may not perhaps be the best option when it comes to deploying your application. Instead, it may be better to use a more robust and scalable database engine. Django comes with out of the box support for several other popular database engines, such as  `PostgreSQL <http://www.postgresql.org/>`_ and `MySQL <http://www.mysql.com/>`_. See the `official Django documentation on Database Engines <https://docs.djangoproject.com/en/1.7/ref/settings/#std:setting-DATABASE-ENGINE>`_ for more details. You can also check out `this excellent article <http://www.sqlite.org/whentouse.html>`_ on the SQLite website which explains situation where you should and you shouldn't consider using the lightweight SQLite engine.
+Создание моделей
+----------------
+После настройки Вашей базы данных в ``settings.py``, давайте создадим две начальных модели данных для приложения Rango.
 
-Creating Models
----------------
-With your database configured in ``settings.py``, let's create the two initial data models for the Rango application.
-
-In ``rango/models.py``, we will define two classes - both of which must inherit from ``django.db.models.Model``. The two Python classes will be the definitions for models representing *categories* and *pages*. Define the ``Category`` and ``Page`` models as follows.
+В ``rango/models.py``, мы определим два класса - оба должны наследоваться от ``django.db.models.Model``. Два Python класса будут определениями для моделей, представляющих *категории* и *страницы*. Определим модели ``Category`` (Категория) и ``Page`` (Страница) следующим образом.
 
 .. code-block:: python
 	
 	class Category(models.Model):
 	    name = models.CharField(max_length=128, unique=True)
 
-	    def __unicode__(self):  #For Python 2, use __str__ on Python 3
+	    def __unicode__(self):  # Используйте __unicode в Python 2 и __str__ в Python 3
 	        return self.name
 	
 	class Page(models.Model):
@@ -60,45 +60,45 @@ In ``rango/models.py``, we will define two classes - both of which must inherit 
 	    url = models.URLField()
 	    views = models.IntegerField(default=0)
 	    
-	    def __unicode__(self):	#For Python 2, use __str__ on Python 3
+	    def __unicode__(self):	# Используйте __unicode в Python 2 и __str__ в Python 3
 	        return self.title
 
-When you define a model, you need to specify the list of attributes and their associated types along with any optional parameters. Django provides a number of built-in fields. Some of the most commonly used are listed below.
+При определении модели Вам нужно указать список атрибутов и связанные с ними типы, а также любые дополнительные необязательные параметры. Django предоставляет множество встроенных полей. Наиболее часто используемые перечислены ниже.
 
-* ``CharField``, a field for storing character data (e.g. strings). Specify ``max_length`` to provide a maximum number of characters the field can store.
-* ``URLField``, much like a ``CharField``, but designed for storing resource URLs. You may also specify a ``max_length`` parameter.
-* ``IntegerField``, which stores integers.
-* ``DateField``, which stores a Python ``datetime.date``.
+* ``CharField`` - поле для хранения символьных данных (например, строк). Параметр ``max_length`` определяет максимальное число символов, которое можно сохранить в поле.
+* ``URLField`` - во многом похоже на ``CharField``, но создано для хранения URL ресурсов. Вы также можете определеить для него параметр ``max_length``.
+* ``IntegerField`` - хранит целые числа.
+* ``DateField``, хранит Python объект ``datetime.date``.
 
-Check out the `Django documentation on model fields <https://docs.djangoproject.com/en/1.7/ref/models/fields/>`_ for a full listing.
+Просмотрите `Django документацию по полям моделей <https://docs.djangoproject.com/en/1.7/ref/models/fields/>`_ для получения полного списка.
 
-For each field, you can specify the ``unique`` attribute. If set to ``True``, only one instance of a particular value in that field may exist throughout the entire database model. For example, take a look at our ``Category`` model defined above. The field ``name`` has been set to unique - thus every category name must be unique.
+Для каждого поля Вы можете указать атрибут ``unique``. Если присвоить ему значение ``True``, то значение поля не может повторяться для этой модели в базе данных. Например, взгляните на нашу модель ``Category``, определенную выше. Поле ``name`` имеет атрибут ``unique`` равный ``True`` - таким образом, каждое название категории должно быть уникальным.
 
-This is useful if you wish to use a particular field as an additional database key. You can also specify additional attributes for each field such as specifying a default value (``default='value'``), and whether the value for a field can be ``NULL`` (``null=True``) or not. 
+Это полезно, если Вы хотите использовать определенное поле в качестве дополнительного ключа базы данных. Вы также можете определить дополнительные атрибуты для каждого поля, например, указать значение по умолчанию (``default='value'``) и может ли значение поля быть ``NULL`` (``null=True``)  или нет.
 
-Django also provides simple mechanisms that allows us to relate models/database tables together. These mechanisms are encapsulated in three further field types, and are listed below.
+Django также предоставляет простые механизмы, которые позволяют связать модели/таблицы базы данных. Эти механизмы инкапсулированы в три следующих типа поля и перечислены ниже.
 
-* ``ForeignKey``, a field type that allows us to create a one-to-many relationship.
-* ``OneToOneField``, a field type that allows us to define a strict one-to-one relationship.
-* ``ManyToManyField``, a field type which allows us to define a many-to-many relationship.
+* ``ForeignKey`` - тип поля, которое позволяет нам создавать связь один-ко-многим.
+* ``OneToOneField`` - тип поля, которое позволяет нам определять строгую связь один-к-одному.
+* ``ManyToManyField`` - тип поля, которое позволяет нам определить связь много-ко-многим.
 
-From our model examples above, the field ``category`` in model ``Page`` is of type ``ForeignKey``. This allows us to create a one-to-many relationship with model/table ``Category``, which is specified as an argument to the field's constructor. *You should be aware that Django creates an ID field for you automatically in each table relating to a model. You therefore do not need to explicitly define a primary key for each model - it's done for you!*
+Из нашего вышеприведенного примера для моделей, поле ``category`` в модели ``Page`` имеет тип ``ForeignKey``. Это позволяет нам создать связь один-ко-многим с моделью/таблицей ``Category``, которая указана в качестве аргумента конструктору поля. *Вы должны знать, что Django создает поле ID автоматически в каждой таблице, связанной с моделью. Таким образом, Вам не нужно явно определять первичный ключ для каждой модели - это сделано за Вас!*
 
-.. note:: When creating a Django model, it's good practice to make sure you include the ``__unicode__()`` method - a method almost identical to the ``__str__()`` method. If you're unfamiliar with both of these, think of them as methods analogous to the ``toString()`` method in a Java class. The ``__unicode__()`` method is therefore used to provide a unicode representation of a model instance. Our ``Category`` model for example returns the name of the category in the ``__unicode__()`` method - something which will be incredibly handy to you when you begin to use the Django admin interface later on in this chapter.
+.. note:: При создании Django модели хорошей практикой считается добавление метода ``__unicode__()`` - метода почти идентичного методу ``__str__()``. Если Вам не знакомы эти методы, то считайте, что они аналогичны методу ``toString()`` в Java классе. Метод ``__unicode__()`` таким образом используется для получения Юникод представления экземпляра модели. Например, Наша модель ``Category`` возвращает название категории в методе ``__unicode__()`` - что очень удобно, когда Вы начнете использовать интерфейс администратора Django позднее в этой главе.
+	Добавление метода ``__unicode__()`` в Ваши классы также полезно при отладке Вашего кода. Вызов команды ``print`` для экземпляра модели ``Category`` *без* метода ``__unicode__()`` возвратит ``<Category: Category object>``. Мы знаем, что это категория, но *какая*? Добавление ``__unicode__()`` вернет ``<Category: python>``, где ``python`` - это ``название`` данной категории. Так намного лучше!
 	
-	Including a ``__unicode__()`` method in your classes is also useful when debugging your code. Issuing a ``print`` on a ``Category`` model instance *without* a ``__unicode__()`` method will return ``<Category: Category object>``. We know it's a category, but *which one?* Including ``__unicode__()`` would then return ``<Category: python>``, where ``python`` is the ``name`` of a given category. Much better!
 
-Creating and Migrating the Database
----------------------------------------
-With our models defined, we can now let Django work its magic and create the table representations in our database. In previous versions of Django this would be performed using the command:
+Создание и миграция базы данных
+-------------------------------
+После того как определены наши модели, мы можем с помощью Django создать их табличные представления в нашей базе данных. В предыдущих версиях Django это выполнялось бы с помощью команды:
 
 ``$ python manage.py syncdb``
 
-However, Django 1.7 provides a migration tool to setup and update the database to reflect changes in the models. So the process has become a little more complicated - but the idea is that if you make changes to the models, you will be able to update the database without having to delete it.
+Однако в Django 1.7 существует инструмент миграции для настройки и обновления базы данных, позволяющий отражать изменения в моделях. Из-за этого процесс стал немного более сложным - но смысл в том, что Вы можете изменять модели и обновлять базу данных без необходимости удалять таблицы.
 
-Setup Database and Create Superuser
+Настройка базы данных и создание суперпользователя
 ....................................
-If you have not done so already you first need to initial the database. This is done via the migrate command.
+Если Вы не сделали этого раньше, то сначала Вам необходимо инициализировать базу данных. Это осуществляется с помощью команды ``migrate``.
 
 
 ::
@@ -115,22 +115,21 @@ If you have not done so already you first need to initial the database. This is 
 	  Applying admin.0001_initial... OK
 	  Applying sessions.0001_initial... OK
 	  
-	  
-If you remember in ``settings.py`` there was a list of INSTALLED_APPS, this initial call to migrate, creates the tables for the associated apps, i.e. auth, admin, etc. There should be a file called, ``db.sqlite`` in your project base directory.
 
-Now you will want to create a superuser to manage the database. Run the following command.
+Если Вы помните в ``settings.py`` был список INSTALLED_APPS и этот первый вызов команды ``migrate``, создает таблицы для соответствующих приложений, т. е., auth, admin и т. д.. Должен создаться файл под названием ``db.sqlite`` в основном каталоге Вашего проекта.
+
+Теперь нужно создать суперпользователя для управления базой данных. Выполните следующую команду.
 
 ::
 
 
 	$ python manage.py createsuperuser
 
-The superuser account will be used to access the Django admin interface later on in this tutorial. Enter a username for the account, e-mail address and provide a password when prompted. Once completed, the script should finish successfully. Make sure you take a note of the username and password for your superuser account.
+Учетная запись суперпользователя будет использоваться для доступа к интерфейсу администратора Django позже в этом учебном пособии. Введите имя пользователя для учетной записи, адрес e-mail и пароль. После этого скрипт должен успешно завершиться. Запомните или запишите имя пользователя и пароль для Вашей учетной записи суперпользователя.
 
-Creating / Updating Models / Tables
+Создание / обновление моделей/таблиц
 ....................................
-
-Whenever you make changes to the models, then you need to register the changes, via the ``makemigrations`` command for the particular app. So for *rango*, we need to issue:
+Всякий раз, когда Вы вносите изменения в модели, Вы должны зафиксировать изменения с помощью команды ``makemigrations`` для конкретного приложения. Поэтому для *rango*, нужно выполнить:
 
 ::
 	
@@ -141,10 +140,9 @@ Whenever you make changes to the models, then you need to register the changes, 
 	    - Create model Category
 	    - Create model Page
 
-If you inspect the ``rango/migrations`` folder, you will see that a python script have been created, called, ``0001_initial.py''. To see the SQL that will be performed to make this migration, you can issue the command, ``python manage.py sqlmigrate <app_name> <migration_no>``. The migration number is show above as 0001, so we would issue the command, ``python manage.py sqlmigrate rango 0001`` for *rango* to see the SQL. Try it out.
+Если Вы просмотрите каталог ``rango/migrations``, то увидите, что был создан Python скрипт ``0001_initial.py''. Чтобы увидеть SQL команды, которые будут выполняться для осуществления этой миграции, вызовите команду ``python manage.py sqlmigrate <название_приложения> <номер_миграции>``. Номер миграции, показанной выше - 0001, поэтому мы выполним команду ``python manage.py sqlmigrate rango 0001`` для приложения *rango*, чтобы увидеть SQL команды. Попробуйте сделать это.
 
-Now, to apply these migrations (which will essentially create the database tables), then you need to issue:
-
+Теперь, чтобы применить эти миграции (которые по существу создадут таблицы в базе данных), выполните команду:
 
 ::
 	
@@ -158,53 +156,52 @@ Now, to apply these migrations (which will essentially create the database table
 	  
 	  
 	  
+.. warning:: Каждый раз, когда вы что-то изменяете в существующих моделях, *Вы должны повторять этот процесс*, выполняя команду ``python manage.py makemigrations <название_приложения>`` и затем ``python manage.py migrate``.
 
-.. warning:: Whenever you add to existing models, *you will have to repeat this process running* ``python manage.py makemigrations <app_name>``, and then ``python manage.py migrate``
-	
-You may have also noticed that our ``Category`` model is currently lacking some fields that we defined in Rango's requirements. We will add these in later to remind you of the updating process.
+Возможно Вы также заметили, что в нашей модели ``Category`` в настоящий момент не хватает некоторых полей, которые были определены в ТЗ для приложения Rango. Мы добавим их позже, чтобы напомнить Вам о процессе обновления.
 
 
-Django Models and the Django Shell
-----------------------------------
-Before we turn our attention to demonstrating the Django admin interface, it's worth noting that you can interact with Django models from the Django shell - a very useful aid for debugging purposes. We'll demonstrate how to create a ``Category`` instance using this method.
+Django модели и командная оболочка Django
+-----------------------------------------
+Прежде чем перейти к демонстрации интерфейса администратора Django, стоит отметить, что Вы можете взаимодействовать с Django моделями из командной оболочки - очень полезный инструмент для целей отладки. Мы покажем, как создать экземпляр ``Category``, используя этот метод.
 
-To access the shell, we need to call ``manage.py`` from within your Django project's root directory once more. Run the following command.
+Чтобы получить доступ к командной оболочке необходимо опять вызвать ``manage.py`` из корневого каталога Вашего Django проекта. Выполните следующую команду.
 
 ``$ python manage.py shell``
 
-This will start an instance of the Python interpreter and load in your project's settings for you. You can then interact with the models. The following terminal session demonstrates this functionality. Check out the inline commentary to see what each command does.
+Она запустит экземпляр интерпретатора Python и загрузит в него настройки Вашего проекта. После этого Вы можете взаимодействовать с моделями. Следующая сессия терминала демонстрирует эту функциональную возможность. Чтобы узнать, что делает каждая команда, прочитайте встроенные комментарии.
 
 .. code-block:: python
 	
-	# Import the Category model from the Rango application
+	# Импортируем модель Category из приложения Rango
 	>>> from rango.models import Category
 	
-	# Show all the current categories
+	# Показать все текущие категории
 	>>> print Category.objects.all()
-	[] # Returns an empty list (no categories have been defined!)
+	[] # Возвращает пустой список (пока не было определено ни одной категории!)
 	
-	# Create a new category object, and save it to the database.
+	# Создаем объект новой категории и сохраняем его в базу данных.
 	>>> c = Category(name="Test")
 	>>> c.save()
 	
-	# Now list all the category objects stored once more.
+	# Теперь опять выведем список всех сохраненных объектов категорий
 	>>> print Category.objects.all()
-	[<Category: test>] # We now have a category called 'test' saved in the database!
+	[<Category: test>] # Теперь в базе данных сохранена категория под названием 'test'!
 	
-	# Quit the Django shell.
+	# Выходим из командной оболочки Django.
 	>>> quit()
 
-In the example, we first import the model that we want to manipulate. We then print out all the existing categories, of which there are none because our table is empty. Then we create and save a Category, before printing out all the categories again. This second ``print`` should then show the ``Category`` just added.
+В примере мы сначала импортируем модель, с которой мы хотим работать. Затем мы выводим на экран все существующие категории, которых нет, поскольку наша таблица пуста. Затем мы создаем и сохраняем категорию и опять выводим на экран все категории. Этот второй ``print`` должен показать только что созданную категорию.
 
-.. note:: The example we provide above is only a very basic taster on database related activities you can perform in the Django shell. If you have not done so already, it is good time to complete part one of the `official Django Tutorial to learn more about interacting with the models <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_. Also check out the `official Django documentation on the list of available commands <https://docs.djangoproject.com/en/1.7/ref/django-admin/#available-commands>`_ for working with models.
+.. note:: Вышеприведенный пример очень простой образец тех действий над базой данных, которые Вы можете осуществлять в командной оболочке Django. Если Вы ещё этого не сделали, пора полностью прочитать первую часть `официального учебного пособия по Django, чтобы узнать больше о взаимодействии с моделями <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_. Также просмотрите `официальную Django документацию по списку доступных команд <https://docs.djangoproject.com/en/1.7/ref/django-admin/#available-commands>`_ при работе с моделями.
 
 .. _admin-section:
 
-Configuring the Admin Interface
--------------------------------
-One of the stand-out features of Django is that it provides a built in, web-based administrative interface that allows us to browse and edit data stored within our models and corresponding database tables. In the ``settings.py`` file, you will notice that one of the pre-installed apps is ``django.contrib.admin``, and in your project's ``urls.py`` there is a urlpattern that matches ``admin/``.
+Настраиваем интерфейс администратора
+------------------------------------
+Одна из выгодных особенностей Django заключается в наличии встроенного, веб интерфейса администратора, который позволяет нам просматривать и редактировать данные, хранящиеся в наших моделях и соответствующих таблицах базы данных. В файле ``settings.py`` видно, что одним из предустановленных приложений является ``django.contrib.admin`` и в файле ``urls.py`` Вашего проекта есть соответствующий ему URL шаблон - ``admin/``.
 
-Start the development server:
+Запустите сервер для разработки:
 
 ::
 
@@ -212,9 +209,10 @@ Start the development server:
 	$ python manage.py runserver
 	
 	
-and visit the url, ``http://127.0.0.1:8000/admin/``. You should be able to log into the Django Admin interface using the username and password created for the superuser. The admin interface only contains tables relevant to the sites adminstration, ``Groups`` and ``Users``. So we will need to instruct Django to also include the models from ``rango``.
+и посетите URL, ``http://127.0.0.1:8000/admin/``. Используя имя и пароль, созданные для суперпользователя, войдите в интерфейс администратора Django. Интерфейс администратора содержит только таблицы, связанные с администрированием сайтов - ``Groups`` и ``Users``. Таким образом, нам необходимо указать Django, чтобы он также добавил модели из ``rango``.
 
- To do this,  open the file ``rango/admin.py`` and add the following code:
+Для этого откройте файл ``rango/admin.py`` и добавьте следующий код:
+
 
 .. code-block:: python
 	
@@ -223,31 +221,32 @@ and visit the url, ``http://127.0.0.1:8000/admin/``. You should be able to log i
 
 	admin.site.register(Category)
 	admin.site.register(Page)
-	
-This will *register* the models with the admin interface. If we were to have another model, it would be a trivial case of calling the ``admin.site.register()`` function, passing the model in as a parameter.
 
-With all of these changes made, re-visit/refresh: ``http://127.0.0.1:8000/admin/``. You should now be able to see the Category and Page models, like in Figure :num:`fig-rango-admin`. 
+Этот код *зарегистрирует* модели в интерфейсе администратора. Если бы существовала ещё одна модель, то необходимо было бы вызвать функцию ``admin.site.register()`` третий раз и передать модель в качестве параметра. (Примечание переводчика - конечно перед этим её надо импортировать как это сделано для приложения *rango*).
+
+После всех этих изменений, опять посетите/обновите ``http://127.0.0.1:8000/admin/``. Теперь должны быть видны модели ``Category`` м ``Page``, как на Рисунке :num:`fig-rango-admin`. 
 
 .. _fig-rango-admin:
 
 .. figure:: ../images/ch5-rango-admin-models.png
 	:figclass: align-center
 
-	The Django admin interface. Note the Rango category, and the two models contained within.
+	Интерфейс администратора Django. Обратите внимание на раздел Rango и две модели внутри неё.
 
-Try clicking the ``Categorys`` link within the ``Rango`` section. From here, you should see the ``test`` category that we created via the Django shell. Try deleting the category as we'll be populating the database with a population script next. The interface is easy to use. Spend a few minutes creating, modifying and deleting both categories and pages. You can also add new users who can login to the Django admin interface for your project by adding a user to the ``User`` in the ``Auth`` application.
+Попробуйте нажать на ссылку ``Categorys`` в разделе ``Rango``. Там Вы должны увидеть категорию ``test``, которую мы создали через командную оболочку Django. Попробуйте удалить категорию, поскольку позже мы заполним базу данных с помощью скрипта. Интерфейс прост в использовании. Потратьте несколько минут на создание, изменение и удаление категорий и страниц. Вы также можете добавлять новых пользователей, которые могут войти в интерфейс администратора из Вашего проекта. Для этого добавьте пользователя в таблицу ``User`` приложения ``Auth``. 
 
-.. note:: Note the typo within the admin interface (categorys, not categories). This problem can be fixed by adding a nested ``Meta`` class into your model definitions with the ``verbose_name_plural`` attribute. Check out `Django's official documentation on models <https://docs.djangoproject.com/en/1.7/topics/db/models/#meta-options>`_ for more information.
+.. note:: Обратите внимание на ошибку в интерфейсе администратора (categorys, а не categories). Эта проблема может быть решена добавляя вложенный класс ``Meta`` в Ваши определения моделей с помощью атрибута ``verbose_name_plural``. Чтобы узнать больше, просмотрите `официальную Django документацию по моделям <https://docs.djangoproject.com/en/1.7/topics/db/models/#meta-options>`_.
 
-.. note:: The example ``admin.py`` file for our Rango application is the most simple, functional example available. There are many different features which you can use in the ``admin.py`` to perform all sorts of cool customisations, such as changing the way models appear in the admin interface. For this tutorial, we'll stick with the bare-bones admin interface, but you can check out the `official Django documentation on the admin interface <https://docs.djangoproject.com/en/1.7/ref/contrib/admin/>`_ for more information if you're interested.
+.. note:: Пример файла ``admin.py`` для нашего приложения Rango - это самый простой, рабочий пример из возможных. Существует множество различных особенностей, которые Вы можете использовать в ``admin.py``, для выполнения различных полезных настроек, таких как изменение способа отображения моделей в интерфейсе администратора. Для этого учебного пособия мы будем использовать минималистичный интерфейс администратора, но Вы можете просмотреть `официальную Django документацию по интерфейсу администратора <https://docs.djangoproject.com/en/1.7/ref/contrib/admin/>`_, чтобы узнать больше, если Вас это заинтересовало.
 
 .. _model-population-script-label:
 
-Creating a Population Script
-----------------------------
-Entering test data into your database tends to be a hassle. Many developers will add in some bogus test data by randomly hitting keys like they are a monkey trying to write Shakespeare. If you are in a small development team, then everyone has to enter in some data. Rather than do this independently, it is better to write a script so that everyone has similar data, and so that everyone has useful and appropriate data, rather than junk test data. So it is good practice to create what we call a *population script* for your database. This script is designed to automatically populate your database with test data for you.
+Создание скрипта для заполнения базы данных
+-------------------------------------------
+Ввод тестовых данных в базу данных как правило утомительное занятие. Многие разработчики добавляют некоторые фиктивные тестовые данных, случайно нажимая на клавиши, подобно обезьянам пытающимся набрать одну из пьес Шекспира. Если Вы член небольшой команды разработчиков, 
+то каждый должен ввести некоторые данные. Вместо этого лучше написать скрипт так, чтобы каждый разработчик имел схожие данные и так, чтобы у всех были полезные и подходящие по смыслу данные, а не просто ничего не значащие тестовые данные. Таким образом, хорошей практикой является создание того, что мы называем *скритпом для заполнения* Вашей базы данных. Этот скрипт создан для автоматического заполнения Вашей базы данных тестовыми данными вместо Вас.
 
-To create a population script for Rango's database, we start by creating a new Python module within our Django project's root directory (e.g. ``<workspace>/tango_with_django_project/``). Create the ``populate_rango.py`` file and add the following code.
+Чтобы создать скрипт для заполнения базы данных Rango, мы начнем с создания нового модуля Python в корневом каталоге нашего Django проекта (например, ``<рабочее пространство>/tango_with_django_project/``). Создадим файл ``populate_rango.py`` и добавим в него следующий код.
 
 .. code-block:: python
 	
@@ -299,7 +298,7 @@ To create a population script for Rango's database, we start by creating a new P
 	        title="Flask",
 	        url="http://flask.pocoo.org")
 	
-	    # Print out what we have added to the user.
+	    # Выводим на экран пользователю то, что мы добавили в базу
 	    for c in Category.objects.all():
 	        for p in Page.objects.filter(category=c):
 	            print "- {0} - {1}".format(str(c), str(p))
@@ -315,26 +314,26 @@ To create a population script for Rango's database, we start by creating a new P
 	    c = Category.objects.get_or_create(name=name)[0]
 	    return c
 	
-	# Start execution here!
+	# Код начинает выполняться отсюда!
 	if __name__ == '__main__':
 	    print "Starting Rango population script..."
 	    populate()
 
-While this looks like a lot of code, what it does is relatively simple. As we define a series of functions at the top of the file, code execution begins towards the bottom - look for the line ``if __name__ == '__main__'``. We call the ``populate()`` function.
+Хотя мы ввели много кода, он выполняет относительно простые действия. Поскольку в начале файла мы определяем набор функций, выполнение кода начинается ближе к концу файла - на строке ``if __name__ == '__main__'``. Затем вызывается функция ``populate()``.
 
-.. warning:: When importing Django models, make sure you have imported your project's settings by importing django and setting the environment variable ``DJANGO_SETTINGS_MODULE`` to be the project setting file. Then you can call ``django.setup()`` to import the django settings. If you don't, an exception will be raised. This is why we import ``Category`` and ``Page`` after the settings have been loaded.
+.. warning:: При импортировании Django моделей, убедитесь, что Вы импортировали настройки Вашего проекта и настроили переменную окружения ``DJANGO_SETTINGS_MODULE``, присвоив её значение файла настройки проекта. Затем Вы можете вызвать ``django.setup()``, чтобы импортировать настройки Django. Если не сделать этого, возникнет исключение. Из-за этого мы импортируем ``Category`` и ``Page`` после того как загружены настройки.
 
-The ``populate()`` function is responsible for the calling the ``add_cat()`` and ``add_page()`` functions, who are in turn responsible for the creation of new categories and pages respectively. ``populate()`` keeps tabs on category references for us as we create each individual ``Page`` model instance and store them within our database. Finally, we loop through our ``Category`` and ``Page`` models to print to the user all the ``Page`` instances and their corresponding categories.
+Функция ``populate()`` отвечает за вызов функций ``add_cat()`` и ``add_page()``, которые в свою очередь отвечают за создание новых категорий и страниц соответственно. ``populate()`` создает ссылки на категории каждый раз, когда мы создаем новый экземпляр модели ``Page`` и сохраняет их в нашей базе данных. Наконец, мы осуществляет обход в цикле наших моделей ``Category`` и ``Page``, чтобы вывести пользователю все экземпляры ``Page`` и соответствующие им категории.
 
-.. note:: We make use of the convenience ``get_or_create()`` method for creating model instances. As we don't want to create duplicates of the same entry, we can use ``get_or_create()`` to check if the entry exists in the database for us. If it doesn't exist, the method creates it. This can remove a lot of repetitive code for us - rather than doing this laborious check ourselves, we can make use of code that does exactly this for us. As we mentioned previously, why reinvent the wheel if it’s already there?
-	
-	The ``get_or_create()`` method returns a tuple of ``(object, created)``. The first element ``object`` is a reference to the model instance that the ``get_or_create()`` method creates if the database entry was not found. The entry is created using the parameters you pass to the method - just like ``category``, ``title``, ``url`` and ``views`` in the example above. If the entry already exists in the database, the method simply returns the model instance corresponding to the entry. ``created`` is a boolean value; ``true`` is returned if ``get_or_create()`` had to create a model instance.
-	
-	The ``[0]`` at the end of our call to the method to retrieve the ``object`` portion of the tuple returned from ``get_or_create()``. Like most other programming language data structures, Python tuples use `zero-based numbering <http://en.wikipedia.org/wiki/Zero-based_numbering>`_.
-	
-	You can check out the `official Django documentation <https://docs.djangoproject.com/en/1.7/ref/models/querysets/#get-or-create>`_ for more information on the handy ``get_or_create()`` method.
+.. note:: Для удобства при создании экземпляров модели мы используем метод ``get_or_create()``. Поскольку мы не хотим создавать копии одной и той же записи, мы используем ``get_or_create()``, чтобы проверить существует ли запись в базе данных. Если не существует, то метод создаёт её. Это позволяет не вводить много повторяющегося кода - вместо того, чтобы писать самим эту проверку - мы используем функцию, которая делает то же самое. Как говорилось выше, зачем изобретать велосипед?
 
-When saved, we can run the script by changing the current working directory in a terminal to our Django project's root and executing the module with the command ``$ python populate_rango.py``. You should then see output similar to that shown below.
+	Метод ``get_or_create()`` возвращает кортеж ``(object, created)``. Первый элемент ``object`` - это ссылка на экземпляр модели, которую метод ``get_or_create()`` создает, если в базе данных не была найдена запись. Запись создается, используя параметры, которые Вы передали в метод - ``category``, ``title``, ``url`` и ``views`` как в вышеприведенном примере. Если запись уже существует в базе данных метод просто возвращает экземпляр модели, соответствующий записи. ``created`` - это логическое значение. ``true`` возвращается, если ``get_or_create()`` пришлось создать экземпляр модели.
+
+	``[0]`` на конце нашего вызова метода извлекает ``object`` из кортежа, который возвращает ``get_or_create()``. Как и большинство  структур данных в других языках программирования, кортежи Python используют `нумерацию, начинающуюся с нуля <http://en.wikipedia.org/wiki/Zero-based_numbering>`_.
+
+	Вы можете просмотреть `официальную Django документацию  <https://docs.djangoproject.com/en/1.7/ref/models/querysets/#get-or-create>`_, чтобы получить больше информации об удобном методе ``get_or_create()``.
+
+После сохранения файла, мы можем запустить скрипт, изменив текущий рабочий каталог в терминале на корневой каталог Django проекта и выполняя модуль с помощью команды ``$ python populate_rango.py``. Вы должны увидеть на экране текст, подобный тому, который показан ниже.
 
 ::
 	
@@ -350,61 +349,62 @@ When saved, we can run the script by changing the current working directory in a
 	- Other Frameworks - Bottle
 	- Other Frameworks - Flask
 
-Now let's verify that the population script populated the database. Restart the Django development server, navigate to the admin interface, and check that you have some new categories and pages. Do you see all the pages if you click ``Pages``, like in Figure :num:`fig-admin-populated`?
+Теперь давайте убедимся, что скрипт заполнил базу данных. Перезапустите Django сервер для разработки, перейдите к интерфейсу администратора и проверьте, что появились новые категории и страницы. Видите ли Вы все страницы, которые изображены на Рисунке :num:`fig-admin-populated`, если щелкните на ``Pages``?
 
 .. _fig-admin-populated:
 
 .. figure:: ../images/ch5-rango-admin.png
 	:figclass: align-center
 
-	The Django admin interface, showing the Page table populated with sample data from our population script.
+	Интерфейс администратора Django, показывающий таблицу Page, заполненную простыми данными из нашего скрипта.
 
-A population script takes a little bit of time to write but when you are working with a team, you will be able to share the population script so that everyone can create the database and have it populated. Also, for unit testing it will come in handy.
+Скрипту для заполнения требуется определенное время для записи, но когда Вы работаете в команде, Вы можете поделиться скриптом, поэтому каждый сможет создать базу данных и заполнить её. Также он пригодится для модульного тестирования.
 
-Basic Workflows
----------------
-Now that we've covered the core principles of dealing with Django's models functionality, now is a good time to summarise the processes involved in setting everything up. We've split the core tasks into separate sections for you.
+Основные последовательности действий
+------------------------------------
+Теперь, когда мы рассмотрели основные принципы работы с моделями Django, пора подытожить процессы, необходимые для их настройки. Мы разобьем основные задачи на отдельные части.
 
-Setting up your Database
-........................
-With a new Django project, you should first tell Django about the database you intend to use (i.e. configure ``DATABASES`` in settings.py). You can also register any models in the ``admin.py`` file to make them accessible via the admin interface.
+Настройка Вашей базы данных
+...........................
+Для нового Django проекта, Вы должны сначала сообщить Django о базе данных, которую Вы собираетесь использовать (т. е., настроить ``DATABASES`` в settings.py). Вы можете также зарегистрировать любые модели в файле ``admin.py``, чтобы они были доступны через интерфейс администратора.
 
-Adding a Model
-..............
-The workflow for adding models can be broken down into five steps.
+Добавление модели
+.................
+Последовательность действий для добавления модели может быть разбита на пять этапов.
 
-#. First, create your new model(s) in your Django application's ``models.py`` file.
-#. Update ``admin.py`` to include and register your new model(s).
-#. Then perform the migration ``$ python manage.py makemigrations``
-#. Apply the changes ``$ python manage.py migrate``. This will create the necessary infrastructure within the database for your new model(s).
-#. Create/Edit your population script for your new model(s).
+#. Во-первых, создайте новую модель(и) в файле ``models.py`` Вашего Django приложения.
+#. Отредактируйте ``admin.py``, чтобы добавить и зарегистрировать новую модель(и).
+#. Затем выполните миграцию ``$ python manage.py makemigrations``.
+#. Подтвердите изменения ``$ python manage.py migrate``. Эта команда создаст необходимую инфраструктуру в базе данных для новой модели(ей).
+#. Создайте/отредактируйте скрипт для заполнения для новой модели(ей).
 
-Invariably there will be times when you will have to delete your database. In which case you will have to run the ``migrate`` command, then ``createsuperuser`` command, followed by the ``sqlmigrate`` commands for each app, then you can populate the database.
+Неизбежно возникнет момент, когда Вам придется удалить базу данных. После этого Вам нужно будет запустить команду ``migrate``, затем команду ``createsuperuser``, после чего команды ``sqlmigrate`` для каждого приложения, наконец, Вы сможете заполнить базу данных.
 
-Exercises
----------
-Now that you've completed the chapter, try out these exercises to reinforce and practice what you have learnt.
+Упражнения
+----------
+Теперь, когда Вы прочитали главу, попытайтесь выполнить следующие упражнения, чтобы закрепить на практике то, что Вы узнали.
 
-* Update the Category model to include the additional attributes, ``views`` and ``likes`` where the default value  is zero.
-* Make the migrations for your app/model, then migrate your database
-* Update your population script so that the Python category has 128 views and 64 likes, the Django category has 64 views and 32 likes, and the Other Frameworks category has 32 views and 16 likes.
-* Undertake the `part two of official Django tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial02/>`_ if you have not done so. This will help to reinforce further what you have learnt here, and to learn more about customising the admin interface.
-* Customise the Admin Interface - so that when you view the Page model it displays in a list the category, the name of the page and the url.
+* Измените модель Category так, чтобы она включала дополнительные атрибуты: ``views`` и ``likes`` - у которых значение по умолчанию равно нулю.
+* Осуществите миграции для Вашего приложения/модели, затем выполните команду ``migrate`` для базы данных.
+* Отредактируйте скрипт для заполнения так, чтобы категория *Python* имела 128 просмотров и 64 лайка, категория *Django* - 64 просмотра и 32 лайка и категория *Other Frameworks* - 32 просмотра и 16 лайков.
+* Прочтите `вторую часть официального учебного пособия по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial02/>`_, если Вы ещё этого не сделали. Это ещё больше закрепит знания, которые Вы получили здесь. Также Вы больше узнаете о настройке интерфейса администратора.
+* Измените интерфейс администратора так, чтобы когда Вы просматривали модель Page, она отображала в виде списка название страницы, категорию, в которой она находится и URL.
 
-Hints
-.....
-If you require some help or inspiration to get these exercises done, these hints will hopefully help you out.
+Подсказки к упражнениям
+.......................
+Если Вам необходима помощью или стимул для выполнения этих упражнений, то мы надеемся, что эти подсказки помогут Вам.
 
-* Modify the ``Category`` model by adding in the fields, ``view`` and ``likes`` as ``IntegerFields``.
-* Modify the ``add_cat`` function in the ``populate.py`` script, to take the ``views`` and ``likes``. Once you get the Category c, then you can update the number of views with ``c.views``, and similarly with likes.
-* To customise the admin interface, you will need to edit ``rango/admin.py`` and create a ``PageAdmin`` class that inherits from ``admin.ModelAdmin``. 
-* Within your new ``PageAdmin`` class, add ``list_display = ('title', 'category', 'url')``.
-* Finally, register the ``PageAdmin`` class with Django's admin interface. You should modify the line ``admin.site.register(Page)``. Change it to ``admin.site.register(Page, PageAdmin)`` in Rango's ``admin.py`` file.
+* Измените модель ``Category``, добавив поля ``view`` и ``likes`` как ``IntegerFields``.
+* Измените функцию ``add_cat`` в скрипте ``populate.py``, чтобы учесть ``views`` и ``likes``. Когда Вы получите Category c, Вы можете изменить число просмотров, обращаясь к ``c.views``. Подобным образом измените количество лайков.
+* Чтобы изменить интерфейс администратора, необходимо отредактировать ``rango/admin.py`` и создать класс ``PageAdmin``, который наследуется от ``admin.ModelAdmin``.
+* В Ваш новый класс ``PageAdmin`` добавьте ``list_display = ('title', 'category', 'url')``.
+* Наконец, зарегистрируйте класс ``PageAdmin`` в интерфейсе администратора Django. Вы должны отредактировать строку ``admin.site.register(Page)``. Измените её на ``admin.site.register(Page, PageAdmin)`` в файле ``admin.py`` приложения Rango.
 
 .. _fig-admin-customised:
 
 .. figure:: ../images/ch5-rango-admin-custom.png
 	:figclass: align-center
 	
-	The updated admin interface page view, complete with columns for category and URL.
+	Обновленный вид страницы интерфейса администратора для модели Page с добавленными столбцами для категории и URL.
+
 
