@@ -1,61 +1,61 @@
 .. _model-using-label:
 
-Models, Templates and Views
-===========================
-Now that we have the models set up and populated with some data, we can now start putting things together. We'll be figuring out how to access data from the models within the views, and how to present this data via the templates.
+Модели, шаблоны и представления
+===============================
+Теперь, когда мы настроили модели и заполнили их данными, можно объединить наши знания полученные ранее. Мы выясним, как получить доступ к данным моделей из представлений и как показать эти данные с помощью шаблонов.
 
-Basic Workflow: Data Driven Pages
----------------------------------
-There are five main steps that you must undertake to create a data driven webpage in Django.
+Основная последовательность действий: Создание страниц с изменяемыми данными
+----------------------------------------------------------------------------
+Чтобы создать страницу с изменяемыми данными в Django, необходимо выполнить последовательность действий из пяти основных этапов.
 
-#. First, import the models you wish to use into your application's ``views.py`` file.
-#. Within the view you wish to use, query the model to get the data you want to present.
-#. Pass the results from your model into the template's context.
-#. Setup your template to present the data to the user in whatever way you wish.
-#. If you have not done so already, map a URL to your view.
+#. Во-первых, импортировать модели, которые Вы хотите использовать, в файле ``views.py`` Вашего приложения.
+#. В представлении, которое Вы хотите использовать, запросите модель, чтобы получить данные, необходимые для отображения.
+#. Передайте результаты из модели в контекст шаблона.
+#. Настройте Ваш шаблон, чтобы отобразить данные пользователю в каком Вы хотите виде.
+#. Если Вы ещё этого не сделали, сопоставьте URL Вашему представлению.
 
-These steps highlight how Django's framework separates the concerns between models, views and templates.
+Эти этапы показывают, как в фреймворке Django проводятся границы между моделями, представлениями и шаблонами.
 
-Showing Categories on Rango's Homepage
---------------------------------------
-One of the requirements regarding the main pages was to show the top five rango'ed categories.
+Показываем категории на главной странице Rango
+----------------------------------------------
+Одним из требований к главной странице было отображение первых пяти категорий по рангу.
 
-Importing Required Models
-.........................
-To fulfil this requirement, we will go through each of the above steps. First, open ``rango/views.py`` and import the ``Category`` model from Rango's ``models.py`` file.
+Импорт требуемых моделей
+........................
+Для выполнения этого требования мы осуществим каждый из вышеприведенных этапов. Во-первых, откройте ``rango/views.py`` и импортируйте модуль ``Category`` из файла ``models.py`` Rango.
 
 .. code-block:: python
 	
 	# Import the Category model
 	from rango.models import Category
 
-Modifying the Index View
-........................
-With the first step out of the way, we then want to modify our ``index()`` function. If we cast our minds back, we should remember the ``index()`` function is responsible for the main page view. Modify the function to look like the example below.
+Изменяем представление Index
+............................
+Выполнив первый этап, затем мы изменяем нашу функцию ``index()``. Вспомним, что функция ``index()`` отвечает за представление главной страницы. Изменим функцию, чтобы она выглядела так, как показано ниже.
 
 .. code-block:: python
 	
 	def index(request):
-	    # Query the database for a list of ALL categories currently stored.
-	    # Order the categories by no. likes in descending order.
-	    # Retrieve the top 5 only - or all if less than 5.
-	    # Place the list in our context_dict dictionary which will be passed to the template engine.
+	    # Осуществляем запрос к базе данных для получения списках ВСЕХ категорий, хранящихся в ней на текущий момент.
+	    # Упорядочиваем категории по количеству лайков в порядке убывания.
+	    # Извлекаем только первые 5 - или все, если их число меньше 5.
+	    # Помещаем список в наш словарь контекста, который будет передан механизму шаблонов.
 	    category_list = Category.objects.order_by('-likes')[:5]
 	    context_dict = {'categories': category_list}
 	    
-	    # Render the response and send it back!
+	    # Формируем ответ для клиента по шаблону и отправляем обратно!
 	    return render(request, 'rango/index.html', context_dict)
 
-Here we have performed steps two and three in one go. First, we queried the ``Category`` model to retrieve the top five categories. Here we used the ``order_by()`` method to sort by the number of likes in descending order - hence the inclusion of the ``-``. We then restricted this list to the first 5 ``Category`` objects in the list.
+Здесь мы сразу выполнили второй и третий этап. Во-первых, мы запросили модель ``Category`` для извлечения пяти первых категорий. Здесь мы использовали метод ``order_by()`` для сортировки по числу лайков в порядке убывания, поэтому был добавлен знак ``-``. Затем мы ограничили список первыми пятью объектами ``Category`` в списке.
 
-With the query complete, we passed a reference to the list (stored as variable ``category_list``) to the dictionary, ``context_dict``. This dictionary is then passed as part of the context for the template engine in the ``render()`` call.
+После завершения запроса, мы передаем ссылку на список (сохраненный в виде переменной ``category_list``) в словарь, ``context_dict``. Этот словарь затем передается как часть контекста механизму шаблонов в вызове функции ``render()``.
 
-.. warning:: Note that the Category Model contains the field ``likes``. So for this to work you need to have completed the exercises in the previous chapter, i.e. the Category Model needs to be updated to include the ``likes`` field. 
+.. warning:: Обратите внимание, что модель Category содержит поле ``likes``. Таким образом, для нормальной работы функции, Вы должны выполнить упражнения в предыдущей главе, т. е., модель Category должна быть отредактирована так, чтобы в ней было поле ``likes``. 
 
 
-Modifying the Index Template
-............................
-With the view updated, all that is left for us to do is update the template ``rango/index.html``, located within your project's ``templates`` directory. Change the HTML code of the file so that it looks like the example shown below.
+Изменение шаблона Index
+.......................
+После обновления представления все что осталось сделать - это обновить шаблон ``rango/index.html``, расположенный в каталоге ``templates`` Вашего проекта. Измените HTML код файла так как показано ниже в примере.
 
 .. code-block:: html
 	
@@ -82,47 +82,46 @@ With the view updated, all that is left for us to do is update the template ``ra
 	    </body>
 	</html>
 
-Here, we make use of Django's template language to present the data using ``if`` and ``for`` control statements. Within the ``<body>`` of the page, we test to see if ``categories`` - the name of the context variable containing our list - actually contains any categories (i.e. ``{% if categories %}``).
+Здесь мы использовали язык шаблона Django, чтобы отобразить данные, используя управляющие операторы ``if`` и ``for``. В ``<body>`` страницы мы проверяем содержит ли ``categories`` (имя переменной контекста, в которой находится наш список категорий) какие-либо категории (с помощью оператора ``{% if categories %}``).
 
-If so, we proceed to construct an unordered HTML list (within the ``<ul>`` tags). The for loop (``{% for category in categories %}``) then iterates through the list of results, printing out each category's name (``{{ category.name }})`` within a pair of ``<li>`` tags to indicate a list element.
+Если да, то создаем неупорядоченный HTML список (внутри тега ``<ul>``). Цикл for (``{% for category in categories %}``) перебирает список, выводя каждое название категории ``({{ category.name }})``, внутри пары тегов ``<li>``.
 
-If no categories exist, a message is displayed instead indicating so.
+Если категорий не существует, то выдается сообщение, указывающее на это.
 
-As the example shows in Django's template language, all commands are enclosed within the tags ``{%`` and ``%}``, while variables are referenced within ``{{`` and ``}}`` brackets. 
+Как видно из примера, в языке шаблона Django все команды заключены в теги ``{%`` и ``%}``, тогда как на переменные ссылаются с помощью скобок ``{{`` и ``}}``.
 
-If you now visit Rango's homepage at http://127.0.0.1:8000/rango/, you should see a list of three categories underneath the page title just like in Figure :num:`fig-rango-categories-simple`. 
+Если Вы теперь посетите домашнюю страницу Rango по адресу http://127.0.0.1:8000/rango/, Вы должны увидеть список из трех категорий ниже заголовка страницы, как показано на Рисунке :num:`fig-rango-categories-simple`.
+
 
 .. _fig-rango-categories-simple:
 
 .. figure:: ../images/rango-categories-simple.png
 	:figclass: align-center
 
-	The Rango homepage - now dynamically generated - showing a list of categories. How exciting!
+	Домашняя страница Rango - теперь генерирующаяся динамически - показывающая список категорий. Прекрасно!
 
 
-Creating a Details Page
------------------------
-According to Rango's specification, we also need to show a list of pages that are associated with each category.
-We have a number of challenges here to overcome. A new view must be created, which should be parameterised. We also need to create URL patterns and URL strings that encode category names.
+Создание страницы с подробной информацией о категории
+-----------------------------------------------------
+В соответствии с ТЗ приложения Rango, также необходимо показывать список страниц, которые связаны с каждой категорией. При этом нам придется решить несколько проблем. Необходимо создать новое представление, которое должно принимать параметры. Мы также создадим URL шаблоны и URL строки для кодирования названий категорий.
 
-URL Design and Mapping
-......................
-Let's start by considering the URL problem. One way we could handle this problem is to use the unique ID for each category within the URL. For example, we could create URLs like ``/rango/category/1/`` or ``/rango/category/2/``, where the numbers correspond to the categories with unique IDs 1 and 2 respectively. However, these URLs are not easily understood by humans. Although we could probably infer that the number relates to a category, how would a user know what category relates to unique IDs 1 or 2? The user wouldn't know without trying. 
+URL настройка и сопоставление
+.............................
+Сначала решим задачу, связанную с URL. Одним из способов решения этой проблемы является использование уникального идентификатора (ID) для каждой категории в URL. Например, мы можем создать URLы вида ``/rango/category/1/`` или ``/rango/category/2/``, где числа соответствуют категориям с уникальными идентификаторами 1 и 2 соответственно. Однако эти URLы трудно понять человеку. Хотя можно было бы сделать вывод, что числа связаны с категориями, как пользователь поймет, с какой категорией связан уникальный идентификатор 1 или 2? Пользователь не узнает этого пока не перейдет по URL в строке браузера.
 
-Instead, we could just use the category name as part of the URL. ``/rango/category/Python/`` should give us a list of pages related to the Python category. This is a simple, readable and meaningful URL. If we go with this approach, we'll have to handle categories which have multiple words, like 'Other Frameworks', etc.
+Вместо этого мы могли бы просто использовать название категории в качестве части URL. Переход по URL ``/rango/category/Python/`` должен выдавать список страниц, связанных с категорией Python. Это простой, читаемый и понятный URL. Если мы хотим использовать этот метод, то необходимо обрабатывать категории, которые будут состоять из нескольких слов, например, 'Other Frameworks' и т. д..
 
-.. note:: Designing clean URLs is an important aspect of web design. See `Wikipedia's article on Clean URLs <http://en.wikipedia.org/wiki/Clean_URL>`_ for more details.
+.. note:: Создание чистых URLов - это важный аспект веб проектирования. Смотри `статью на Википедии о чистых URLах <http://en.wikipedia.org/wiki/Clean_URL>`_, чтобы узнать больше.
 
-To handle this problem we are going to make use of the slugify function provided by Django, based on the answers provided at: http://stackoverflow.com/questions/837828/how-do-i-create-a-slug-in-django
+Чтобы решить эту проблему мы будем использовать функцию slugify, предоставляемую Django, используя ответы, данные в http://stackoverflow.com/questions/837828/how-do-i-create-a-slug-in-django.
 
+Добавления поля Slug в таблицу категорий
+........................................
+Для того, чтобы создать чистые URLы мы должны добавить поле slug (хранит название категории в виде строки, в которой все проблемы заменены дефисами) в модель ``Category``. Сначала нам необходимо импортировать функцию ``slugify`` из django, которая заменит пробелы дефисами, т. е., предложение "как заменить пробелы на дефисы в django" превратится в "как-заменить-пробелы-на-дефисы-в-django".
 
-Update Category Table with Slug Field
-.....................................
-To make clean urls we are going to include a slug field in the ``Category`` model. First we need to import the function ``slugify`` from django, which will replace whitespace with hyphens, i.e "how do i create a slug in django" turns into "how-do-i-create-a-slug-in-django".
+.. warning:: Хотя Вы можете использовать пробелы в URLах, это считается не безопасным. Прочитайте `IETF памятку по URLам <http://www.ietf.org/rfc/rfc1738.txt>`_, чтобы узнать больше.
 
-.. warning:: While you can use spaces in URLs, it is considered to be unsafe to use them. Check out `IETF Memo on URLs <http://www.ietf.org/rfc/rfc1738.txt>`_ to read more.
-
-Then we need to override the ``save`` method of the ``Category`` model, which we will call the ``slugify`` method and update the ``slug`` field with it. Note that every time the category name changes, the slug will also change. Update your model, as shown below, and add in the import.
+Затем нам надо переопределить метод ``save`` модель ``Category``, в котором мы вызовем метод ``slugify`` и обновим поле ``slug`` с помощью него. Обратите внимание, что каждый раз при изменении названия категории, slug также изменится. Измените Вашу модель как показано ниже и не забудьте импортировать метод slugify.
 
 .. code-block:: python
 	
@@ -138,11 +137,10 @@ Then we need to override the ``save`` method of the ``Category`` model, which we
 			self.slug = slugify(self.name)
 			super(Category, self).save(*args, **kwargs)
 
-		def __unicode__(self):
+		def __unicode__(self):  # используйте __str__ в Python 3.*
 			return self.name
 
-
-Now that you have performed this update to the Model, you will need to perform the migration. 
+После того как Вы осуществили обновление модели, необходимо выполнить миграцию.
 
 .. code-block:: python
 
@@ -150,10 +148,9 @@ Now that you have performed this update to the Model, you will need to perform t
 	$ python manage.py migrate
 	
 	
-Since we did not provide a default value for the slug, and we already have existing data in the model, then the migrate command will give you two options. Select the option to provide a default, and enter ''. Dont worry this will get updated shortly. Now re-run your population script. Since the ``save`` method is called for each Category, the overrided ``save`` method will be executed, updating the slug field. Run the server, and inspect the data in the models via the admin interface.
+Поскольку мы не задали значение по умолчанию для slug и у нас уже существуют данные в модели, то команда *migrate* предоставит Вам два варианта. Выберите вариант, в котором предлагается задать значение по умолчанию и введите ''. Эта пустая строка будет вскоре перезаписана. Теперь повторно запустите Ваш скрипт для заполнения базы данных. Поскольку метод ``save`` в скрипте вызывается для каждой категории, вместо него будет выполняться переопределенный метод ``save``, обновляя поле slug. Запустите сервер и проверьте данные в моделях через интерфейс администратора.
 
-In the admin interface you may want it to automatically pre-populate the slug field as your type in the category name. To do this you can update ``rango/admin.py`` with the following code:
-
+В интерфейсе администратора Вы можете захотеть, чтобы автоматически осуществлялось повторное заполнение поля slug при вводе названия категории. Для этого Вы можете изменить ``rango/admin.py``, записав в него следующий код:
 
 .. code-block:: python
 
@@ -161,77 +158,75 @@ In the admin interface you may want it to automatically pre-populate the slug fi
 	from django.contrib import admin
 	from rango.models import Category, Page
 
-	# Add in this class to customized the Admin Interface
+	# ДОбавляем этот класс, чтобы изменить интерфейс администратора
 	class CategoryAdmin(admin.ModelAdmin):
 	    prepopulated_fields = {'slug':('name',)}
 
-	# Update the registeration to include this customised interface
+	# Обновляем регистрацию, чтобы она включала этот измененный интерфейс
 	admin.site.register(Category, CategoryAdmin)
 	admin.site.register(Page)
 
 
-Try out the admin interface and add in a new category. Pretty cool, hey! Now that we have added in slug fields we can now use them as clean urls :-).
+Опробуйте измененный интерфейс администратора и добавьте новую категорию. Правда здорово? После того как мы добавили поля slug, мы можем использовать их для чистых URLов :-).
 
+Последовательность действий для создания страницы с категориями
+...............................................................
+После выбора вида URL, начнем создавать страницы. Мы реализуем следующие этапы.
 
-Category Page Workflow
+#. Импортируем модель Page в ``rango/views.py``.
+#. Создадим новое представление в ``rango/views.py`` - под названием ``category`` - представление ``category`` будем принимать дополнительный парамер, ``category_name_url``, где будет хранится закодированное название категории.
+	* Нам будут необходимы некоторые вспомогательные функции для кодирования и декодирования ``category_name_url``.
+#. Создать новый шаблон ``templates/rango/category.html``.
+#. Обновить ``urlpatterns`` Rango, чтобы сопоставить новое представление ``category`` URL шаблону в ``rango/urls.py``.
+
+Мы также должны обновить представление ``index()`` и шаблон ``index.html``, чтобы создать ссылки на представление страницы с категориями.
+
+Представление Category
 ......................
-With our URLs design chosen, let's get started. We'll undertake the following steps.
-
-#. Import the Page model into ``rango/views.py``.
-#. Create a new view in ``rango/views.py`` - called ``category`` - The ``category`` view will take an additional parameter, ``category_name_url`` which will stored the encoded category name. 
-	* We will need some help functions to encode and decode the ``category_name_url``.
-#. Create a new template, ``templates/rango/category.html``.
-#. Update Rango's ``urlpatterns`` to map the new ``category`` view to a URL pattern in ``rango/urls.py``.
-
-We'll also need to update the ``index()`` view and ``index.html`` template to provide links to the category page view.
-
-Category View
-.............
-In ``rango/views.py``, we first need to import the ``Page`` model. This means we must add the following import statement at the top of the file.
+В ``rango/views.py``, нам сначала нужно импортировать модель ``Page``. Для этого мы должны добавить следующую команду импорта в начале файла.
 
 .. code-block:: python
 	
 	from rango.models import Page
 
-Next, we can add our new view, ``category()``.
+Затем мы добавим наше новое представление, ``category()``.
 
 .. code-block:: python
 	
 	def category(request, category_name_slug):
 	    
-	    # Create a context dictionary which we can pass to the template rendering engine.
+	    # Создаем словарь контекста, который мы можем передать механизму обработки шаблонов.
 	    context_dict = {}
 	    
 	    try:
-	        # Can we find a category name slug with the given name?
-	        # If we can't, the .get() method raises a DoesNotExist exception.
-	        # So the .get() method returns one model instance or raises an exception.
+	        # Можем ли мы найти название категории с дефисами для заданного названия?
+	        # Если нет, метод .get() вызывает исключение DoesNotExist.
+	        # Итак метод .get() возвращает экземпляр модели или вызывает исключение.
 	        category = Category.objects.get(slug=category_name_slug)
 	        context_dict['category_name'] = category.name
 	        
-	        # Retrieve all of the associated pages.
-	        # Note that filter returns >= 1 model instance.
+	        # Получит ьвсе связанные страницы.
+	        # Заметьте, что фильтр возвращает >= 1 экземпляр модели.
 	        pages = Page.objects.filter(category=category)
 	        
-	        # Adds our results list to the template context under name pages.
+	        # Добавить наш список результатов к контексту модели под названием pages ("страницы").
 	        context_dict['pages'] = pages
-	        # We also add the category object from the database to the context dictionary.
-	        # We'll use this in the template to verify that the category exists.
+	        # Мы также добавWe объект категории из базы данных в словарь контекста.
+	        # Мы будем использовать это информацию в шаблоне, чтобы проверить, что категория существует.
 	        context_dict['category'] = category
 	    except Category.DoesNotExist:
-	        # We get here if we didn't find the specified category.
-	        # Don't do anything - the template displays the "no category" message for us.
+	        # Мы попадаем сюда, если не нашли указанной категории.
+	        # Ничего делать не надо - шаблон отобразить сообщение "Нет такой категории" вместо нас.
 	        pass
 	    
-	    # Go render the response and return it to the client.
+	    # Возврщаем ответ на запрос клиенту.
 	    return render(request, 'rango/category.html', context_dict)
 
-Our new view follows the same basic steps as our ``index()`` view. We first define a context dictionary, then we attempt to extract the data from the models, and add in the relevant data to the context dictionary. We determine which category by using the value passed as parameter ``category_name_slug`` to the ``category()`` view function. If the category is found in the Category model, we can then pull out the associated Pages, and add this to the context dictionary, ``context_dict``. 
+При создании нашего нового представления мы использовали те же основные этапы, что и для нашего представления ``index()``. Сначала мы определили словарь контекста, затем попытались извлечь данные из модели и добавить соответствующие данные в словарь контекста. Мы определили категорию по значению, передаваемому в виде параметра ``category_name_slug`` в функцию-представление ``category()``. Если категория существует в модели Category, то мы можем затем извлечь соответствующие страницы и добавить их к словарю контекста - ``context_dict``.
 
-
-Category Template
-.................
-Now let's create our template for the new view.  In ``<workspace>/tango_with_django_project/templates/rango/`` directory, create ``category.html``. In the new file, add the following code.
+Шаблон Category
+...............
+Теперь давайте создадим наш шаблон для нового представления. В каталоге ``<рабочее пространство>/tango_with_django_project/templates/rango/``, создайте ``category.html``. В новый файл добавьте следующий код.
 
 .. code-block:: html
 	
@@ -259,47 +254,47 @@ Now let's create our template for the new view.  In ``<workspace>/tango_with_dja
 	    </body>
 	</html>
 
-The HTML code example again demonstrates how we utilise the data passed to the template via its context. We make use of the ``category_name`` variable and our ``category`` and ``pages`` objects. If ``category`` is not defined within our template context, the category was not found within the database, and a friendly error message is displayed stating this fact. If the opposite is true, we then proceed to check for ``pages``. If ``pages`` is undefined or contains no elements, we display a message stating there are no pages present. Otherwise, the pages within the category are presented in a HTML list. For each page in the ``pages`` list, we present their ``title`` and ``url`` attributes.
+Пример HTML кода опять показывает, как мы используем данные, передаваемые в шаблон с помощью его контекста. Мы используем переменную ``category_name`` и наши объекты ``category`` и ``pages``. Если ``category`` не определена в нашем контексте шаблона, то категория не была найдена в базе данных, и отображается сообщение об ошибке, указывающее об этом. Если категория была найдена, то мы проверяем есть ли в ней ``pages``. Если ``pages`` не определены или не содержат ничего, мы отображаем сообщение о том, что страниц не существует. В противном случае, страницы в категории представляются в виде HTML списка. Для каждой страницы в списке ``pages`` мы используем атрибуты ``title`` и ``url``.
 
-.. note:: The Django template conditional tag - ``{% if %}`` - is a really neat way of determining the existence of an object within the template's context. Try getting into the habit of performing these checks to reduce the scope for potential exceptions that could be raised within your code.
+.. note:: Условный тег шаблона Django - ``{% if %}`` - на самом деле отличный способ определить наличие объекта в контексте шаблона. Постарайтесь привыкнуть выполнять эти проверки, чтобы уменьшить область потенциальных исключений, которые могут возникнуть в вашем коде.
 	
-	Placing conditional checks in your templates - like ``{% if category %}`` in the example above - also makes sense semantically. The outcome of the conditional check directly affects the way in which the rendered page is presented to the user - and presentational aspects of your Django applications should be encapsulated within templates.
+	Размещение условных проверок в Ваши шаблоны - таких как ``{% if category %}`` в вышеприведенном примере - также имеет семантический смысл. Результат условной проверки непосредственно влияет на то, как страница, созданная на основе шаблона, будет представлена пользователю - особенности представления страницы Вашего Django приложений должны быть инкапсулированы в шаблоны.
 
-Parameterised URL Mapping
-.........................
-Now let's have a look at how we actually pass the value of the ``category_name_url`` parameter to the ``category()`` function. To do so, we need to modify Rango's ``urls.py`` file and update the ``urlpatterns`` tuple as follows.
+URL сопоставление с параметрами
+...............................
+Теперь давайте рассмотрим как передать значение параметра ``category_name_url`` в функцию ``category()``. Для этого необходимо модифицировать файл Rango ``urls.py`` и обновить кортеж ``urlpatterns`` следующим образом.
 
 .. code-block:: python
 	
 	urlpatterns = patterns('',
 	    url(r'^$', views.index, name='index'),
 	    url(r'^about/$', views.about, name='about'),
-	    url(r'^category/(?P<category_name_slug>[\w\-]+)/$', views.category, name='category'),)  # New!
+	    url(r'^category/(?P<category_name_slug>[\w\-]+)/$', views.category, name='category'),)  # Новая строка!
 
-As you can see, we have added in a rather complex entry that will invoke ``view.category()`` when the regular expression ``r'^(?P<category_name_slug>\w+)/$'`` is matched. We set up our regular expression to look for any sequence of alphanumeric characters (e.g. a-z, A-Z, or 0-9) and the hyphen(-) before the trailing URL slash. This value is then passed to the view ``views.category()`` as parameter ``category_name_slug``, the only argument after the mandatory ``request`` argument.
+Как видите, мы довольно сложную строку, которая будет вызывать ``view.category()``, когда произойдет совпадение с регулярным выражением ``r'^(?P<category_name_slug>\w+)/$'``. Мы составили наше регулярное выражение так, чтобы оно искало любую последовательность алфавитно-цифровых символов (например, a-z, A-Z или 0-9) и дефисов (-) перед последним слешем в URL. Это значение затем передается в представление ``views.category()`` в виде параметра ``category_name_slug`` - единственного аргумента после обязательного аргумента ``request``.
 
-.. note:: When you wish to parameterise URLs, it's important to ensure that your URL pattern matches the parameters that the corresponding view takes in. To elaborate further, let's take the example we added above. The pattern added was as follows.
-	
+.. note:: Если Вы хотите использовать URLы с параметрами, важно убедиться, что ваш URL шаблон имеем столько же параметров, сколько принимает соответствующее представление. Чтобы лучше исследовать эту проблему, давайте рассмотрим вышеприведенный пример. Шаблон был добавлен следующим образом:
+
 	.. code-block:: python
 		
 		url(r'^category/(?P<category_name_slug>[\w\-]+)/$', views.category, name='category')
 	
-	We can from here deduce that the characters (both alphanumeric and underscores) between ``category/`` and the trailing ``/`` at the end of a matching URL are to be passed to method ``views.category()`` as named parameter ``category_name_slug``. For example, the URL ``category/python-books/`` would yield a ``category_name_slug`` of ``python-books``.
-	
-	As you should remember, all view functions defined as part of a Django project *must* take at least one parameter. This is typically called ``request`` - and provides access to information related to the given HTTP request made by the user. When parameterising URLs, you supply additional named parameters to the signature for the given view. Using the same example, our ``category`` view signature is altered such that it now looks like the following.
-	
+	Здесь мы можем сделать вывод, что символы (алфавитно-цифровые и дефисы) между ``category/`` и ``/`` в конце совпавшего URL будут переданы методу ``views.category()`` в виде именнованного параметра ``category_name_slug``. Например, URL ``category/python-books/`` приведет к тому, что в ``category_name_slug`` запишется ``python-books``.
+
+	Вероятно Вы помните, что все функции-представления определяемые как часть Django проекта *должны* принимать хотя бы один параметр. Он обычно называется ``request`` и обеспечивает доступ к информации, связанной с заданным HTTP запросом, сделанным пользователем. При использовании URLов с параметрами, Вы должны передавать дополнительные именованные параметры в набор аргументов для заданного представления. Используя этот же пример, наше представление ``category`` изменяется так, что теперь выглядит следующим образом.
+
 	.. code-block:: python
 		
 		def category(request, category_name_slug):
-		    # ... code here ...
+		    # ... остальной код представления ...
 	
-	It's not the position of the additional parameters that matters, it's the *name* that must match anything defined within the URL pattern. Note how ``category_name_slug`` defined in the URL pattern matches the ``category_name_slug`` parameter defined for our view. Using ``category_name_slug`` in our view will give ``python-books``, or whatever value was supplied as that part of the URL.
+	Положение дополнительных параметров не имеет значения, только *название* должно соответствовать чему-либо, определяемому в URL шаблоне. Обратите внимание на то как ``category_name_slug``, определяемое в URL шаблоне соответствует параметру ``category_name_slug``, определяемому для нашего вида. Используя ``category_name_slug`` в нашем представлении мы передаем ``python-books`` или любое значение, которое было введено в той части URL.
 
-.. note:: Regular expressions may seem horrible and confusing at first, but there are tons of resources online to help you. `This cheat sheet <http://cheatography.com/davechild/cheat-sheets/regular-expressions/>`_ is an excellent resource for fixing regular expression problems.
+.. note:: Регулярные выражения могут казаться устрашающими и запутанными на первый взгляд, но существует множество ресурсов онлайн, которые могут помочь Вам. `Эта шпаргалка <http://cheatography.com/davechild/cheat-sheets/regular-expressions/>`_ - прекрасный ресурс для решения проблем, связанных с регулярными выражениями.
 
-Modifying the Index Template
-.....................................
-Our new view is set up and ready to go - but we need to do one more thing. Our index page template needs to be updated to provide users with a means to view the category pages that are listed. We can update the ``index.html`` template to now include a link to the category page via the slug.
+Изменение шаблона Index
+.......................
+Наше новое представление настроено и готово к работе - но нам необходимо сделать ещё кое-что. Наш шаблон для главной страницы нужно изменить, чтобы пользователь смог просмотреть перечисленные страницы с категориями. Теперь можно обновить шаблон ``index.html`` так, чтобы в нём была ссылка на страницу с категорией, используя slug.
 
 .. code-block:: html
 	
@@ -315,7 +310,7 @@ Our new view is set up and ready to go - but we need to do one more thing. Our i
 	        {% if categories %}
 	            <ul>
 	                {% for category in categories %}
-	                <!-- Following line changed to add an HTML hyperlink -->
+	                <!-- Следующая строка была изменена и в неё была добавлена HTML гиперссылка -->
 	                <li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
 	                {% endfor %}
 	            </ul>
@@ -326,30 +321,30 @@ Our new view is set up and ready to go - but we need to do one more thing. Our i
 	    </body>
 	</html>
 
-Here we have updated each list element (``<li>``) adding a HTML hyperlink (``<a>``). The hyperlink has an ``href`` attribute, which we use to specify the target URL defined by ``{{ category.slug }}``. 
+В вышеприведенном блоке кода мы изменили каждый элемент списка (``<li>``), добавив к нему HTML гиперссылку (``<a>``). Гиперссылка имеет атрибут  ``href``, который мы используем, чтобы определить требуемый URL, определяемый ``{{ category.slug }}``. 
 
-Demo
-....
-Let's try everything out now by visiting the Rango's homepage. You should see your homepage listing all the categories. The categories should now be clickable links. Clicking on ``Python`` should then take you to the ``Python`` detailed category view, as demonstrated in Figure :num:`fig-rango-links`. If you see a list of links like ``Official Python Tutorial``, then you've successfully set up the new view. Try navigating a category which doesn't exist, like ``/rango/category/computers``. You should see a message telling you that no pages exist in the category.
+Пример работы
+.............
+Давайте посмотрим, что у нас получилось, посетив домашнюю страницу Rango. Вы должны увидеть домашнюю страницу со списком всех категорий. Теперь все категории должны быть активными ссылками. При нажатии на ``Python`` Вы должны перейти к просмотру категории ``Python``, как показано на рисунке :num:`fig-rango-links`. Если Вы видите список ссылок, например, ``Official Python Tutorial``, то Вы успешно создали новое представление. Попытайтесь перейти в катагорию, которой не существует, например ``/rango/category/computers``. Вы должны увидеть сообщение, сообщающее о том, что в этой категории нет страниц.
 
 .. _fig-rango-links:
 
 .. figure:: ../images/rango-links.png
 	:figclass: align-center
 
-	What your link structure should now look like. Starting with the Rango homepage, you are then presented with the category detail page. Clicking on a page link takes you to the linked website.
+	Так теперь должна выглядеть Ваша структура ссылок. Начиная с домашней страницы Rango, Вы затем можете перейти на страницу категории. Нажав на ссылку на странице Вы перейдете на связанный с ней веб сайт.
+	
+Упражнения
+----------
+Закрепите то, о чем Вы узнали в этой главе, пытаясь выполнить следующие упражнения.
 
-Exercises
----------
-Reinforce what you've learnt in this chapter by trying out the following exercises.
+* Измените домашнюю страницу так, чтобы она также включала 5 самых просматриваемых страниц.
 
-* Modify the index page to also include the top 5 most viewed pages.
+* Изучите `третью часть официального учебного пособия по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial03/>`_, если Вы не сделали это до сих пор, чтобы ещё больше закрепить то, чему Вы здесь научились.
 
-* Undertake the `part three of official Django tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial03/>`_ if you have not done so already to further what you've learnt here.
+Подсказки к упражнениям
+.......................
+Следующие подсказки помогут Вам выполнить упражнения, приведенные выше. Удачи!
 
-Hints
-.....
-To help you with the exercises above, the following hints may be of some use to you. Good luck!
-
-* Update the population script to add some value to the views count for each page.
+* Обновите скрипт для заполнения базы данных, добавив в него некоторое значение для числа просмотров каждой страницы.
 
