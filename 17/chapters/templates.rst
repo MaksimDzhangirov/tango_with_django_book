@@ -1,18 +1,18 @@
-Working with Templates
-======================
-So far we've created several Django HTML templates for different pages in the application. You've probably already noticed that there is a lot of repeated HTML code in these templates.
+Работа с шаблонами
+==================
+Ранее мы создали несколько Django HTML шаблонов для различных страниц в приложении. Вы, наверное, заметили, что в этих шаблонах существует много повторяющегося HTML кода.
 
-While most sites will have lots of repeated structure (i.e. headers, sidebars, footers, etc) repeating the HTML in each template is a not good way to handle this. So instead of doing the same cut and paste hack job, we can minimize the amount of repetition in our code base by employing *template inheritance* provided by Django's Template Language.
+Хотя большинство сайтов имеют много повторяющихся элементов (т. е., хедер, сайдбары, футеры и т. д.), повторять HTML в каждом шаблоне не самый лучший способ. Вместо того, чтобы бездумно копировать и вставлять повторяющиеся части кода, мы можем минимизировать повторения в нашем коде, используя *наследование шаблонов*, поддерживаемое Языком Шаблонов Django.
 
-The basic approach to using inheritance in templates is as follows.
+Основной принцип наследования шаблонов заключается в следующем:
 
-#. Identify the re-occurring parts of each page that are repeated across your application (i.e. header bar, sidebar, footer, content pane)
-#. In a *base template*, provide the skeleton structure of a standard page along with any common content (i.e. the copyright notice that goes in the footer, the logo and title that appears in the section), and then define a number of *blocks* which are subject to change depending on which page the user is viewing.
-#. Create specific templates - all of which inherit from the base template - and specify the contents of each block.
+#. Определить повторяющиеся части на каждой странице для Вашего приложения  (т. е., хедер, сайдбар, футер, элементы внутри основного содержимого страницы)
+#. В *базовом шаблоне* создать каркас стандартной страницы, добавив в него любые общие элементы (т. е., авторские права в футере, логотип и название, которые обычно располагаются в хедере), а затем определите *блоки*, которые будут меняться в зависимости от просматриваемой пользователем страницы.
+#. Создайте конкретный шаблон - наследуемый от базового шаблона - и укажите содержимое для каждого блока.
 
-Reoccurring HTML and The Base Template
---------------------------------------
-Given the templates that we have created so far it should be pretty obvious that we have been repeating a fair bit of HTML code. Below we have abstracted away any page specific details to show the skeleton structure that we have been repeating within each template.
+Повторяющийся HTML код и базовый шаблон
+---------------------------------------
+Учитывая шаблоны, которые мы создали ранее, очевидно, что мы повторяли в них много HTML кода. Ниже мы абстрагируемся от деталей, характерных для конкретных страниц, чтобы показать каркас, который будет повторяться в каждом шаблоне.
 
 .. code-block:: html
 	
@@ -24,21 +24,21 @@ Given the templates that we have created so far it should be pretty obvious that
 	    </head>
 	
 	    <body>
-	        <!-- Page specific content goes here -->
+	        <!-- Содержимое характерное для каждой конкретной страницы будет размещаться здесь. -->
 	    </body>
 	</html>
 
-Let's make this our base template, for the time being, and save it as ``base.html`` in the ``templates`` directory (e.g. ``templates/base.html``). 
+Пусть это будет наш базовый шаблон для начала; сохраните его как ``base.html`` в каталоге ``templates`` (например, ``templates/base.html``).
 
-.. note:: You should always aim to extract as much reoccurring content for your base templates. While it may be a bit more of a challenge for you to do initially, the time you will save in maintenance of your templates in the future far outweighs the initial overhead. Think about it: would you rather maintain one copy of your markup or multiple copies?
+.. note:: Вы всегда должны стремиться поместить как можно больше повторяющихся частей в Ваши базовые шаблоны. Хотя в первый раз это будет сделать довольно сложно, время которое Вы сэкономите при поддержке Ваших сайтов в будущем значительно превзойдет эти начальные накладные расходы. Подумайте что проще: изменить разметку в одном файле или нескольких?
 
-.. warning:: Remember that your page ``<!DOCTYPE html>`` declaration absolutely must be placed on the first line for your page! Not doing so will mean your markup will not comply with the W3C HTML5 guidelines.
+.. warning:: Помните, что объявление ``<!DOCTYPE html>`` на Вашей странице должно размещаться на первой строке! В противном случае Вы не будете соблюдать нормы W3C HTML5.
 
-Template Blocks
----------------
-Now that we've identified our base template, we can prepare it for our inheriting templates. To do this, we need to include a Template Tag to indicate what can be overridden in the base template - this is done through the use of *blocks*.
+Шаблоны блоков
+--------------
+Теперь когда мы определили наш базовый шаблон, можно подготовить его для последующего наследования. Для этого необходимо добавить тег шаблона, чтобы указать, что может быть изменено в базовом шаблоне - это можно сделать с помощью *блоков*.
 
-Add a ``body_block`` to the base template as follows:
+Добавим блок ``body_block`` в базовый шаблон следующим образом:
 
 .. code-block:: html
 	
@@ -55,20 +55,19 @@ Add a ``body_block`` to the base template as follows:
 	    </body>
 	</html>
 
-Recall that standard Django template commands are denoted by ``{%`` and ``%}`` tags. To start a block, the command is ``block <NAME>``, where ``<NAME>`` is the name of the block you wish to create. You must also ensure that you close the block with the ``endblock`` command, again enclosed within Django template tags.
+Вспомните, что стандартные команды языка шаблонов Django обозначаются тегами ``{%`` и ``%}``. Чтобы начать блок используется команда ``block <ИМЯ>``, где ``<ИМЯ>`` - название блока, который Вы хотите создать. Также необходимо убедиться, что Вы закрыли блок командой ``endblock``, заключенной в теги языка шаблона Django.
 
-You can also specify 'default content' for your blocks, for example:
+Вы можете также указать "содержимое по умолчанию" для Ваших блоков, например:
 
 .. code-block:: html
 	
 	{% block body_block %}This is body_block's default content.{% endblock %}
 
+При создании шаблона для каждой страницы, мы наследуем шаблон ``base.html`` и переопределяем содержимое ``body_block``. Вы можете поместить в Ваших шаблонов столько блоков, сколько захотите. Например, Вы можете создать блок для заголовка страницы, футера, сайдбара и т. д.. Блоки действительно эффективный инструмент системы шаблонов Django, поэтому чтобы узнать больше о них, ознакомьтесь с `официальной Django документацией по шаблонам <https://docs.djangoproject.com/en/1.7/topics/templates/#id1>`_.
 
-When we create templates for each page we will inherit from ``base.html`` and override the contents of the ``body_block``. However, you can place as many blocks in your templates as you so desire. For example, you could create a block for the page title, a footer, a sidebar, etc. Blocks are a really powerful feature of Django's template system to learn more about them check out the `official Django documentation on templates <https://docs.djangoproject.com/en/1.7/topics/templates/#id1>`_.
-
-Abstracting Further
-...................
-Now that you have an understanding of Django blocks, let's take the opportunity to abstract our base template a little bit further. Reopen the ``base.html`` template and modify it to look like the following.
+Дальнейшее абстрагирование
+..........................
+Теперь, когда Вы имеете представление о Django блоках, давайте ещё больше абстрагируем наш базовый шаблон. Заново откройте шаблон ``base.html`` и измените его, чтобы он выглядел следующим образом.
 
 .. code-block:: html
 	
@@ -103,27 +102,27 @@ Now that you have an understanding of Django blocks, let's take the opportunity 
 	    </body>
 	</html>
 
-We have introduced two new features into the template.
+Здесь мы использовали два новых элемента в шаблоне.
 
-* The first is a new Django template block, ``title``. This will allow us to specify a custom page title for each page inheriting from our base template. If an inheriting page does not make use of this feature, the title is defaulted to ``Rango - How to Tango with Django!``
-* We also bring across the list of links from our current ``index.html`` template and place them into a HTML ``<div>`` tag underneath our ``body_block`` block. This will ensure the links are present across all pages inheriting from the base template. The links are preceded by a *horizontal rule* (``<hr />``) which provides a visual separation between the ``body_block`` content and the links. 
+* Во-первых - новый блок Django шаблона: ``title``. Он позволяет нам указать разный заголовок для каждой страницы, наследуемой от нашего базового шаблона. Если наследуемая страница не изменит этот блок, то будет использоваться заголовок по умолчанию ``Rango - How to Tango with Django!``
+* Во-вторых - мы перенесли список ссылок из шаблона ``index.html`` и поместили его в HTML тег ``<div>`` ниже нашего блока ``body_block``. Таким образом, ссылки существующие на всех страницах будут наследоваться из базового шаблона. Перед ссылками размещается горизонтальная линия (тег ``<hr />``), который визуально разделяет содержимое блока body_block`` и ссылки.
 
-Also note that we enclose the ``body_block`` within a HTML ``<div>`` tag - we'll be explaining the meaning of the ``<div>`` tag in Chapter :ref:`css-course-label`. Our links are also converted to an unordered HTML list through use of the ``<ul>`` and ``<li>`` tags.
+Также обратите внимание, что мы заключили блок ``body_block`` в HTML тег ``<div>`` - мы поясним назначение тега ``<div>`` в Главе :ref:`css-course-label`. Наши ссылки также преобразуются в неупорядоченный HTML список, используя теги ``<ul>`` и ``<li>``.
 
 
-Template Inheritance
---------------------
-Now that we've created a base template with a block, we can now update the templates we have created to inherit from the base template. For example, let's refactor the template ``rango/category.html``.
+Наследование шаблонов
+---------------------
+Теперь, когда мы создали базовый шаблон с помощью блока, мы можем обновить шаблоны, так, чтобы они наследовались от базового. Например, давайте модифицируем шаблон ``rango/category.html``.
 
-To do this, first remove all the repeated HTML code leaving only the HTML and Template Tags/Commands specific to the page. Then at the beginning of the template add the following line of code:
+Для этого сначала удалите весь повторяющийся HTML код, оставив только HTML и команды/теги шаблона, характерные для этой страницы. Затем в начале шаблона, добавьте следующую строку кода:
 
 .. code-block:: html
 	
 	{% extends 'base.html' %}
 
-The ``extends`` command takes one parameter, the template which is to be extended/inherited from (i.e. ``rango/base.html``). We can then modify the ``category.html`` template so it looks like the following complete example.
+Команда ``extends`` принимает один параметр, шаблон, который будет расширен/унаследован (т. е., ``rango/base.html``). Теперь можно изменить шаблон ``category.html``, чтобы он выглядел, как показано в следующем примере.
 
-.. note:: The parameter you supply to the ``extends`` command should be relative from your project's ``templates`` directory. For example, all templates we use for Rango should extend from ``rango/base.html``, not ``base.html``.
+.. note:: Параметр, который Вы передаете команде ``extends``, должен задаваться относительно каталога ``templates`` Вашего проекта. Например, все шаблоны, которые мы будет использовать для Rango должны наследоваться от ``rango/base.html``, а не ``base.html``.
 
 .. code-block:: html
 	
@@ -155,35 +154,34 @@ The ``extends`` command takes one parameter, the template which is to be extende
 		
 	{% endblock %}
 
-Now that we inherit from ``base.html``, all that exists within the ``category.html`` template is the ``extends`` command, the ``title`` block and the ``body_block`` block. You don't need a well-formatted HTML document because ``base.html`` provides all the groundwork for you. All you're doing is plugging in additional content to the base template to create the complete HTML document which is sent to the client's browser.
+Теперь после наследования шаблона ``base.html``, шаблон ``category.html`` содержит только команду ``extends``, блок ``title`` и блок ``body_block``. Не нужно создавать заново HTML документ, поскольку эту же сделано в ``base.html``. Все что нужно сделать - это подключить дополнительные элементы к базовому шаблону для создания законченного HTML документа, который посылается браузеру клиента.
 
 .. note:: 
 
- 	Templates are very powerful and you can even create your own template tags. Here we have shown how we can minimise the repetition of structure HTML in our templates.
+	Шаблоны очень мощный инструмент и Вы даже можете создавать свои собственные теги шаблонов. Здесь мы показали, как можно минимизировать повторяющуюся структуру HTML в наших шаблонах.
 
-	However, templates can also be used to minimise code within your application's views. For example, if you wanted to include the same database-driven content on each page of your application, you could construct a template that calls a specific view to handle the repeating portion of your webpages. This then saves you from having to call the Django ORM functions which gather the required data for the template in every view that renders it.
+	Однако шаблоны могут также использоваться для минимизации кода в представлениях Вашего приложения. Например, если Вы хотите добавить содержимое из базы данных на каждую страницу Вашего приложения, Вы можете создать шаблон, который вызывает определенное представление для обработки повторяющейся части Ваших страниц. Это избавит Вас от необходимости вызывать Django ORM функции, которые извлекают требуемые данные для шаблона, в каждом представлении.
+
+ 	Чтобы узнать больше о дополнительных функциях, предоставляемых языком шаблонов Django, прочтите официальную `Django документацию по шаблонам <https://docs.djangoproject.com/en/1.7/topics/templates/>`_. 
+
 	
-	To learn more about the extensive functionality offered by Django's template language, check out the official `Django documentation on templates <https://docs.djangoproject.com/en/1.7/topics/templates/>`_. 
-	
-	
-	
-Referring to URLs in Templates
-------------------------------
-So far we have been directly coding the URL of the page/view we want to show within the template, i.e. ``<a href="/rango/about/"> About  </a>``. However, the preferred way is to use the template tag ``url`` to look up the url in the ``urls.py`` files. To do this we can change the way we reference the URL as follows:
+Ссылки на URL в шаблонах
+------------------------
+Ранее мы непосредственно кодировали URL страниц/представлений, которые мы хотим показать в шаблоне, т. е.,  ``<a href="/rango/about/"> About  </a>``. Однако предпочтительней использовать тег шаблона ``url`` для поиска URL в файлах ``urls.py``. При использовании этого шаблона ссылка на URL будет выглядеть следующим образом:
 
 .. code-block:: html
 
 	<li><a href="{% url 'about' %}">About</a></li>
 	
-The Django template engine will look up the ``urls.py`` files for a url with the ``name='about'`` (and then reverse match the actual url). This means if we change the url mappings in ``urls.py`` then we do not have to go through all the templates and update them. If we had not given our urlpattern a name, we could directly reference it as follows:
+Механизм обработки шаблонов Django просмотрит файлы ``urls.py`` в поиске URL ``c названием  равным "about"`` (затем происходит обратный поиск фактического URL). Это означает, что если мы изменим URL сопоставления в ``urls.py``, то не нужно будет просмотреть все шаблоны и обновить адреса URL в них. Если мы не задали нашему URL шаблону название, то мы можем непосредственно сослаться на него как:
 
 .. code-block:: html
 
 	<li><a href="{% url 'rango.views.about' %}">About</a></li>
 	
-Here we need to specify the application, and the view about.
+В этом случае необходимо указать приложение и затем представление about.
 
-You can now update the base template with the ``url`` template tag so that links in base template are rendered using the following code:
+Теперь Вы можете модифицировать базовый шаблон, используя тег шаблона ``url``; при этом ссылки в базовом шаблоне будут задаваться с помощью следующего кода:
 
 .. code-block:: html
 	
@@ -203,14 +201,13 @@ You can now update the base template with the ``url`` template tag so that links
 	    </ul>
 	</div>
 
-
-In your ``index.html`` template you will notice that you have a parameterized url pattern, i.e. the ``category`` url/view takes the ``category.slug`` as a parameter. To handle this you can pass the url template tag the name of the url/view and the slug, i.e. {% url 'category'  category.slug %} within the template, as follows:
+Заметьте, что в Вашем шаблоне ``index.html``, существует URL шаблон с параметром, т. е. URL/представление ``category`` принимает ``category.slug`` в качестве параметра. В этом случае Вы можете передать тегу URL шаблона название URL/представления и slug, т. е., записать его в виде {% url 'category' category.slug %} в шаблоне:
 
 .. code-block:: html
 
 
 	{% for category in categories %}
-	    <li><a href="{% url 'category'  category.slug %}">{{ category.name }}</a></li>
+	    <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
 	{% endfor %}
 
 
@@ -219,37 +216,36 @@ In your ``index.html`` template you will notice that you have a parameterized ur
 #TODO(leifos): Also point out how the urls can be placed in a namespace and referenced accordingly, see http://django.readthedocs.org/en/latest/intro/tutorial03.html 
 
 
-Exercises
----------
-Now that you've worked through this chapter, we've got several exercises for you to work through. After completing them, you'll be a Django templating pro.
+Упражнения
+----------
+Теперь после того как Вы изучили эту главу, мы подготовили для Вас несколько упражнений. После их выполнения, вы должны стать профессионалом в области использования шаблонов Django.
 
-* Update all other existing templates within Rango's repertoire to extend from the ``base.html`` template. Follow the same process as we demonstrated above. Once completed, your templates should all inherit from ``base.html``, as demonstrated in Figure :num:`fig-rango-template-inheritance`. While you're at it, make sure you remove the links from our ``index.html`` template. We don't need them anymore! You can also remove the link to Rango's homepage within the ``about.html`` template.
-* Convert the restricted page to use a template. Call the template ``restricted.html``, and ensure that it too extends from our ``base.html`` template.
-* Change all the references to rango urls to use the url template tag.
-* Add another link to our growing link collection that allows users to navigate back to Rango's homepage from anywhere on the website.
+* Измените все остальные существующие шаблоны внутри приложения Rango так, чтобы они наследовались от шаблона ``base.html``. Используйте ту же последовательность действий, которая была показана выше. После выполнения этой задачи все Ваши шаблоны должны наследовать ``base.html`` как показано на Рисунке :num:`fig-rango-template-inheritance`. При этом убедитесь, что Вы удалили ссылки на Ваш шаблон ``index.html``. Они нам больше не нужны! Также Вы можете удалить ссылку на домашнюю страницу Rango в шаблоне ``about.html``.
+* Преобразуйте страницу с ограниченным доступом так, чтобы она использовала шаблон. Назовите шаблон ``restricted.html`` и убедитесь, что она тоже наследует наш шаблон ``base.html``.
+* Измените все URL в ссылках, используя тег шаблона ``url``.
+* Добавьте ещё одну ссылку в наш растущий список, которая позволит пользователям вернуться обратно на главную страницу Rango с любой другой страницы на сайте.
 
-
-.. warning:: Remember to add ``{% load static %}`` to the top of each template that makes use of static media. If you don't, you'll get an error! Django template modules must be imported individually for each template that requires them - *you can't make use of modules included in templates you extend from!*
+.. warning:: Не забудьте добавить ``{% load static %}`` в начале каждого шаблона, что позволит использовать статические медиа файлы. Если не сделать этого, то Вы получите ошибку! Модули шаблонов Django должны импортироваться по отдельности для каждого шаблона, которым они требуются - *Вы не можете использовать модули, добавленные в шаблонах, которые используются для наследования!*
 
 .. _fig-rango-template-inheritance:
 
 .. figure:: ../images/rango-template-inheritance.svg
 	:figclass: align-center
 	
-	A class diagram demonstrating how your templates should inherit from ``base.html``.
+	Диаграмма классов, показывающая как Ваши шаблоны должны наследовать ``base.html``.
 
-.. note:: Upon completion of these exercises, all of Rango's templates should inherit from ``base.html``. Looking back at the contents of ``base.html``, the ``user`` object - found within the context of a given Django request - is used to determine if the current user of Rango is logged in (through use of ``user.is_authenticated``). As all of Rango's templates should inherit from this base template, we can say that *all of Rango's templates now depend on having access to the context of a given request.*
-	
-	Due to this new dependency, you must check each of Rango's Django views. For each view, ensure that the context for each request is made available to the Django template engine. Throughout this tutorial, we've been using ``render()`` to achieve this, passing the request as a parameter. If you don't ensure this happens, your views may be rendered incorrectly - users may appear to be not logged in, even though Django thinks that they are!
-	
-	As a quick example of the checks you must carry out, have a look at the ``about`` view. Initially, this was implemented with a hard-coded string response, as shown below. Note that we only send the string - we don't make use of the request passed as the ``request`` parameter.
+.. note:: После выполнения этих упражнений, все шаблоны должны наследовать ``base.html``. Просмотрите ещё раз содержимое ``base.html``. Объект ``user`` - находящийся в контексте Django запроса - используется, чтобы определить вошел ли в систему пользователь Rango (используя ``user.is_authenticated``). Поскольку все шаблоны Rango должны наследовать этот базовый шаблон, можно сказать, что *все шаблоны Rango теперь зависят от наличия доступа к контексту запроса*.
+
+	Из-за этой новой зависимости, необходимо проверить каждое Django представление в Rango. Убедитесь, что контекст каждого запроса доступен механизму обработки шаблонов Django. В этом учебном пособии, мы используем для этого функцию ``render()``, передавая request в качестве параметра. Если не сделать этого, то Ваши представления могут неправильно обработаться - страница для авторизованных пользователей ничем не будет отличаться от страницы для не авторизованных! 
+
+	В качестве примера проверок, которые Вам необходимо выполнить, взгляните на представление ``about``. Сначала оно было реализовано с помощью жестко заданной строки, как показано ниже. Обратите внимание, что мы посылаем браузеру клиента только строку - мы не передаем запрос в виде параметра ``request``.
 	
 	.. code-block:: python
 		
 		def about(request):
 		    return HttpResponse('Rango says: Here is the about page. <a href="/rango/">Index</a>')
 	
-	To employ the use of a template, we call the ``render()`` function and pass through the ``request`` object. This will allow the template engine access to objects such as ``user``, which will allow the template engine to determine if the user is logged in (ie. authenticated).
+	При использовании шаблона, мы вызываем функцию ``render()`` и передаем ей объект ``request``. Это позволяет механизму обработки шаблонов получить доступ к объектам, таким как ``user``, и определить вошел ли пользователь в систему (т. е., аутентифицирован ли он).
 	
 	.. code-block:: python
 		
@@ -257,8 +253,8 @@ Now that you've worked through this chapter, we've got several exercises for you
 		    
 		    return render(request, 'rango/about.html', {})
 	
-	Remember, the last parameter of ``render()`` is a dictionary with which you can use to pass additional data to the Django template engine. As we have no additional data to pass through we pass through an empty dictionary. Have a look at Section :ref:`adding-a-template-label` to refresh your memory on ``render()``.
-	
+	Напомним, что последний параметр функции ``render()`` - это словарь, который Вы можете использовать для передачи дополнительных данных в механизм обработки шаблонов Django. Поскольку у нас нет дополнительных данных, которые нужно предать, мы используем пустой словарь. Просмотрите Раздел :ref:`adding-a-template-label`, чтобы освежить в памяти использование функции ``render()``.
+		
 	
 	
 	
