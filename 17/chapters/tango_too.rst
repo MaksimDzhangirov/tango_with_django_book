@@ -1,18 +1,18 @@
 .. _tango-too-label:
 
-Making Rango Tango! Code and Hints
-==================================
+Улучшаем приложение Rango! Код и подсказки
+==========================================
 
-Hopefully, you will have been able to complete the exercises given the workflows we provided, if not, or if you need a little help checkout snippets of code and use them within your version of Rango.
+Надеемся Вы смогли выполнить упражнения, используя последовательность действий, которую мы привели; если нет или Вам необходима небольшая помощь, просмотрите фрагменты кода и используйте их для Вашей версии Rango.
 
-
-Track Page Click Throughs
+Подсчет просмотра страниц
 -------------------------
-Currently, Rango provides a direct link to external pages. This is not very good if you want to track the number of times each page is clicked and viewed. To count the number of times a page is viewed via Rango you will need to perform the following steps.
 
-Creating a URL Tracking View
-............................
-Create a new view called ``track_url()`` in ``/rango/views.py`` which takes a parameterised HTTP ``GET`` request (i.e. ``rango/goto/?page_id=1``) and updates the number of views for the page. The view should then redirect to the actual URL.
+В настоящий момент, Rango выдает прямую ссылку на внешние страницы. Это не самый хороший вариант, если Вы хотите отслеживать количество щелчков и просмотров каждой страницы. Для подсчета количества просмотров страницы через Rango, Вам необходимо выполнить следующие действия:
+
+Создать представление, анализирующее URL
+........................................
+Создайте новое представление под названием ``track_url()`` в файле ``/rango/views.py``, которое принимает параметризированный HTTP ``GET`` запрос (т. е., ``rango/goto/?page_id=1``) и обновляет число просмотров для страницы. Представление должно затем перенаправлять пользователя к фактическому URL.
 
 .. code-block:: python	
 	
@@ -34,24 +34,24 @@ Create a new view called ``track_url()`` in ``/rango/views.py`` which takes a pa
 	
 	    return redirect(url)
 
-Be sure that you import the ``redirect()`` function to ``views.py`` if it isn't included already!
+Удостоверьтесь, что Вы импортировали функцию ``redirect()`` в файл ``views.py``, если он не был импортирован до этого!
 
 .. code-block:: python
 	
 	from django.shortcuts import redirect
 
-Mapping URL
-...........
-In ``/rango/urls.py`` add the following code to the ``urlpatterns`` tuple.
+Сопоставить представлению URL
+.................
+В файле ``/rango/urls.py`` добавьте следующий код в кортеж ``urlpatterns``.
 
 .. code-block:: python
 	
 	url(r'^goto/$', views.track_url, name='goto'),
 
 
-Updating the Category Template
-...............................
-Update the ``category.html`` template so that it uses ``rango/goto/?page_id=XXX`` instead of providing the direct URL for users to click.
+Обновить шаблон для категории
+.............................
+Обновите шаблон ``category.html`` так, чтобы в нём использовался URL ``rango/goto/?page_id=XXX`` вместо прямого URL в ссылке, на которую нажимает пользователь.
 
 .. code-block:: html
 	
@@ -66,49 +66,45 @@ Update the ``category.html`` template so that it uses ``rango/goto/?page_id=XXX`
 		</li>
     {% endfor %}
 
-Here you can see that in the template we have added some control statements to display ``view``, ``views`` or nothing depending on the value of ``page.views``.
+Здесь видно, что мы добавили в шаблон некоторые управляющие операторы, которые используются для вывода слова ``view`` (при одном просмотре), ``views`` (если число просмотров больше 1) или ничего не выводят, в зависимости от значения ``page.views``.
 
-Updating Category View
-......................
-Since we are tracking the number of click throughs you can now update the ``category()`` view so that you order the pages by the number of views, i.e:
+Обновить представление Category
+................................
+Так как мы отслеживаем количество переходов по ссылке, теперь Вы можете обновить представление ``category()``, чтобы отсортировать страницы по количеству просмотров, т. е.:
 
 .. code-block:: python
 
 
 	pages = Page.objects.filter(category=category).order_by('-views')
 
-
-Now, confirm it all works, by clicking on links, and then going back to the category page. Don't forget to refresh or click to another category to see the updated page.
-
+Теперь убедитесь, что всё работает правильно, нажав на ссылки, и затем вернувшись на страницу категории. Не забудьте обновить страницу или перейдите в другую категорию, чтобы увидеть обновленную страницу.
 
 .. #######################################################
 
 
+Поиск на странице категории
+---------------------------
+Цель Rango - предоставить пользователям полезный каталог ссылок на страницы. На данный момент, функция поиска не зависима от категорий. Было бы лучше, если бы поиск был интегрирован в просмотр категории. Давайте предположим, что пользователи сначала просматривают интересующие их категории. Если они не нашли нужную им страницу, тогда они могут поискать её. Если они нашли в поиске подходящую страницу, они могут добавить её в категорию, в которой они находятся. Давайте решим первую задачу.
+Сначала нужно удалить глобальную функцию поиска и позволять пользователям осуществлять поиск только внутри категории. Это означает, что мы можем удалить текущую страницу поиска и представление для поиска. После этого необходимо выполнить следующие действия.
 
-Searching Within a Category Page
---------------------------------
-Rango aims to provide users with a helpful directory of page links. At the moment, the search functionality is essentially independent of the categories. It would be nicer however to have search integrated into category browsing. Let's assume that a user will first browse their category of interest first. If they can't find the page that they want, they can then search for it. If they find a page that is suitable, then they can add it to the category that they are in. Let's tackle the first part of this description here.
+Удоаляем глобальную функцию поиска
+..................................
+Удалите ссылку на глобальный *Поиск* из меню, отредактировав шаблон ``base.html``. Вы можете также удалить или закомментировать URL сопоставление в файле ``rango/urls.py``.
 
-We first need to remove the global search functionality and only let users search within a category. This will mean that we essentially decommission the current search page and search view. After this, we'll need to perform the following.
-
-Decommissioning Generic Search
-..............................
-Remove the generic *Search* link from the menu bar by editing the ``base.html`` template. You can also remove or comment out the URL mapping in ``rango/urls.py``.
-
-Creating a Search Form Template
+Создаем шаблон формы для поиска
 ...............................
-Take the search form from ``search.html`` and put it into the ``category.html``. Be sure to change the action to point to the ``category()`` view as shown below.
+Перенесите форму для поиска из ``search.html`` в ``category.html``. Удостоверьтесь, что атрибут ``action`` тега form ссылается на представление ``category()`` как показано ниже.
 
 .. code-block:: html
 
     <form class="form-inline" id="user_form" method="post" action="{% url 'category'  category.slug %}">
     	{% csrf_token %}
-        <!-- Display the search form elements here -->
+        <!-- Отображаем элементы формы для поиска здесь -->
         <input class="form-control" type="text" size="50" name="query" value="{{query}}" id="query" />
         <input class="btn btn-primary" type="submit" name="submit" value="Search" />
    </form>
 
-Also include a ``<div>`` to house the results underneath.
+Также ниже добавьте ``<div>``, в котором будут находиться результаты поиска.
 
 .. code-block:: html
 
@@ -116,7 +112,7 @@ Also include a ``<div>`` to house the results underneath.
 		{% if result_list %}
 	    	<div class="panel-heading">
 	        	<h3 class="panel-title">Results</h3>
-	        	<!-- Display search results in an ordered list -->
+	        	<!-- Отображаем результаты поиска в виде упорядоченного списка -->
 	        	<div class="panel-body">
 	            	<div class="list-group">
 	                	{% for result in result_list %}
@@ -130,10 +126,9 @@ Also include a ``<div>`` to house the results underneath.
 	    {% endif %}
 	</div>
 	
-
-Updating the Category View
-..........................
-Update the category view to handle a HTTP ``POST`` request (i.e. when the user submits a search) and inject the results list into the context. The following code demonstrates this new functionality.
+Обновляем представление Category
+................................
+Обновите представление для категории, чтобы оно могло обрабатывать HTTP ``POST`` запрос (который возникает, когда пользователь отправляет данные, введенные в форму для поиска) и добавьте список результатов в словарь контекста. Приведенный ниже код реализует эту новую функцию.
 
 .. code-block:: python
 
@@ -145,7 +140,7 @@ Update the category view to handle a HTTP ``POST`` request (i.e. when the user s
 	        query = request.POST['query'].strip()
 
 	        if query:
-	            # Run our Bing function to get the results list!
+	            # Запускаем нашу функцию Bing, чтобы получить список результатов поиска!
 	            result_list = run_query(query)
 
 	            context_dict['result_list'] = result_list
@@ -165,20 +160,19 @@ Update the category view to handle a HTTP ``POST`` request (i.e. when the user s
 
 	    return render(request, 'rango/category.html', context_dict)
 
-	
-Notice that in the ``context_dict``	that we pass through, we will include the ``result_list`` and ``query``, and if there is no query, we provide a default query, i.e. the category name. The query box then displays this variable.
 
+Обратите внимание, что в словарь ``context_dict``, который мы передали шаблону ``rango/category.html`` мы добавили ``result_list`` (список результатов поиска) и ``query`` (поисковый запрос), причем если переменной ``query`` не существует, то используется поисковый запрос по умолчанию равный названию категории. Эта переменная будет отображаться в поле для ввода запроса.
 
 	.. #########################################################################
 
 ..	View Profile 
 	------------
-	To add the view profile functionality, undertake the following steps.
-
-	Creating the Profile Template
-	.............................
-	First, create a new template called ``profile.html``. In this template, add the following code.
-
+	Чтобы добавить функцию просмотра профиля, выполните следующие шаги.
+	
+	Создайте шаблон для профиля
+	...........................
+	Сначала создайте новый шаблон под названием ``profile.html``. В этот шаблон добавьте следующий код.
+	
 	.. code-block:: html
 	
 		{% extends "rango/base.html" %}
@@ -202,10 +196,10 @@ Notice that in the ``context_dict``	that we pass through, we will include the ``
 		{% endblock %}
 
 
-	Creating Profile View
-	......................
-	Create a view called ``profile`` and add the following code.
-
+	Создайте представление для профиля
+	..................................
+	Создайте представление под названием ``profile`` и добавьте в него следующий код.
+	
 	.. code-block:: python
 	
 		from django.contrib.auth.models import User
@@ -226,17 +220,17 @@ Notice that in the ``context_dict``	that we pass through, we will include the ``
 		    context_dict['userprofile'] = up
 		    return render_to_response('rango/profile.html', context_dict, context)
 
-	Mapping the Profile View and URL
-	................................
-	Create a mapping between the URL ``/rango/profile`` and the ``profile()`` view. Do this by updating the ``urlpatterns`` tuple in ``rango/urls.py`` so that it includes the following entry.
+	Сопоставление URL представлению для профиля	    
+	...........................................
+	Создайте сопоставление между URL ``/rango/profile`` и представлением ``profile()``. Для этого обновите кортеж ``urlpatterns`` в файле ``rango/urls.py`` так, чтобы содержал следующую строку.
 
 	.. code-block:: python
 	
 		url(r'^profile/$', views.profile, name='profile'),
 
-	Updating the Base Template
-	..........................
-	In the ``base.html`` template, update the code to put a link to the profile page in the menu bar.
+	Обновляем базовый шаблон
+	........................
+	В шаблоне ``base.html``, обновите код, добавив ссылку на страницу профиля в меню.
 
 	.. code-block:: html
 	
@@ -246,13 +240,13 @@ Notice that in the ``context_dict``	that we pass through, we will include the ``
 	
 	.. #########################################################################
 
-	Track Page Click Throughs
+	Подсчет просмотра страниц
 	-------------------------
-	Currently, Rango provides a direct link to external pages. This is not very good if you want to track the number of times each page is clicked and viewed. To count the number of times a page is viewed via Rango you will need to perform the following steps.
+	В настоящий момент, Rango выдает прямую ссылку на внешние страницы. Это не самый хороший вариант, если Вы хотите отслеживать количество щелчков и просмотров каждой страницы. Для подсчета количества просмотров страницы через Rango, Вам необходимо выполнить следующие действия:
 
-	Creating a URL Tracking View
-	............................
-	Create a new view called ``track_url()`` in ``/rango/views.py`` which takes a parameterised HTTP ``GET`` request (i.e. ``rango/goto/?page_id=1``) and updates the number of views for the page. The view should then redirect to the actual URL.
+	Создать представление, анализирующее URL
+	........................................
+	Создайте новое представление под названием ``track_url()`` в файле ``/rango/views.py``, которое принимает параметризированный HTTP ``GET`` запрос (т. е., ``rango/goto/?page_id=1``) и обновляет число просмотров для страницы. Представление должно затем перенаправлять пользователя к фактическому URL.
 
 	.. code-block:: python	
 	
@@ -273,24 +267,24 @@ Notice that in the ``context_dict``	that we pass through, we will include the ``
 	
 		    return redirect(url)
 
-	Be sure that you import the ``redirect()`` function to ``views.py`` if it isn't included already!
+	Удостоверьтесь, что Вы импортировали функцию ``redirect()`` в файл ``views.py``, если он не был импортирован до этого!
 
 	.. code-block:: python
 	
 		from django.shortcuts import redirect
 
-	Mapping URL
-	...........
-	In ``/rango/urls.py`` add the following code to the ``urlpatterns`` tuple.
+	Сопоставить представлению URL
+	.................
+	В файле ``/rango/urls.py`` добавьте следующий код в кортеж ``urlpatterns``.
 
 	.. code-block:: python
 	
 		url(r'^goto/$', views.track_url, name='track_url'),
 
 
-	Updating the Category Template
-	...............................
-	Update the ``category.html`` template so that it uses ``rango/goto/?page_id=XXX`` instead of providing the direct URL for users to click.
+	Обновить шаблон для категории
+	.............................
+	Обновите шаблон ``category.html`` так, чтобы в нём использовался URL ``rango/goto/?page_id=XXX`` вместо прямого URL в ссылке, на которую нажимает пользователь.
 
 	.. code-block:: html
 	
@@ -311,8 +305,8 @@ Notice that in the ``context_dict``	that we pass through, we will include the ``
 		<strong>No pages currently in category.</strong><br/>
 		{% endif %}
 
-	Here you can see that in the template we have added some control statements to display ``view``, ``views`` or nothing depending on the value of ``page.views``.
+	Здесь видно, что мы добавили в шаблон некоторые управляющие операторы, которые используются для вывода слова ``view`` (при одном просмотре), ``views`` (если число просмотров больше 1) или ничего не выводят, в зависимости от значения ``page.views``.
 
-	Updating Category View
-	......................
-	Since we are tracking the number of click throughs you can now update the ``category()`` view so that you order the pages by the number of views. To confirm this works, click on a link and refresh the category view - the link you clicked should jump up the rankings.
+	Обновить представление Category
+	...............................
+	Так как мы отслеживаем количество переходов по ссылке, теперь Вы можете обновить представление ``category()``, чтобы отсортировать страницы по количеству просмотров. Убедитесь, что всё работает правильно, нажав на ссылку и обновив представление для категории - щелчок по ссылке должен увеличить рейтинг страницы.
