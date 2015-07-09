@@ -1,22 +1,20 @@
 .. _template-tag-chapter:
 
-Template Tags
+Теги шаблонов
 =============
 
+Выдаем список категорий на каждой странице
+------------------------------------------
+Хотелось бы иметь возможность показывать различные категории, которые пользователь может просматривать в боковой панели на каждой странице. С учетом того, что мы изучили, можно было бы поступить следующим образом:
 
-Providing Categories on Every Page
-----------------------------------
-It would be nice to show the different categories that users can browse through in the sidebar on each page. Given what we have learnt so far we could do the following:
+* В шаблоне ``base.html`` добавить код, отображающий список категорий, если он был передан ему.
+* Затем в каждом представлении мы могли обращаться к объекту Category, получать все категории и передавать их в словарь контекста.
 
-* In the ``base.html`` template we could add some code to display an item list of categories, if the category list has been passed through.
-* Then in each view, we could access the Category object, get all the categories, and return that in the context dictionary.
+Но это довольно примитивное решение, требующее большого числа операций вырезания и вставки кода. Кроме того, возникнет проблема с отображением категорий на страницах, обслуживаемых пакетом django-registration-redux. Из-за этого необходим другой подход, использующий ``теги шаблонов``, которые добавляются в шаблон и запрашивают необходимые данные.
 
-However, this is a pretty nasty solution. It requires a lot of cutting and pasting of code. Also, we will run into problems, when we want to show the categories on pages serviced by the django-registration-redux package. So we need a different approach, by using ``templatetags`` that are included in the template that request the data required.
-
-
-Using Template Tags
---------------------
-Create a directory ``rango/templatetags``, and create two files, one called ``__init__.py``, which will be empty, and another called, ``rango_extras.py``, where you can add the following code:
+Использование тегов шаблонов
+----------------------------
+Создайте каталог ``rango/templatetags``, а в нем два файла - один назовите ``__init__.py`` и оставьте его пустым, а второй - ``rango_extras.py``, в который добавьте следующий код:
 
 .. code-block:: python
 
@@ -30,8 +28,7 @@ Create a directory ``rango/templatetags``, and create two files, one called ``__
 	    return {'cats': Category.objects.all()}
 
 
-
-As you can see we have made a method called, ``get_category_list()`` which returns the list of categories, and that is assocaited with a template called ``rango/cats.html``. Now create a template called ''rango/cats.html`` in the templates directory with the following code:
+Как видите, мы создали метод под названием ``get_category_list()``, который возвращает список категорий, и связали его с шаблоном ``rango/cats.html``. Теперь создайте шаблон ``rango/cats.html`` в каталоге с шаблонами и вставьте в него следующий код:
 
 .. code-block:: html
 
@@ -47,8 +44,7 @@ As you can see we have made a method called, ``get_category_list()`` which retur
 	    </ul>
 	{% endif %}
 
-
-Now in your ``base.html`` you can access the templatetag by first loading it up with ``{% load rango_extras %}`` and then slotting it into the page with ``{% get_category_list %}``, i.e.:
+Теперь в Вашем базовом шаблоне ``base.html`` можно обратиться к созданному тегу шаблона, сначала загрузив его с помощью команды ``{% load rango_extras %}``, а затем разместив его на странице в виде ``{% get_category_list %}``, т. е.:
 
 .. code-block:: html
 
@@ -61,21 +57,19 @@ Now in your ``base.html`` you can access the templatetag by first loading it up 
     </div>
 	
 	
-.. note:: You will need to restart your server every time you modify the templatetags so that they are registered.
+.. note:: Вам нужно будет перезапускать Ваш сервер для разработок каждый раз при модификации тегов шаблонов, чтобы изменения вступили в силу.
 
-
-Parameterised Template Tags
+Теги шаблонов с параметрами
 ---------------------------
-
-Now lets extend this so that when we visit a category page, it highlights which category we are in. To do this we need to paramterise the templatetag. So update the method in ``rango_extras.py`` to be:
+Теперь давайте расширим функциональные возможности нашего тега так, чтобы при переходе на страницу с категорией, он подсвечивал категорию, в которой мы находимся в данный момент. Для этого необходимо передать аргументы в тег шаблона. Таким образом, отредактируйте метод в файле ``rango_extras.py`` следующим образом:
 
 .. code-block:: python
 
 	def get_category_list(cat=None):
 	    return {'cats': Category.objects.all(), 'act_cat': cat}
 		
-		
-This lets us pass through the category we are on. We can now update the ``base.html`` to pass through the category, if it exists.
+
+Это позволит передать методу категорию, в которой мы находимся в данной момент. Теперь можно изменить шаблон ``base.html``, передавая в тег категорию, если она существует.
 
 .. code-block:: html
 
@@ -87,9 +81,7 @@ This lets us pass through the category we are on. We can now update the ``base.h
 
     </div>
 	
-	
-Now update the ``cats.html`` template:
-
+Теперь обновите шаблон ``cats.html``:
 
 .. code-block:: html
 
@@ -98,9 +90,9 @@ Now update the ``cats.html`` template:
         	<a href="{% url 'category'  c.slug %}">{{ c.name }}</a></li>
     {% endfor %}
 
-Here we check to see if the category being displayed is the same as the category being passed through (i.e. ``act_cat``), if so, we assign the ``active`` class to it from Bootstrap (http://getbootstrap.com/components/#nav).
+В нём мы проверяем совпадает ли категория, выводимая на экран, с категорией (т. е., ``act_cat``), которая была передана методу; если да, то мы присваиваем ей класс ``active``, определенный в Bootstrap (http://getbootstrap.com/components/#nav).
 
+Перезапустите сервер для разработок и посетите страницы. При каждом посещении страницы мы пытаемся получить доступ к переменной ``category``. Когда Вы просматриваете страницу категории, шаблон имеет доступ к переменной ``category``, значение которой передает тегу шаблона ``get_category_list()``. Оно затем используется в шаблоне ``cats.html`` для подсветки активной категории.
 
-Restart the development web server, and now visit the pages. We have passed through the ``category`` variable. When you view a category page, the template has access to the ``category`` variable, and so provides a value to the templatetag ``get_category_list()``. This is then used in the ``cats.html`` template to select which category to highlight as active.
 
 
