@@ -1,243 +1,226 @@
 .. _login-redux-label:
 
-User Authentication with Django-Registration-Redux
-==================================================
-
-There are numerous add-on applications that have been developed that provide login, registration and authentication mechanisms. Since most applications will provide such facilitaties there is little point re-writing / re-inventing the urls, views, and templates. In this chapter, we are going to use the package ``django-registration-redux`` to provide these facilities. This will mean we will need re-factor our code - however, it will provide with some experience of using external applications, how easily they can be plugged into your Django project, along with login facilities with all the bells and whistles. It will also make our application much cleaner.
-
-
-.. note:: This chapter is not neccessary. You can skip it, but we will be assuming that you have upgraded the authentication mechanisms, in subsequent chapters.
+Аутентификация пользователя с помощью Django-Registration-Redux
+===============================================================
+Существует множество разработанных дополнительных приложений, которые обеспечивают механизмы входа в систему, регистрации и аутентификации. Поскольку большинство приложений предоставляют такие возможности, нет смысла заново писать/заново придумывать URL, представления и шаблоны. В этой главе мы будем использовать пакет ``django-registration-redux`` для реализаци этих возможностей. Это означает, что мы должны реорганизовать код - но в то же время мы приобретем опыт использования внешних приложений, как они могут быть подключены к Вашему Django проекту на примере приложения для входа в систему со всеми дополнительными возможностями. Это также сделает наше приложение намного чище.
 
 
 
-Setting up Django Registration Redux
-------------------------------------
+.. note:: Эта глава не обязательная. Вы можете пропустить её, но мы будем считать, что Вы обновили механизмы аутентификации в последующих главах.
 
-To start we need to first install ``django-registration-redux``:
+
+Настрока Django Registration Redux
+----------------------------------
+
+Для начала необходимо установить пакет ``django-registration-redux``:
 
 ..
 
 
-	$ pip install django-registration-redux
+    $ pip install django-registration-redux
 
 
-
-Now that it is installed, we need to tell Django that we will be using this application. Open up the ``settings.py`` file, and update the ``INSTALLED_APPS`` tuple:
-
+Теперь, когда он установлен, необходимо указать Django, что мы будем использовать это приложение. Откройте файл ``settings.py`` и обновите кортеж ``INSTALLED_APPS``:
 
 .. code-block:: python
-	
-	
-	INSTALLED_APPS = (
-    	'django.contrib.admin',
-    	'django.contrib.auth',
-    	'django.contrib.contenttypes',
-    	'django.contrib.sessions',
-    	'django.contrib.messages',
-    	'django.contrib.staticfiles',
-    	'rango',
-    	'registration', # add in the registration package
-	)
+    
+    
+    INSTALLED_APPS = (
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'rango',
+        'registration', # добавляем пакет для регистрации пользователей
+    )
 
-While you are in the ``settings.py`` file you can also add:
+Находясь в файле ``settings.py``, также можете добавить:
 
 .. code-block:: python
-	
+    
 
-	REGISTRATION_OPEN = True 		# If True, users can register
-	ACCOUNT_ACTIVATION_DAYS = 7 	# One-week activation window; you may, of course, use a different value.
-	REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
-	LOGIN_REDIRECT_URL = '/rango/'  # The page you want users to arrive at after they successful log in
-	LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in, 
-									# and are trying to access pages requiring authentication
-	
-	
-These settings should be self explanatory. Now, in ``tango_with_django_project/urls.py`` you can update the ``urlpatterns`` so it includes a reference to the registration package:
+    REGISTRATION_OPEN = True        # Если равно True, то пользователи могут регистрироваться
+    ACCOUNT_ACTIVATION_DAYS = 7     # время в течении которого можно активировать аккаунт;
+                                    # в качестве примера выбрано 7 дней или одна неделя, но Вы можете указать другое значение.
+    REGISTRATION_AUTO_LOGIN = True  # Если равно  True, то пользователь будет автоматически входить в систему.
+    LOGIN_REDIRECT_URL = '/rango/'  # Страница, на которую будут попадать пользователи, после успешного входа в систему.
+    LOGIN_URL = '/accounts/login/'  # Страница, на которую перенаправляются пользователи, если они не вошли в систему и
+                                    # пытаются получить доступ к страницам, которые требуют аутентификации
+    
 
+Что делают эти настройки, должно быть понятно из комментариев. Теперь в ``tango_with_django_project/urls.py`` можно обновить ``urlpatterns`` так, чтобы в них была ссылка на пакет registration.
 
 .. code-block:: python
 
-	urlpatterns = patterns('',
-  			
-    	url(r'^admin/', include(admin.site.urls)),
-    	url(r'^rango/', include('rango.urls')),
-    	url(r'^accounts/', include('registration.backends.simple.urls')),
-	)
+    urlpatterns = patterns('',
+            
+        url(r'^admin/', include(admin.site.urls)),
+        url(r'^rango/', include('rango.urls')),
+        url(r'^accounts/', include('registration.backends.simple.urls')),
+    )
+
+Пакет ``django-registration-redux`` предоставляет ряд различных бекендов для регистрации в зависимости от Ваших потребностей. Например, Вам может потребоваться процесс регистрации, состоящий из двух этапов, когда пользователю посылается письмо с ссылкой для подтверждения регистрации. Здесь мы будем использовать простой одноэтапный процесс, когда пользователь создает свою учетную запись, вводя имя пользователя, адрес электронной почты и пароль, после чего автоматически входит в систему.
+
+Функциональные возможности и сопоставление URL
+------------------------------
+
+Пакет Django Registration Redux автоматизирует множество функций. В ``registration.backend.simple.urls`` реализуется:
+
+* регистрация -> ``/accounts/register/``
+* завершение регистрации -> ``/accounts/register/complete``
+* вход в систему  -> ``/accounts/login/``
+* выход из системы  -> ``/accounts/logout/``
+* изменение пароля -> ``/password/change/``
+* сброс пароля -> ``/password/reset/``
+
+В то же время ``registration.backends.default.urls`` кроме этого предоставляет функции для активации учетной записи в два этапа:
+
+* активация завершена (используется при регистрации в два этапа) -> ``activate/complete/``
+* активировать (используется при неудачной активации) -> ``activate/<ключ_активации>/``
+* письмо с активационным ключом (сообщает пользователю, что было послано письмо с активационным ключом)
+
+    * содержимое письма с активационным ключом (текстовый файл, содержащий текст письма)
+    * тема письма с активационным ключом (текстовый файл, содержащий строку с темой письма)
 
 
-The ``django-registration-redux`` package provides a number of different registration backends, depending on your needs. For example you may want a two-step process, where user are sent a confirmation email, and a verification link. Here we will be using the simple one-step registration process, where a user sets up their account by entering in a username, email, and password, and is automatically logged in.
+А теперь самое интересное. Хотя Django Registration Redux предоставляет все эти функции, в нём не реализован ни один шаблон. Поэтому нам нужно создать шаблоны для каждого представления.
 
 
-Functionality and URL mapping
------------------------------
+Настройка шаблонов
+------------------
 
-The Django Registration Redux package provides the machinery for numerous functions. In the ``registration.backend.simple.urls``, it provides:
+В руководстве по быстрому старту, смотри https://django-registration-redux.readthedocs.org/en/latest/quickstart.html, кратко описывается какие шаблоны нужны, но не сразу понятно, что должен содержать каждый шаблон.
 
-* registration  -> ``/accounts/register/``
-* registration complete -> ``/accounts/register/complete``
-* login  -> ``/accounts/login/``
-* logout  -> ``/accounts/logout/``
-* password change -> ``/password/change/``
-* password reset -> ``/password/reset/``
+Тем не менее, можно скачать набор шаблонов с аккаунта GitHub Anders Hofstee по ссылке https://github.com/macdhuibh/django-registration-templates и узнать, что входит в шаблоны. Мы будем использовать эти шаблоны как образец.
 
-While in the ``registration.backends.default.urls`` it also provides the functions for activating the account in a two stage process:
+Сначала создайте новый каталог в каталоге ``templates`` под названием ``registration``. Здесь будут храниться все страницы, связанные с приложением Django Registration Redux и оно будет просматривать содержимое этого каталога при поиске требуемых ему шаблонов.
 
-* activation complete (used in the two-step registration) -> ``activate/complete/``
-* activate (used if the account actiona fails) -> ``activate/<activation_key>/``
-* activation email (notifies the user an activation email has been sent out)
-
-	* activation email body (a text file, that contains the activation email text)
-	* activation email subject (a text file, that contains the subject line of the activation email)
-
-
-
-Now the catch. While Django Registration Redux provides all this functionality, it does not provide the templates. So we need to provide the templates associated with each view. 
-
-
-Setting up the Templates
-------------------------
-
-In the quickstart guide, see https://django-registration-redux.readthedocs.org/en/latest/quickstart.html, it provides an overveiw of what templates are required, but it is not immediately clear what goes within each template.
-
-However, it is possible to download a set of tempaltes from Anders Hofstee's GitHub account, see
-https://github.com/macdhuibh/django-registration-templates, and from here you can see what goes into the templates. We will use these templates as our guide here.
-
-
-First, create a new directory in the ``templates`` directory, called ``registration``. This is where we will house all the pages associated with the Django Registration Redux application, as it will look in this directory for the templates it requires.
-
-
-
-Login Template
+Шаблон для входа в систему
 ...............
 
-In ``templates/registration`` create the file, ``login.html`` with the following code:
+В каталоге ``templates/registration`` создайте файл ``login.html`` со следующим кодом:
 
 .. code-block:: html
 
 
-	{% extends "rango/base.html" %}
-	
-	{% block body_block %}
-	<h1>Login</h1>
-		<form method="post" action=".">
-  			{% csrf_token %} 
-  			{{ form.as_p }}
+    {% extends "rango/base.html" %}
+    
+    {% block body_block %}
+    <h1>Login</h1>
+        <form method="post" action=".">
+            {% csrf_token %} 
+            {{ form.as_p }}
 
-  	  		<input type="submit" value="Log in" />
-  			<input type="hidden" name="next" value="{{ next }}" />
-			</form>
+            <input type="submit" value="Log in" />
+            <input type="hidden" name="next" value="{{ next }}" />
+            </form>
 
-		<p>Not  a member? <a href="{% url 'registration_register' %}">Register</a>!</p>
-	{% endblock %}
-
-
-Notice that whenever a url is referenced, the ``url`` template tag is used to reference it. If you visit, http://127.0.0.1:8000/accounts/ then you will see the list of url mappings, and the names assocaited with each url.
+        <p>Not  a member? <a href="{% url 'registration_register' %}">Register</a>!</p>
+    {% endblock %}
 
 
-Registration Template
-.....................
-
-In ``templates/registration`` create the file, ``registration_form.html`` with the following code:
-
-.. code-block:: html
-
-	{% extends "rango/base.html" %}
+Обратите внимание, что каждый раз при создании ссылки на URL, используется тег шаблона ``url``. Если посетить страницу http://127.0.0.1:8000/accounts/, то Вы увидите список URL сопоставлений и названия, связанные с каждым URL.
 
 
-	{% block body_block %}
-	<h1>Register Here</h1>
-		<form method="post" action=".">
-  			{% csrf_token %}
-  	  		{{ form.as_p }}
+Шаблон для регистрации
+......................
 
-  			<input type="submit" value="Submit" />
-		</form>
-	{% endblock %}
-
-
-
-Registration Complete Template
-...............................
-
-In ``templates/registration`` create the file, ``registration_complete.html`` with the following code:
+В ``templates/registration`` создайте файл ``registration_form.html`` со следующим содержимым:
 
 .. code-block:: html
 
-	{% extends "rango/base.html" %}
+    {% extends "rango/base.html" %}
 
 
-	{% block body_block %}
-	<h1>Registration Complete</h1>
-		<p>You are now registered</p>
-	{% endblock %}
+    {% block body_block %}
+    <h1>Register Here</h1>
+        <form method="post" action=".">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <input type="submit" value="Submit" />
+        </form>
+    {% endblock %}
 
 
-Logout Template
-...............................
 
-In ``templates/registration`` create the file, ``logout.html`` with the following code:
+Шаблон для страницы "Регистрация завершена"
+...........................................
+
+В ``templates/registration`` создайте файл ``registration_complete.html`` со следующим кодом:
 
 .. code-block:: html
 
-	{% extends "rango/base.html" %}
+    {% extends "rango/base.html" %}
 
 
-	{% block body_block %}
-	<h1>Logged Out</h1>
-		<p>You are now logged out.</p>
-	{% endblock %}
+    {% block body_block %}
+    <h1>Registration Complete</h1>
+        <p>You are now registered</p>
+    {% endblock %}
 
 
+Шаблон для выхода из системы
+............................
 
-Try out the Registration Process
-.................................
-Run the runserver and visit: http://127.0.0.1:8000/accounts/register/
+В ``templates/registration`` создайте файл ``logout.html`` со следующим содержимым:
 
-Note how the registration form contains two fields for password - so that it can be checked. Try registering, but enter different passwords. 
+.. code-block:: html
 
-While this works, not everything is hooked up, and we still have some legacy code.
-
-
-Refactoring your project
-.........................
-
-Now you will need to update the ``base.html`` so that the new registration url/views are used:
-
-* Update register to point to ``<a href="{% url 'registration_register' %}">``
-* login to point to ``<a href="{% url 'auth_login' %}">``, and
-* logout to point to ``<a href="{% url 'auth_logout' %}?next=/rango/">``
-* In ``settings.py``, update ``LOGIN_URL`` to be ``'/accounts/login/'``.
-
-Notice that for the logout, we have included a ``?next=/rango/``. This is so when the user logs out, it will redirect them to the index page of rango. If we exclude it, then they will be directed to the log out page (but that would not be very nice).
-
-Next de-commission the ``register``,  ``login``, ``logout`` functionality from the 
-``rango`` application, i.e. remove the urls, views, and templates (or comment them out).
+    {% extends "rango/base.html" %}
 
 
+    {% block body_block %}
+    <h1>Logged Out</h1>
+        <p>You are now logged out.</p>
+    {% endblock %}
 
-Modifying the Registration Flow
-...............................
 
-At the moment, when users register, it takes them to the registration complete page. This feels a bit clunky, so instead, we can take them to the main index page. This can be done by overriding the ``RegistrationView`` provided by ``registration.backends.simple.views``. To do this, the ``tango_with_django_project/urls.py``, import  ``RegistrationView``, add in a new registration class and then update the urlpatterns as follows:
+Проверка работоспособности процесса регистрации
+...............................................
+Запустите сервер и посетите страницу: http://127.0.0.1:8000/accounts/register/
+
+Обратите внимание, что форма для регистрации содержит два поля для пароля - так, чтобы его можно было проверить. Попытайтесь зарегистрироваться, но введите разные пароли.
+
+После проверки работоспособности приложения, нам все ещё необходимо избавиться от старого кода.
+
+Реорганизация Вашего проекта
+............................
+Теперь необходимо обновить ``base.html`` так, чтобы использовались новые URL/представления для регистрации:
+
+* Обновите ссылку register, чтобы она указывала на ``<a href="{% url 'registration_register' %}">``
+* Ссылка login должна указывать на ``<a href="{% url 'auth_login' %}">`` и
+* Ссылка logout - на ``<a href="{% url 'auth_logout' %}?next=/rango/">``
+* В ``settings.py``, измените ``LOGIN_URL`` на ``'/accounts/login/'``.
+
+Обратите внимание, что для ссылки на logout мы добавили ``?next=/rango/``. При этом после выхода из системы пользователь будет перенаправляться на главную страницу Rango. Если убрать эту часть строки, то пользователи будут перенаправляться на страницу входа в систему (что не должно происходить в данном случае).
+
+Затем можно удалить URLы, представления и шаблоны (или закомментировать), связанные с нашей реализацией функций ``регистрации``, ``входа и выхода в/из системы``, для приложения ``rango``.
+
+Изменяем последовательность действий при регистрации
+....................................................
+В момент, когда пользователи зарегистрировались на сайте, их направляют на страницу, показывающую, что регистрация завершена. Это кажется нам неудобным, поэтому, мы будем направлять их главную страницу. Для этого нужно переопределить ``RegistrationView``, предоставляемый ``registration.backends.simple.views``. В ``tango_with_django_project/urls.py`` импортируйте ``RegistrationView``, добавьте новый класс для регистрации и затем обновите ``urlpatterns`` следующим образом:
 
 .. code-block:: python
 
 
-	from registration.backends.simple.views import RegistrationView
-	
-	# Create a new class that redirects the user to the index page, if successful at logging
-	class MyRegistrationView(RegistrationView):
-	    def get_success_url(self,request, user):
-	        return '/rango/'
+    from registration.backends.simple.views import RegistrationView
+    
+    # Создайте новый класс, который перенаправит пользователя на главную страницу при успешной регистрации
+    class MyRegistrationView(RegistrationView):
+        def get_success_url(self, request, user):
+            return '/rango/'
 
 
-	urlpatterns = patterns('',
-	    url(r'^admin/', include(admin.site.urls)),
-	    url(r'^rango/', include('rango.urls')),
-		#Add in this url pattern to override the default pattern in accounts.
-	    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
-	    url(r'^accounts/', include('registration.backends.simple.urls')),
-	)
+    urlpatterns = patterns('',
+        url(r'^admin/', include(admin.site.urls)),
+        url(r'^rango/', include('rango.urls')),
+        # Добавляем эту строку в URL шаблоны, чтобы переопределить шаблон, используемый по умолчанию для учетных записей, - r'^accounts/'.
+        url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+        url(r'^accounts/', include('registration.backends.simple.urls')),
+    )
 
 
 
@@ -246,10 +229,10 @@ At the moment, when users register, it takes them to the registration complete p
 
 
 
-Exercises
----------
-* Provide users with password change functionality
+Упражнения
+----------
+* Реализуйте функциональную возможность, позволяющую пользователям менять пароль
 
 
-	
-	
+    
+    
