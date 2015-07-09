@@ -1,75 +1,76 @@
 .. _bing-label:
 
-Adding External Search Functionality
-====================================
-At this stage, our Rango application is looking pretty good - a majority of our required functionality is implemented. In this chapter, we will connect Rango up to Bing's Search API so that users can also search for pages, rather than just use the categories. First let's get started by setting up an account to use Bing's Search API, then construct a wrapper to call Bing's web search functionality before integrating the search into Rango.
+Добавляем функциональные возможности: внешний поиск
+===================================================
+В настоящий момент наше Rango приложение можно считать практически завершенным - большинство требуемых от него функциональных возможностей реализовано. В этой главе мы подключим к Rango API Bing Search, чтобы пользователи могли осуществлять поиск страниц, а не просто использовать категории. Давайте начнем с регистрации учетной записи для использования Bing Search, затем создадим оболочку для вызова функции веб-поиска Bing перед его интеграцией в Rango.
 
-The Bing Search API
--------------------
-The Bing Search API provides you with the ability to embed search results from the Bing search engine within your own applications. Through a straightforward interface, you can request results from Bing's servers to be returned in either XML or JSON. The data returned can then be interpreted by a XML or JSON parser, with the results then rendered as part of a template within your application.
+API Bing Search
+---------------
+Bing Search API позволяет Вам встраивать результаты поиска поисковой системы Bing в Ваше собственное приложение. С помощью простого интерфейса Вы можете запросить результаты поиска от Bing серверов в XML или JSON форме. Возвращаемые данные могут быть обработаны XML или JSON анализатором, а результат затем выведен с помощью шаблона Вашего приложения.
 
-Although the Bing API can handle requests for different kinds of content, we'll be focusing on web search only for this tutorial - as well as handling JSON responses. To use the Bing Search API, you will need to sign up for an *API key*. The key currently provides subscribers with access to 5000 queries per month, which should be more than enough for our purposes.
+Хотя Bing API может обрабатывать запросы различного вида, в этом учебном пособии мы сосредоточимся только на поиске, а также обработке JSON данных. Для использования Bing Search API Вам надо зарегистрироваться, чтобы получить *API ключ*. В настоящее время ключ позволяет осуществлять до 5000 запросов в месяц, что более чем достаточно для наших целей.
 
-Registering for a Bing API Key
-..............................
-To register for a Bing API key, you must first register for a free Microsoft account. The account provides you with access to a wide range of Microsoft services. If you already have a Hotmail account, you already have one! You can create your free account and login at https://account.windowsazure.com.
+Регистрируемся для получения ключа Bing API
+...........................................
+Для получения Bing API ключа, Вы должны сначала зарегистрировать бесплатную учетную запись Microsoft. Учетная запись открывает доступ к широкому спектру услуг Microsoft. Если у Вас есть учетная запись Hotmail, то Вы уже зарегистрированы! Вы можете создать бесплатную учетную запись и войти в систему по адресу https://account.windowsazure.com.
 
-When you account has been created, jump to the `Windows Azure Marketplace Bing Search API page <https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44>`_. At the top of the screen, you may first need to click the *Sign In* button - if you have already signed into your Microsoft account, you won't need to provide your account details again. If the text says *Sign Out*, you're already logged in.
+После создания учетной записи, перейдите на страницу `Bing Search API магазина Windows Azure <https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44>`_. Вверху экрана сначала необходимо нажать на кнопку *Sign In* (Входа в систему - Прим. переводчика) - но если Вы уже имеете зарегистрированную учетную запись Microsoft, то вводить свои данные опять не нужно. Если на кнопке написано  *Sign Out* (Выйти из системы - Прим. переводчика), Вы уже вошли в систему.
 
-Down the right hand side of the page is a list of transactions per month. At the bottom of the list is *5,000 Transactions/month*. Click the sign up button to the right - you should be subscribing for a free service. You should then read the *Publisher Offer Terms*, and if you agree with them click *Sign Up* to continue. You will  then be presented with a page confirming that you have successfully signed up.
+В правой нижней части страницы приведен список транзакций в месяц. В конце списка написано *5,000 транзакций/месяц*. Нажмите на кнопку *Sign up* справа - Вам станет доступна эта бесплатная услуга. Затем Вам дадут почитать *Условия использования* и если Вы согласны с ними нажмите *Sign Up*, чтобы продолжить. Затем будет показана страница подтверждающая, что Вы успешно подписались на использование этой услуги.
 
-Once you've signed up, click the *Data* link at the top of the page. From there, you should be presented with a list of data sources available through the Windows Azure Marketplace. At the top of the list should be *Bing Search API* - it should also say that you are *subscribed* to the data source. Click the *use* link associated with the Bing Search API located on the right of the page. You will then be presented with a screen similar to that shown in Figure :num:`fig-bing-explore`.
+После этого, нажмите на ссылку *Data* в верхней части страницы. Вы должны увидеть список источников данных доступных через магазин Windows Azure. В верхней части списка должно быть *Bing Search API*, а также должно быть написано, что Вы *подписаны* на этот источник данных. Нажмите ссылку *use*, связанную с Bing Search API, расположенную справа на странице. Затем Вы должны увидеть на экране страницу, подобную той, которая показана на Рисунке :num:`fig-bing-explore`.
 
 .. _fig-bing-explore:
 
 .. figure:: ../images/bing-explore.png
 	:figclass: align-center
 
-	The Bing Search API service explorer page. In this screenshot, the *Primary Account Key* is deliberately obscured. You should make sure you keep your key secret, too!
+	Страница тестирования услуги Bing Search API. На этом снимке экрана, *Primary Account Key (Первичный ключ учетной записи)* скрыт специально. Вы тоже должны держать в тайне Ваш ключ!
 
-This page allows you to try out the Bing Search API by filling out the boxes to the left. For example, the *Query* box allows you to specify a query to send to the API. Ensure that at the bottom of the screen you select *Web* for web search results only. Note the URL provided in the blue box at the top of the page changes as you alter the settings within the webpage. Take a note of the Web search URL. We'll be using part of this URL within our code later on. The following example is a URL to perform a web search using the query *rango*.
+Эта страница позволяет Вам протестировать Bing Search API, заполнив поля слева. Например, поле *Query* позволяет Вам определить запрос, посылаемый API. Убедитесь, что в нижней части экрана Вы выбрали *Web*, чтобы выводились результаты только веб поиска. Обратите внимание, что URL внутри синего поля в верхней части страницы поменяется, если Вы измените настройки на странице. Запомните URL для поиска в Интернете. Позднее мы будем использовать его часть в нашем коде. Ниже дан пример URL, который осуществляет поиск в Интернете по запросу *rango*.
 
 ::
 	
 	https://api.datamarket.azure.com/Bing/Search/v1/Web?Query=%27rango%27
 
-We must also retrieve your API key so you can authenticate with the Bing servers when posing requests. To obtain your key, locate the text *Primary Account Key* at the top of the page and click the *Show* link next to it. Your key will then be exposed. We'll be using it later, so take a note of it - and keep it safe! If someone obtains your key, they'll be able to use your free query quota.
+Мы должны также получить Ваш ключ API, чтобы серверы Bing могли Вас аутентифицировать при отправке запросов им. Чтобы получить ключ, найдите текст *Primary Account Key* в верхней части страницы и нажмите ссылку показать рядом с ним. После этого ключ будет показан. Мы будем использовать его позже - поэтому держите его в тайне! Если кто-то получит Ваш ключ, то сможет использовать Вашу квоту бесплатных запросов.
 
-.. note:: The Bing API Service Explorer also keeps a tab of how many queries you have left of your monthly quota. Check out the top of the page to see!
 
-Adding Search Functionality
----------------------------
-To add search functionality to Rango, we first must write an additional function to query the Bing API. This code should take in the request from a particular user and return to the calling function a list of results. Any errors that occur during the API querying phase should also be handled gracefully within the function. Spinning off search functionality into an additional function also provides a nice abstraction between Django-related code and search functionality code.
+.. note:: На странице услуги Bing API Service также ведется учет того сколько бесплатных запросов в месяц у Вас осталось. Их можно увидеть в верхней части страницы.
 
-To start, let's create a new Python module called ``bing_search.py`` within our ``rango`` application directory. Add the following code into the file. Check out the inline commentary for a description of what's going on throughout the function.
+Добавляем функцию поиска
+------------------------
+Чтобы добавить функцию поиска в Rango, мы сначала должны написать вспомогательную функцию для посылки запроса к Bing API. Эта функция должена принять запрос от конкретного пользователя и вернуть вызывающей функции список результатов поиска. Любые ошибки, возникающие во время запроса к API, должны быть учтены и обрабатываться в функции. Выделение функции поиска в вспомогательную функцию также обеспечивает хорошее разделение кода, связанного с Django, от кода для реализации функций поиска.
+
+Для начала давайте создадим новый Python модуль под названием ``bing_search.py`` внутри каталога приложения ``rango``. Добавьте следующий код в файл. Прочитайте встроенные комментарии, чтобы понять, что делает функция.
 
 .. code-block:: python
 	
 	import json
 	import urllib, urllib2
 
-	# Add your BING_API_KEY 
+	# Добавьте Ваш Bing API ключ в BING_API_KEY 
 
-	BING_API_KEY = '<insert_bing_api_key>'
+	BING_API_KEY = '<вставьте_bing_api_ключ_сюда>'
 
 	def run_query(search_terms):
-	    # Specify the base
+	    # Определяем основную часть URL адреса
 	    root_url = 'https://api.datamarket.azure.com/Bing/Search/'
 	    source = 'Web'
 
-	    # Specify how many results we wish to be returned per page.
-	    # Offset specifies where in the results list to start from.
-	    # With results_per_page = 10 and offset = 11, this would start from page 2.
+	    # Указываем сколько результатов поиска должно отображаться на странице.
+	    # Смещение указывает позицию в списке результатов поиска.
+	    # Если results_per_page = 10 и offset = 11, то нужно переходить на вторую страницу.
 	    results_per_page = 10
 	    offset = 0
 
-	    # Wrap quotes around our query terms as required by the Bing API.
-	    # The query we will then use is stored within variable query.
+	    # Заключаем в кавычки наши условия запроса, как этого требует Bing API.
+	    # Запрос, который мы будем использовать, хранится в переменной query.
 	    query = "'{0}'".format(search_terms)
 	    query = urllib.quote(query)
 
-	    # Construct the latter part of our request's URL.
-	    # Sets the format of the response to JSON and sets other properties.
+	    # Создаем оставшуюся часть URL для нашего запроса.
+	    # Выбираем в качестве формата для результатов запроса JSON и настраиваем другие параметры.
 	    search_url = "{0}{1}?$format=json&$top={2}&$skip={3}&Query={4}".format(
 	        root_url,
 	        source,
@@ -77,91 +78,87 @@ To start, let's create a new Python module called ``bing_search.py`` within our 
 	        offset,
 	        query)
 
-	    # Setup authentication with the Bing servers.
-	    # The username MUST be a blank string, and put in your API key!
+	    # Настройка аутентификации для доступа к Bing серверам.
+	    # username ДОЛЖНО быть пустой строкой
 	    username = ''
 
 
-	    # Create a 'password manager' which handles authentication for us.
+	    # Создаем 'менеджер паролей', который осуществит аутентификацию за нас.
 	    password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
 	    password_mgr.add_password(None, search_url, username, BING_API_KEY)
 
-	    # Create our results list which we'll populate.
+	    # Создаем список результатов, который мы будем заполнять
 	    results = []
 
 	    try:
-	        # Prepare for connecting to Bing's servers.
+	        # Подготовка подключения к Bing серверам.
 	        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
 	        opener = urllib2.build_opener(handler)
 	        urllib2.install_opener(opener)
 
-	        # Connect to the server and read the response generated.
+	        # Подключение к серверу и считывание сгенерированнго сервером ответа.
 	        response = urllib2.urlopen(search_url).read()
 
-	        # Convert the string response to a Python dictionary object.
+	        # Преобразование строки ответа от сервера в объект-словарь Python.
 	        json_response = json.loads(response)
 
-	        # Loop through each page returned, populating out results list.
+	        # Перебираем в цикле каждую страницу ответа и заполняем наш список результатов.
 	        for result in json_response['d']['results']:
 	            results.append({
 	            'title': result['Title'],
 	            'link': result['Url'],
 	            'summary': result['Description']})
 
-	    # Catch a URLError exception - something went wrong when connecting!
+	    # Перехватываем исключение URLError - произошла ошибка при подключении!
 	    except urllib2.URLError as e:
 	        print "Error when querying the Bing API: ", e
 
-	    # Return the list of results to the calling function.
+	    # Возвращаем список результатов вызывающей функции.
 	    return results
 
-The logic of the function above can be broadly split into six main tasks:
+Логика вышеприведенной функции может быть в общих чертах разделана на шесть основных задач:
 
-* First, the function prepares for connecting to Bing by preparing the URL that we'll be requesting.
-* The function then prepares authentication, making use of your Bing API key. Make sure you replace ``<api_key>`` with your actual Bing API key, otherwise you'll be going nowhere!
-* We then connect to the Bing API through the command ``urllib2.urlopen(search_url)``. The results from the server are read and saved as a string.
-* This string is then parsed into a Python dictionary object using the ``json`` Python package.
-* We loop through each of the returned results, populating a ``results`` dictionary. For each result, we take the ``title`` of the page, the ``link`` or URL and a short ``summary`` of each returned result.
-* The dictionary is returned by the function.
+* Во-первых, функция подготавливается к подключению Bing, создавая URL для запроса.
+* Затем функция подготавливается к аутентификации, используя Ваш Bing API ключ. Убедитесь, что Вы заменили строку ``<вставьте_bing_api_ключ_сюда>`` на реальный Bing API ключ, в противном случае произойдет ошибка при аутентификации! 
+* Затем мы подсоединяемся к Bing API, используя команду ``urllib2.urlopen(search_url)``. Ответ от сервера считывается и сохраняется в виде строки.
+* Эта строка затем анализируется и преобразуется в объек-словарь Python, используя Python пакет ``json``.
+* В цикле мы перебираем каждый из возвращенных результатов и заполняем словарь ``results``. Для каждого результата мы извлекаем ``title`` (заголовок) страницы, ссылку или URL и краткое ``summary`` (описание) каждого возвращенного результата.
+* Функция возвращает словарь.
 
-Notice that results are passed from Bing's servers as JSON. This is because we explicitly specify to use JSON in our initial request - check out the ``search_url`` variable which we define. If an error occurs when attempting to connect to Bing's servers, the error is printed to the terminal via the ``print`` statement within the ``except`` block.
+Учтите, что результаты передаются Bing серверами в виде JSON. Это происходит потому, что мы явно указали использовать JSON в нашем первоначальном запросе - посмотрите на определенную нами переменную ``search_url``. Если произошла ошибки при доступе к Bing серверам, то она выводится в терминал с помощью оператора ``print`` в блоке ``except``.
 
-.. note:: There are many different parameters that the Bing Search API can handle which we don't cover here. If you're interested in seeing how to tailor your results, check out the `Bing Search API Migration Guide and FAQ <http://datamarket.azure.com/dataset/bing/search>`_.
+.. note:: Существует множество различных параметров, не рассматриваемых здесь, которые может обрабатывать Bing Search API. Если Вы хотите узнать как можно настроить результаты поиска, ознакомьтесь с `Руководством по миграции и FAQ Bing Search API <http://datamarket.azure.com/dataset/bing/search>`_.
 
+Безопасное хранение Вашего API ключа
+------------------------------------
+Если Вы выкладываете свой код в публичный репозиторий на GibHub или другом подобном сайте, необходимо предпринять некоторые меры предосторожности, связанные с общим доступом к Вашему API ключу. Одним из решений является создание нового файла под названием ``keys.py``, в котором находится переменная ``BING_API_KEY``. Затем нужно импортировать ``BING_API_KEY`` в файл ``bing_search.py``. Обновите Ваш файл ``.gitignore`` и допишите в него ``keys.py``, чтобы ``keys.py`` не добавлялся в репозиторий. Таким образом, ключ будет храниться только локально.
 
-Storing your API KEY safely
----------------------------
-If you are putting your code into a public repository on GitHub or the like, then you should take some pre-cautions about sharing your API Key. One solution is to create a new file call, ``keys.py`` which has a variable  ``BING_API_KEY``. Then import the ``BING_API_KEY`` into ``bing_search.py``.  Update your ``.gitignore`` file to include ``keys.py``, so that ``keys.py`` is not added to the repository. This way the key will only be stored locally.
+Упражнения
+----------
+Взяв за основу функцию Bing Search API, которую мы создали выше, попытайтесь выполнить следующие упражнения.
+* Если Вы используете публичный репозиторий, реорганизуйте код таким образом, чтобы Ваш API ключ не был общедоступным.
+* Добавьте функцию main() в *bing_search.py*, чтобы протестировать BING Search API.
+* Подсказка: добавьте следующий код, чтобы при вводе в терминале ``python bing_search.py``, вызывалась функция ``main()``:
 
-
-Exercises
----------
-Taking the basic Bing Search API function we added above as a baseline, try out the following exercises.
-* If using a public repository, refactor the code so that your API key is not publicly accessible
-* Add a main() function to the *bing_search.py* to test out the BING Search API 
-* Hint: add the following code, so that when you ``python bing_search.py`` it calls the ``main()`` function:
-	
 .. code-block:: python
 
 	if __name__ == '__main__':
 	    main()
 	
 	
-* The main function should ask a user for a query (from the command line), and then issue the query to the BING API via the run_query method and print out the top ten results returned. 
-* Print out the rank, title and URL for each result.
+* Функция main должна позволять пользователю вводить запрос (из командной строки) и затем выполнять запрос к BING API, используя метод run_query и выводить на экран первые десять результатов поиска.
+* Выведите на экран номер, название и URL каждого результата.
 
 
+Добавляем поиск в Rango
+-----------------------
+Чтобы добавить функцию внешнего поиска, нам необходимо выполнить следующие шаги:
+#. Сначала нужно создать шаблон ``search.html``, который наследует наш шаблон ``base.html``. В шаблоне ``search.html`` будет находиться HTML ``<форма>`` для считывания пользовательского запроса, а также код шаблона для отображения результатов.
+#. Затем создайте представление для обработки шаблона ``search.html``, а также вызова функции ``run_query()``, которая была определена выше.
 
-Putting Search into Rango
--------------------------
-To add external search functionality, we will need to perform the following steps.
-
-#. We must first create a ``search.html`` template which extends from our ``base.html`` template. The ``search.html`` template will include a HTML ``<form>`` to capture the user's query as well as template code to present any results.
-#. We then create a view to handle the rendering of the ``search.html`` template for us, as well as calling the ``run_query()`` function we defined above.
-
-Adding a Search Template
-........................
-Let's first create our ``search.html`` template. Add the following HTML markup and Django template code.
+Добавляем шаблон для поиска
+...........................
+Давайте сначала создадим наш шаблон ``search.html``. Добавьте следующую HTML разметку и код шаблонов Django.
 
 .. code-block:: html
 	
@@ -184,7 +181,7 @@ Let's first create our ``search.html`` template. Add the following HTML markup a
 
 	            <form class="form-inline" id="user_form" method="post" action="{% url 'search' %}">
 	                {% csrf_token %}
-	                <!-- Display the search form elements here -->
+	                <!-- Отображаем элементы поисковой формы здесь -->
 	                <input class="form-control" type="text" size="50" name="query" value="" id="query" />
 	                <input class="btn btn-primary" type="submit" name="submit" value="Search" />
 	                <br />
@@ -194,7 +191,7 @@ Let's first create our ``search.html`` template. Add the following HTML markup a
 	                {% if result_list %}
 	                    <div class="panel-heading">
 	                    <h3 class="panel-title">Results</h3>
-	                    <!-- Display search results in an ordered list -->
+	                    <!-- Отображаем результаты поиска в виде упорядоченного списка -->
 	                    <div class="panel-body">
 	                        <div class="list-group">
 	                            {% for result in result_list %}
@@ -212,19 +209,17 @@ Let's first create our ``search.html`` template. Add the following HTML markup a
 
 	{% endblock %}
 
+Вышеприведенный код шаблона выполняет две основные задачи:
+	#. В любой ситуации шаблон отображает поле для поиска и кнопки поиска в HTML ``<форме>`` пользователям, чтобы они могли ввести и отправить свои поисковые запросы.
+	#. Если объект ``results_list`` был передан в контекст шаблона, то шаблон выводит все элементы объекта, отображая результаты, хранящиеся в нём.
 
-The template code above performs two key tasks:
+Чтобы стилизовать HTML мы будем использовать Bootstrap: панели, http://getbootstrap.com/components/#panels, списки http://getbootstrap.com/components/#list-group, и формы, расположенные на одной линии http://getbootstrap.com/css/#forms-inline.
 
-	#. In all scenarios, the template presents a search box and a search buttons within a HTML ``<form>`` for users to enter and submit their search queries.
-	#. If a ``results_list`` object is passed to the template's context when being rendered, the template then iterates through the object displaying the results contained within.
-	
-To style the html we have made use of Bootstrap: panels, http://getbootstrap.com/components/#panels, list groups, http://getbootstrap.com/components/#list-group, and inline forms, http://getbootstrap.com/css/#forms-inline.
+Как скоро будет видно из нашего представления, соответствующего шаблону, объект ``results_list`` будет передаваться в шаблон только, когда существуют результаты поиска. Их не будет, например, когда пользователь попадает на страницу поиска в первый раз - поскольку он ничего не ввел в качестве запроса!
 
-As you will see from our corresponding view code shortly, a ``results_list`` will only be passed to the template engine when there are results to return. There won't be results for example when a user lands on the search page for the first time - they wouldn't have posed a query yet!
-
-Adding the View
-...............
-With our search template added, we can then add the view which prompts the rendering of our template. Add the following ``search()`` view to Rango's ``views.py`` module.
+Добавляем представление
+.......................
+После добавления поискового шаблона, мы можем добавить представление, который отвечает за отображение нашего шаблона. Добавить следующее представление ``search()`` в модуль ``views.py`` Rango.
 
 .. code-block:: python
 	
@@ -236,24 +231,23 @@ With our search template added, we can then add the view which prompts the rende
 	        query = request.POST['query'].strip()
 
 	        if query:
-	            # Run our Bing function to get the results list!
+	            # Запускаем нашу Bing функцию, чтобы получить список результатов!
 	            result_list = run_query(query)
 
 	    return render(request, 'rango/search.html', {'result_list': result_list})
 		
-		
-By now, the code should be pretty self explanatory to you. The only major addition is the calling of the ``run_query()`` function we defined earlier in this chapter. To call it, we are required to also import the ``bing_search.py`` module, too. Ensure that before you run the script that you add the following import statement at the top of the ``views.py`` module.
+С учетом того, что Вы знаете, этот код должен быть Вам понятен. Единственным важным отличием его от других представлений является вызов функции ``run_query()``, которая была определена ранее в этой главе. Для её вызова нужно также импортировать модуль ``bing_search.py``. Убедитесь, что перед запуском скрипта, Вы добавили следующий оператор импорта в начале модуля ``views.py``.
 
 .. code-block:: python
 	
 	from rango.bing_search import run_query
 
-You'll also need to ensure you do the following, too.
+Также Вы должны:
+#. Добавить сопоставление между представлением ``search()`` и URL ``/rango/search/``, назвав его ``name='search'``.
+#. Обновить навигационную панель ``base.html``, добавив в него ссылку на страницу поиска. Не забывайте использовать тег шаблона ``url``, для получения адреса ссылки.
 
-#. Add a mapping between your ``search()`` view and the ``/rango/search/`` URL calling it ``name='search'``
-#. Update the ``base.html`` navigation bar to include a link to the search page. Remember to use the ``url`` template tag to reference the link.
+.. note:: Из `соответствующей статьи на Википедии <http://en.wikipedia.org/wiki/Application_programming_interface>`_, 
+*Интерфейс Программирования Приложений (API)* определяет как программы должны взаимодействовать друг с другом. Что касается веб-приложений, API считается набор HTTP запросов, а также определение структуры ответных сообщений, которые могут возвращаться при каждом запросе. Любая более-менее значимая услуга, предоставляемая через Интернет, имеет своё собственное API - оно не ограничивается только поиском в Интернете. Чтобы узнать больше о веб API, прочитайте `отличное учебное пособие по API, написанное Луисом Реем <http://blog.luisrei.com/articles/rest.html>`_.
 
-
-.. note:: According to the `relevant article on Wikipedia <http://en.wikipedia.org/wiki/Application_programming_interface>`_, an *Application Programming Interface (API)* specifies how software components should interact with one another. In the context of web applications, an API is considered as a set of HTTP requests along with a definition of the structures of response messages that each request can return. Any meaningful service that can be offered over the Internet can have its own API - we aren't limited to web search. For more information on web APIs, `Luis Rei provides an excellent tutorial on APIs <http://blog.luisrei.com/articles/rest.html>`_.
 
 
