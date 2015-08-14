@@ -1,16 +1,14 @@
-Virtual Environments
-====================
+Виртуальные окружения
+=====================
 
-To create a virtual enironment use:
+Чтобы создать виртуальное окружение, используйте команду:
 
-mkvirtualenv <virtual_environment_name>
-
-
+mkvirtualenv <название_виртуального_окружения>
 
 
 
-To list what virtual environments use:
+Чтобы просмотреть список всех доступных виртуальных окружений, вызовите команду:
 
 lsvirtualenv
 
--b provides a brief listing.
+Ключ -b позволяет кратко, без подробностей, выводить информацию о виртуальных окружениях.
