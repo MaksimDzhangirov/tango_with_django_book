@@ -1,3 +1,3 @@
-Javascript and JQuery
----------------------
-In the next edition we'll be adding in tutorials on how to use Javascript and JQuery within Web Application.
+Javascript и JQuery
+-------------------
+В следующем издании, мы добавим в пособие материал о том, как использовать Javascript и JQuery при разработке веб-приложений.
