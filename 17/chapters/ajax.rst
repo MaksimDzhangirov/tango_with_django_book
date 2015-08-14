@@ -1,63 +1,59 @@
 .. _ajax-label:
 
-AJAX in Django with JQuery
-==========================
-AJAX essentially is a combination of technologies that are integrated together to reduce the number of page loads. Instead of reloading the full page, only part of the page or the data in the page is reloaded. 	If you haven't used AJAX before or would like to know more about it before using it, check out the resources at the Mozilla website: https://developer.mozilla.org/en-US/docs/AJAX
+AJAX в Django, используя JQuery
+===============================
+AJAX это на самом деле несколько технологий, которые объединены вместе, для уменьшения количества перезагрузки страницы. Вместо перезагрузки целой страницы, перезагружается только часть страницы или данных на странице. Если Вы не использовали AJAX до этого или хотите узнать больше о нём, перед его использованием здесь, воспользуйтесь ресурсами на сайте Mozilla: https://developer.mozilla.org/en-US/docs/AJAX
 
-To simplify the AJAX requests, we will be using the JQuery library. Note that if you are using the Twitter CSS Bootstrap toolkit then JQuery will already be added in. Otherwise, download the latest version of JQuery and include it within your application (see Chapter ..).
-
-AJAX based Functionality
-------------------------
-To make the interaction with the Rango application more seamless let's add in a number of features that use AJAX, such as:
-
-* Add a "Like Button" to let registered users "like" a particular category
-* Add inline category suggestions - so that when a user types they can quickly find a category
-* Add an "Add Button" to let registered users quickly and easily add a Page to the Category
+Чтобы упростить AJAX запросы, мы будем использовать библиотеку JQuery. ОБратите внимание, что если Вы используете набор инструментов Twitter CSS Bootstrap, то JQuery уже входит в него. В противном случае, скачайте последнюю версию JQuery и добавьте его в Ваше приложение (смотри Главу ..).
 
 
-Create a new file, called ``rango-ajax.js`` and add it to your ``js`` directory. Then in your *base* template include:
+Функциональные возможности приложения Rango, реализуемые с помощью AJAX
+-----------------------------------------------------------------------
+Чтобы ещё больше улучшить взаимодействие пользователя с приложением Rango, давайте добавим ряд функций, которые используют AJAX, такие как:
+
+* Кнопка "Лайк", чтобы зарегистрированный пользователи могли *лайкнуть* определенную категорию;
+* "Живой поиск" по категориям - когда пользователь вводит название категории система автодополняет, позволяя быстрее осуществлять поиск;
+* Кнопка "Добавить страницу", позволяющая пользователям быстро и легко добавить страницу в категорию.
+
+Создайте новый файл - ``rango-ajax.js`` и добавьте его в Ваш каталог ``js``. Затем в Ваш *базовый* шаблон включите:
 
 .. code-block:: html
 	
 	<script src="{% static "js/jquery.js" %}"></script>
 	<script src="{% static "js/rango-ajax.js" %}"></script>
 
-
-Here we assume you have downloaded a version of the JQuery library, but you can also just directly refer to it:
+Здесь мы предполагаем, что Вы скачали одну из версий библиотеки JQuery, но Вы можете также подгружать её с Интернета:
 
 .. code-block:: html
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+Теперь, когда библиотека JQuery подключена и её можно использовать, воспользуемся ей, чтобы улучшить приложение Rango.
 
-Now that the pre-reqs for using JQuery are in place we can use it to pimp the rango application.
+Добавляем кнопку "Лайк"
+-----------------------
+Было бы не плохо, если бы зарегистрированный пользователь мог бы каким-то образом показать, что ему нравится определенная категория. Следующая последовательность действий позволит пользователям "лайкать" категории, но не отслеживать какие категории они "лайкнули", т. е., мы считаем, что они не будут нажимать кнопку "лайк" несколько раз.
 
-Add a "Like Button" 
---------------------
-It would be nice to let user, who are registered, denote that they "like" a particular category. In the following workflow, we will let users "like" categories, but we will not be keeping track of what categories they have "liked", we'll be trusting them not to click the like button multiple times.
+Последовательность действий
+...........................
+Чтобы пользователи могли "лайкать" определенные категории, осуществите следующую последовательность действий:
 
-Workflow
-........
+* В шаблон ``category.html``:
+	- Добавьте кнопку "Лайк" с идентификатором ``id="like"``;
+	- Добавьте тег шаблона отображающий количество лайков: ``{{% category.likes %}}``;
+	- Поместите его внутри тега div с идентификатором ``id="like_count"``, т. е., ``<div id="like_count">{{ category.likes }} </div>``
+	- Таким образом производится настрока шаблона, чтобы можно было лайкать категории и отображать лайки для категории.
+	- Обратите внимание, что поскольку представление ``category()`` передает ссылку на объект category, мы можем использовать её, чтобы получить доступ к количеству лайков в шаблоне следующим образом - ``{{ category.likes }}``.
 
-To let users "like" certain categories undertake the following workflow:
+* Создайте представление - ``like_category``, которое будет анализировать запрос и извлекать ``category_id``, а затем инкрементировать количество лайков для категории с указанным идентификатором;
+	- Не забудьте сопоставить ему URL; т. е. сопоставить представлению ``like_category`` URL ``rango/like_category/``. В этом случае GET запрос будет иметь вид ``rango/like_category/?category_id=XXX``;
+	- Вместо возврата HTML страницы, это представление будет возвращать новое общее количество лайков для этой категории;
+* Теперь в "rango-ajax.js" добавьте код JQuery для выполнения AJAX GET запроса;
+	- Если запрос успешен, то нужно обновите элемент ``#like_count`` и скрыть кнопку "Лайк".
 
-* In the ``category.html`` template:
-	- Add in a "Like" button with ``id="like"``.
-	- Add in a template tag to display the number of likes: ``{{% category.likes %}}``
-	- Place this inside a div with ``id="like_count"``, i.e. ``<div id="like_count">{{ category.likes }} </div>``
-	- This sets up the template to capture likes and to display likes for the category.
-	- Note, since the ``category()`` view passes a reference to the category object, we can use that to access the number of likes, with ``{{ category.likes }}`` in the template
-
-* Create a view called, ``like_category`` which will examine the request and pick out the ``category_id`` and then increment the number of likes for that category.
-	- Don't forgot to add in the url mapping; i.e  map the ``like_category`` view to ``rango/like_category/``. The GET request will then be ``rango/like_category/?category_id=XXX``
-	- Instead of returning a HTML page have this view will return the new total number of likes for that category.
-* Now in "rango-ajax.js" add the JQuery code to perform the AJAX GET request.
-	- If the request is successful, then update the ``#like_count`` element, and hide the like button.
-
-
-Updating Category Template
-..........................
-To prepare the template we will need to add in the "Like" button with ``id="like"`` and create a ``<div>`` to display the number of likes ``{{% category.likes %}}``. To do this, add the following ``<div>`` to the *category.html* template:
+Обновляем шаблон для категорий
+..............................
+Чтобы подготовить шаблон к новой функциональной возможности, нам необходимо добавить кнопку "Лайк" с идентификатором ``id="like"`` и создать ``<div>`` для отображения количества лайков ``{{% category.likes %}}``. Для этого добавьте следующий ``<div>`` следующий ``<div>`` в шаблон *category.html*:
 
 .. code-block:: html
 	
@@ -74,10 +70,9 @@ To prepare the template we will need to add in the "Like" button with ``id="like
 	
 	</p>
 
-
-Create a Like Category View
-...........................
-Create a view called, ``like_category`` in ``rango/views.py`` which will examine the request and pick out the category_id and then increment the number of likes for that category. 
+Создаем представление Like Category
+...................................
+Создайте представление под названием ``like_category`` в ``rango/views.py``, которое будет анализировать запрос и извлекать идентификатор категории category_id, а затем инкрементировать количество лайков для категории с указанным идентификатором.
 
 .. code-block:: python
 	
@@ -100,18 +95,18 @@ Create a view called, ``like_category`` in ``rango/views.py`` which will examine
 		
 	    return HttpResponse(likes)
 
-On examining the code, you will see that we are only allowing authenticated users to denote that they like a category. The view assumes that a variable ``category_id`` has been passed through via a GET so that the we can identify the category to update. In this view, we could also track and record that a particular user has "liked" this category if we wanted - but we are keeping it simple to focus on the AJAX mechanics.
+Просмотрев код, Вы увидите, что мы позволяем только аутентифицированным пользователям лайкнуть категорию. В представлении предполагается, что переменная ``category_id`` была передана через GET запрос, с помощью которой мы можем определить для какой категории нужно обновить количество лайков. В этом представлении, если бы захотели, мы могли бы также отслеживать и фиксировать, что определенный пользователь "лайкнул" эту категорию - но мы специально упростили его, чтобы сосредоточиться на AJAX механике.
 
-Don't forget to add in the URL mapping, into ``rango/urls.py``. Update the ``urlpatterns`` by adding in:
+Не забудьте сопоставить ему URL в ``rango/urls.py``. Обновите ``urlpatterns`` добавив в них:
 
 .. code-block:: python
 	
 	url(r'^like_category/$', views.like_category, name='like_category'),
 
 
-Making the AJAX request
-.......................
-Now in "rango-ajax.js" you will need to add some JQuery code to perform an AJAX GET request. Add in the following code:
+Создаем AJAX запрос
+...................
+Теперь в "rango-ajax.js" добавьте JQuery код для выполнения AJAX GET запроса. Вставьте следующий код:
 
 .. code-block:: javascript
 	
@@ -124,48 +119,46 @@ Now in "rango-ajax.js" you will need to add some JQuery code to perform an AJAX 
 	        });
 	    });
 
-This piece of JQuery/Javascript will add an event handler to the element with id ``#likes``, i.e. the button. When clicked, it will extract the category id from the button element, and then make an AJAX GET request which will make a call to ``/rango/like_category/`` encoding the ``category_id`` in the request. If the request is successful, then the HTML element with id like_count (i.e. the <strong> ) is updated with the data returned by the request, and the HTML element with id likes (i.e. the <button>) is hidden.
+Этот фрагмент JQuery/Javascript добавит обработчик события к элементу с идентификатором ``#likes``, т. е., к кнопке. При нажатии на неё, будет извлечен идентификатор категории из элемента кнопки и затем создан  AJAX GET запрос, который вызовет ``/rango/like_category/``, передав ``category_id`` в запросе. Если запрос передасться успешно, то HTML элемент с идентификатором like_count (т. е., <strong>) обновиться и станет равным данным, возвращенным по запросу, а HTML элемент с идентификатором likes (т. е., <button>) будет скрыт.
 
-There is a lot going on here and getting the mechanics right when constructing pages with AJAX can be a bit tricky. Essentially here, when the button is clicked an AJAX request is made, given our url mapping, this invokes the ``like_category`` view which updates the category and returns the new number of likes. When the AJAX request receives the response it updates parts of the page, i.e. the text and the button. The ``#likes`` button is hidden.
+При этом происходит много чего и правильно понять механику для создания страниц с AJAX может быть не совсем просто. По сути, при нажатии кнопки создается AJAX запрос, с учетом нашего URL сопоставления, вызывающий представление ``like_category``, которое обновляет и возвращает новое количество лайков для категории. Когда AJAX получает ответ от представления, он обновляет определенные части страницы, т. е. текст и кнопку. Кнопка ``#likes`` становится скрытой.
 
+Добавляем "живой поиск" для категории
+-------------------------------------
+Было бы здорово, если бы мы предоставили пользователям быстрый способ поиска категории, чтобы они не просматривали длинный список. Для этого мы можем создать поле для ввода, позволяющее пользователям вводить символы или части слова, а затем система предоставит список совпавших с символами категорий, из которых пользователь сможет выбрать подходящую. Каждый раз, когда пользователь вводит символ, осуществляется запрос на сервер, извлекающий категории, которые соответствуют вводу пользователя.
 
+Последовательность действий
+...........................
+Для этого Вам необходимо сделать следующее.
 
-Adding Inline Category Suggestions
-----------------------------------
-It would be really neat if we could provide a fast way for users to find a category, rather than browsing through a long list. To do this we can create a suggestion component which lets users type in a letter or part of a word, and then the system responds by providing a list of suggested categories, that the user can then select from. As the user types a series of requests will be made to the server to fetch the suggested categories relevant to what the user has entered. 
+* Создать параметризированную функцию под названием ``get_category_list(max_results=0, starts_with='')``, которая возвращает все категории, которые начинаются с ``starts_with``, если ``max_results=0``, а в противном случае возвращает до ``max_results`` категорий.
+	- Функция возвращает список объектов-категорий, а также закодированное название категории, хранящее в атрибуте ``url``.
+* Создайте представление под названием *suggest_category*, которая будет анализировать запрос и извлечь категорию из строки запроса.
+	- Предположим, что осуществляется GET запрос и попытаемся получить атрибут *query*.
+	- Если строка запроса не пустая, извлечь из модели Category первые 8 категорий, которые начинаются со строки запроса.
+	- Затем список категорий вставляется в HTML код с помощью шаблона.
+* Вместо создания шаблона под названием ``suggestions.html`` опять используем ``cats.html``, поскольку в нём будут отображаться данные того же типа (т. е., категории).
+* Чтобы клиент мог запросить эти данные, Вы должны создать URL сопоставление; давайте назовём его *category_suggest*.
 
+После настройки сопоставления, представления и шаблона для этого представления, Вам необходимо обновить шаблон ``base.html`` и добавить определенный Javascript код, чтобы категории отображались при вводе пользователем символов.
 
-Workflow
-........
-To do this you will need to do the following.
-
-* Create a parameterised function called ``get_category_list(max_results=0, starts_with='')`` that returns all the categories starting with ``starts_with`` if ``max_results=0`` otherwise it returns up to ``max_results`` categories.
-	- The function returns a list of category objects annotated with the encoded category denoted by the attribute, ``url``
-* Create a view called *suggest_category* which will examine the request and pick out the category query string.
-	- Assume that a GET request is made and attempt to get the *query* attribute.
-	- If the query string is not empty, ask the Category model to get the top 8 categories that start with the query string.
-	- The list of category objects will then be combined into a piece of HTML via template. 
-* Instead of creating a template called ``suggestions.html`` re-use the ``cats.html`` as it will be displaying data of the same type (i.e. categories).
-* To let the client ask for this data, you will need to create a URL mapping; lets call it *category_suggest*
-
-With the mapping, view, and template for this view in place, you will need to update the ``base.html`` template and add in some javascript so that the categories can be displayed as the user types.
-
-* In the ``base.html`` template modify the sidebar block so that a div with an id="cats" encapsulates the categories being presented. The JQuery/AJAX will update this element.
-	- Above this <div> add an input box for a user to enter the letters of a category, i.e.:
-
-		``<input  class="input-medium search-query" type="text" name="suggestion" value="" id="suggestion" />``
+* В  шаблоне ``base.html`` измените блок боковой панели так, чтобы в div с идентификатором id="cats" находились категории, соответствующие запросу. JQuery/AJAX будет обновлять этот элемент.
+	- Выше этого элемента <div> добавьте поле для ввода, чтобы пользователь мог ввести символы, входящие в категорию, т. е.:
 	
-* With these elements added into the templates, you can add in some JQuery to update the categories list as the user types.
-	- Associate an on keypress event handler to the *input* with ``id="suggestion"``
-	- ``$('#suggestion').keyup(function(){ ... })``
-	- On keyup, issue an ajax call to retrieve the updated categories list
-	- Then use the JQuery ``.get()`` function i.e. ``$(this).get( ... )``
-	- If the call is successful, replace the content of the <div> with id="cats" with the data received.
-	- Here you can use the JQuery ``.html()`` function i.e. ``$('#cats').html( data )``
+		``<input  class="input-medium search-query" type="text" name="suggestion" value="" id="suggestion" />``
 
-Parameterise the Get Category List Function
-...........................................
-In this helper function we use a filter to find all the categories that start with the string supplied. The filter we use will be ``istartwith``, this will make sure that it doesn't matter whether we use upper-case or lower-case letters. If it on the other hand was important to take into account whether letters was upper-case or not you would use ``startswith`` instead. 
+* Добавив эти элементы в шаблоны, Вы можете записать определенный JQuery код, который обновит список категорий, каждый раз при вводе пользователя.
+	- Свяжите обработчик события нажатия на клавишу с *полем ввода* с идентификатором ``id="suggestion"``
+	- ``$('#suggestion').keyup(function(){ ... })``;
+	- Когда пользователь отпускает клавишу, осуществите AJAX запрос, чтобы получить обновленный список категорий
+	- Затем используйте JQuery функцию ``.get()``, т. е., ``$(this).get( ... )``;
+	- Если запрос выполнен успешно, то замените содержимое элемента <div> с идентификатором id="cats" на полученные данные;
+	- Здесь можно использовать функцию JQuery ``.html()``, т. е., ``$('#cats').html( data )``.
+
+
+Создаём функцию c параметрами Get Category List
+...............................................
+В этой вспомогательной функции мы используем фильтр, чтобы найти все категории, которые начинаются с переданной в функцию строки. Мы используем фильтр ``istartwith``, который не чувствителен к регистру символов. Если наоборот необходимо его учитывать, то Вам нужно использовать фильтр ``startswith``.
 
 .. code-block:: python
 
@@ -180,9 +173,9 @@ In this helper function we use a filter to find all the categories that start wi
 			
 		return cat_list
 
-Create a Suggest Category View
-..............................
-Using the ``get_category_list`` function we can now create a view that returns the top 8 matching results as follows: 
+Создаем представление Suggest Category
+......................................
+Используя функцию ``get_category_list`` мы теперь можем создать представление, которое возвращает первые 8 совпавших результатов как показано ниже:
 
 .. code-block:: python
 	
@@ -197,19 +190,19 @@ Using the ``get_category_list`` function we can now create a view that returns t
 			
 		return render(request, 'rango/category_list.html', {'cat_list': cat_list })
 
-Note here we are re-using the ``rango/cats.html`` template :-). 
+Отметим, что мы опять используем шаблон ``rango/cats.html`` :-).
 
-Map View to URL
-...............
-Add the following code to ``urlpatterns`` in ``rango/urls.py``:
+Сопоставляем представлению URL
+..............................
+Добавьте следующий код в ``urlpatterns`` из файла ``rango/urls.py``:
 
 .. code-block:: python
 
 	url(r'^suggest_category/$', views.suggest_category, name='suggest_category'),
 
-Update Base Template
-....................
-In the base template in the sidebar div add in the following HTML code:
+Обновите базовый шаблон
+.......................
+В базовый шаблон в div для боковой панели добавьте следующий HTML код:
 
 .. code-block:: html
 
@@ -225,11 +218,11 @@ In the base template in the sidebar div add in the following HTML code:
 		<div id="cats">
 		</div>	
 
-Here we have added in an input box with ``id="suggestion"`` and div with ``id="cats"`` in which we will display the response. We don't need to add a button as we will be adding an event handler on keyup to the input box which will send the suggestion request.
+Здесь мы добавили поле для ввода с идентификатором ``id="suggestion"`` и div c идентификатором ``id="cats"``, в котором будет отображаться результат запроса. Нам не нужно добавлять кнопку, поскольку мы создадим обработчик события при отпускании клавиши в поле ввода, который отправит введенный запрос.
 
-Add AJAX to Request Suggestions
-...............................
-Add the following JQuery code to the ``js/rango-ajax.js``:
+Добавляем AJAX, чтобы запросить подходящие категории
+....................................................
+Добавьте следующий JQuery код в ``js/rango-ajax.js``:
 
 .. code-block:: javascript
 	
@@ -241,24 +234,24 @@ Add the following JQuery code to the ``js/rango-ajax.js``:
 		});
 	});
 
-Here, we attached an event handler to the HTML input element with ``id="suggestion"`` to trigger when a keyup event occurs. When it does the contents of the input box is obtained and placed into the ``query`` variable. Then a AJAX GET request is made calling ``/rango/category_suggest/`` with the ``query`` as the parameter. On success, the HTML element with id="cats" i.e. the div, is updated with the category list html.
+Здесь мы добавили обработчик события к HTML элементу input с идентификатором ``id="suggestion"``, срабатывающий при событии - отпускание клавиши. Когда это происходит содержимое поля ввода извлекается и передается в переменную ``query``. Затем создается AJAX GET запрос, обращающийся к ``/rango/category_suggest/`` и передающий ``query`` в качестве параметра. При успешном запросе, с помощью функции html обновляется HTML элемент с идентификатором id="cats", т. е., div, новым списком категорий.
 
-Exercises
----------
-To let registered users quickly and easily add a Page to the Category put an "Add" button next to each search result.
+Упражнения
+----------
+Чтобы пользователь мог легко и быстро добавить страницу в категорию, поместите кнопку "Add" рядом с каждым результатом поиска.
 
-* Update the ``category.html`` template:
-	- Add a mini-button next to each search result (if the user is authenticated), garnish the button with the title and url data, so that the JQuery can pick it out.
-	- Put a <div> with ``id="page"`` around the pages in the category so that it can be updated when pages are added.
-	- Remove that link to add button, if you like. 
-* Create a view auto_add_page that accepts a parameterised GET request (title, url, catid) and adds it to the category
-* Map an url to the view ``url(r'^auto_add_page/$', views.auto_add_page, name='auto_add_page'),``
-* Add an event handler to the button using JQuery - when added hide the button. The response could also update the pages listed on the category page, too.
+* Обновите шаблон ``category.html``:
+	- Добавьте небольшую кнопку рядом с каждым результатом поиска (если пользователь аутентифицирован), задайте для каждой кнопки атрибуты data-catid, data-title и data-url, чтобы их можно было выбрать с помощью JQuery.
+	- Разместите элемент <div> с идентификатором ``id="page"`` рядом со страницами в категории, чтобы его можно было обновить при добавлении страниц.
+	- Если хотите можете удалить ссылку на кнопку добавления страницы.
 
+* Создайте представление auto_add_page, которое принимает параметризированный GET запрос (с параметрами title, url, catid) и добавляет страницу с такими параметрами в категорию
+* Сопоставьте URL представлению ``url(r'^auto_add_page/$', views.auto_add_page, name='auto_add_page'),``
+* Добавьте обработчик события к кнопке с помощью JQuery - после добавления страницы скройте кнопку. Также можно обновить страницы, приведенные на странице категории.
 
-Hints
-.....
-HTML Template code: 
+Подсказки к упражнениям
+.......................
+HTML код шаблона: 
 
 .. code-block:: html
 	
@@ -266,7 +259,7 @@ HTML Template code:
 		<button data-catid="{{category.id}}" data-title="{{ result.title }}" data-url="{{ result.link }}" class="rango-add btn btn-mini btn-info" type="button">Add</button>
 	{% endif %}
 
-JQuery code:
+JQuery код:
 
 .. code-block:: javascript
 
@@ -281,9 +274,9 @@ JQuery code:
 	               		});
 	    				});
 
-Note here we are assigned the event handler to all the buttons with class ``rango-add``.
+Отметим, что здесь мы связали обработчик события - нажатие на кнопку - со всеми кнопками с классом  ``rango-add``.
 
-View code:
+Код представления:
 
 .. code-block:: python
 	
@@ -303,7 +296,7 @@ View code:
 
 	            pages = Page.objects.filter(category=category).order_by('-views')
 
-	            # Adds our results list to the template context under name pages.
+	            # Добавляем наш список результатов в контекст шаблона под названиями страниц.
 	            context_dict['pages'] = pages
 
 	    return render(request, 'rango/page_list.html', context_dict)
