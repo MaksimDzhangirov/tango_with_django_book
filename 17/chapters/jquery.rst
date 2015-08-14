@@ -1,18 +1,18 @@
 .. _jquery:
 
-JQuery and Django
-=================
-JQuery rocks! JQuery is a library written in Javascript that seriously pimps its power and utility. A few lines of JQuery often encapsulates hundreds of lines of javascript. JQuery provides a suite of functionality that is mainly focused on manipulating HTML elements. In this chapter, we will describe:
+JQuery и Django
+===============
+Использовать JQuery круто! JQuery - это библиотека, написанная на Javascript, которая значительно увеличивает возможности и практичность использования Javascript. Несколько строк JQuery часто содержат сотни строк на Javascript. JQuery предоставляет набор функциональных возможностей, большинство из которых сосредоточены на манипуляции с HTML элементами. В этой главе мы опишем:
 
-* how to incorporate JQuery within your Django Application
-* explain how to interpret JQuery code
-* and provide a number of small examples
+* как добавить JQuery в Ваше приложение Django;
+* объясним как анализировать код JQuery;
+* и приведем несколько небольших примеров.
 
 
-Including JQuery in your Django Project/Application
----------------------------------------------------
+Добавление JQuery в Ваш проект/приложение Django
+------------------------------------------------
 
-In your *base* template include a reference to:
+В Ваш *базовый* шаблон добавьте ссылку на:
 
 .. code-block:: html
 
@@ -21,40 +21,35 @@ In your *base* template include a reference to:
 	<script src="{% static "js/jquery-1.11.1.js" %}"></script>
 	<script src="{% static "js/rango-jquery.js" %}"></script>
 
-Here we assume you have downloaded a version of the JQuery library, but you can also just directly refer to it:
+Здесь мы предполагаем, что Вы уже скачали подходящую версию библиотеки JQuery, но Вы можете также напрямую сослаться на неё:
 
 .. code-block:: html
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	
+Убедитесь, что правильно настроены пути к Вашим статическим файлам (смотри Главу :ref:`setup-label`)
 
-Make sure you have your static files set up (see Chapter :ref:`setup-label`)
-
-In the static folder create a *js* folder and plonk the JQuery javascript file (``jquery.js``) here along with an file called ``rango-jquery.js``, which will house our javascript code. In ``rango-jquery.js``, add the following javascript:
+В каталоге для статических файлов создайте каталог *js* и переместите в неё javascript файл с JQuery (``jquery.js``), а также файл - ``rango-jquery.js``, в котором будет находиться наш javascript код. В ``rango-jquery.js`` добавьте следующий код:
 
 .. code-block:: javascript
 
 	$(document).ready(function() {
 	
-		// JQuery code to be added in here.
+		// JQuery код будет добавляться сюда.
 	
 	});
 
+Этот фрагмент JQuery сначала выбирает объект документ (с помощью ``$(document)``), а затем вызывает метод ``ready()``. Как только документ готов, т. е., страница полностью загружена, то будет выполнена анонимная функция, обозначенная в коде как ``function(){ }``. Эта довольно часто используется, если не всегда, необходимо подождать пока документ полностью не загрузится перед запуском функций JQuery. В противном случае, код может попытаться выполниться для HTML элементов, которые ещё не были загружены (смотри http://api.jquery.com/ready/).
 
-This piece of JQuery, first selects the document object (with ``$(document)``), and then makes a call to ``ready()``. Once the document is ready i.e. the complete page is loaded, then the anonymous function denoted by ``function(){ }`` will be executed. It is pretty typical, if not standard, to wait until the document has been finished loading before running the JQuery functions. Otherwise, the code my try to run, but the HTML elements may not have been downloaded (see http://api.jquery.com/ready/).
+Стилистическое замечание
+........................
+JQuery требует от Вас больше использовать ``функциональный`` стиль программирования, в отличие от обычного Javascript стиля, который часто пишется в ``процедурном`` стиле программирования. Все команды JQuery имеют один и тот же шаблон: выбрать и совершить какое-либо действие. Выбрать элемент, а затем совершить действие над этим элементом. Об этом стоит помнить. Существуют различные операторы выбора и различные действия, которые могут быть выполнены/применены над/к элементам. Ниже в подразделах мы рассмотрим несколько функций JQuery, которые Вы можете использовать для манипулирования HTML элементами.
 
-Stylistic Note
-..............
-JQuery requires you to think in a more ``functional`` programming style, as opposed to the typical Javascript style which is often written in a more ``procedural`` programming style. For all the JQuery commands they follow a similar pattern: Select and Act. Select an element, and then act on the element. So it is good to keep this in mind. There are different selection operators, and various actions that can then be performed/applied. In the next, subsections we will take a few JQuery functions that you can use to manipulate the HTML elements.
-	
-	
-	
-Example Popup Box on Click
---------------------------
-In this example, we want to show you the difference between doing the same functionality in standard Javascript versus JQuery.
+Пример: Всплывающее окно по щелчку
+----------------------------------
+В этом примере мы хотим показать насколько может отличаться реализация одной и той же функции, используя стандартный Javascript и JQuery.
 
-In your ``about.html`` template, add the following piece of code:
-
+В Вашем шаблоне ``about.html`` добавьте следующий фрагмент кода:
 
 .. code-block:: html
 
@@ -62,10 +57,9 @@ In your ``about.html`` template, add the following piece of code:
 	 	Click Me - I run Javascript 
 	 </button>
 	 
-	
-As you can see, we are assigning the function ``alert()`` to the ``onClick`` handler of the button. Load up the ``about`` page, and try it  out. 
+В нём мы присваиваем функцию ``alert()`` обработчику события ``onClick`` (по щелчку - Прим. переводчика) кнопки. Загрузите страницу ``about`` и проверьте работоспособность этой функции.
 
-Now lets do it using JQuery, by first adding another button:
+Теперь давайте сделаем тоже самое, используя Jquery, добавив вторую кнопку на страницу:
 
 .. code-block:: html
 
@@ -75,9 +69,7 @@ Now lets do it using JQuery, by first adding another button:
 
 	<p>This is another example</p>
 
-
-Notice that there is not javascript code associated with the button currently. We will be doing that with the following code added to ``rango-jquery.js``:
-
+Обратите внимание, что пока никакой Javascript код не связан с кнопкой. Мы добавим его в файл ``rango-jquery.js``:
 
 .. code-block:: javascript
 	 
@@ -88,20 +80,19 @@ Notice that there is not javascript code associated with the button currently. W
 	    });
    	});
 
+Перезагрузите страницу и проверьте как работают кнопки. Если всё было сделано правильно, то Вы увидите, что обе кнопки выводят предупреждение.
 
-Reload the page, and try it out. Hopefully, you will see that both buttons pop up an alert. 
+Здесь JQuery/Javascript код сначала выбирает объект документ и когда он загрузился, выполняет функции, находящиеся внутри него, т. е., ``$("#about-btn").click()``, которая выбирает элемент на странице с id равным ``about-btn`` и затем программно связывает событие нажатия на кнопку с функцией ``alert()``.
 
-The JQuery/Javascript code here, first selects the document object, and when it is ready, it executes the functions within its body, i.e. ``$("#about-btn").click()``, which selects the element in the page with id equal to ``about-btn``, and then it programatically assigns to the on click event, the ``alert()`` function.
+Сначала может показаться, что код jQuery более громоздкий, поскольку требуется намного больше кода, чтобы выполнить ту же функцию, которую выполняет Javascript. Это верно для простой функции, такой как ``alert()``, но более сложные функции получаются намного чище с использованием jQuery, поскольку JQuery/Javascript код содержится в отдельном файле (полностью!). Это связано с тем, что мы назначаем обработчик события во время выполнения функции, а не статически в коде. Таким образом, происходит разделение между jQuery/Javascript кодом и HTML кодом.
 
-At first you might think that jQuery is rather cumbersome, as it requires us to include  a lot more code to do the same thing. This may be true for a simple function like ``alert()`` but for more complex functions it is much cleaner, as the JQuery/Javascript code is maintained in a separate file (completely!!). This is because we assign the event handler at run-time rather than statically within the code. We achieve separation of concerns between the jquery/javascript code and the html code.
-
-.. note:: Remember when it comes to CSS, JAVASCRIPT and HTML, you gotta keep them separated!
+.. note:: Помните, что CSS, JAVASCRIPT и HTML, необходимо хранить в отдельных файлах!
 
 
-Selectors
+Селекторы
 ---------
 
-There are different ways to select elements in JQuery. From the above example, shows how the ``#`` can be used to find ``id`` elements in your html document. To find classes, you can use ``.``, so, for example, if we added the following code:
+Существует несколько способов выбрать элементы в JQuery. В вышеприведенном примере показано как можно использовать символ ``#``, чтобы найти элементы с атрибутом ``id`` в Вашем HTML документе. Чтобы найти классы, Вы можете использовать символ ``.`` так, как это сделано в следующем фрагменте кода:
 
 .. code-block:: javascript
 
@@ -109,9 +100,9 @@ There are different ways to select elements in JQuery. From the above example, s
                alert("You clicked me! ouch!");
     });
 
-Then all elements, that had a ``class="ouch"`` would be selected, and assigned to its on click handler, the ``alert()`` function. Note that all the elements would be assigned the same function.
+В этом случае будут выбраны все элементы, которые имеют класс ``class="ouch"`` и им будет назначен обработчик события - щелчка мыши, при котором будет вызываться функция ``alert()``. Учтите, что всем элементам будет присвоена одна и та же функция.
 
-Also, html tags can also be selected by referring to the tag in the selector:
+Также HTML теги можно выбрать, если указать тег в селекторе:
 
 .. code-block:: javascript
 
@@ -122,36 +113,32 @@ Also, html tags can also be selected by referring to the tag in the selector:
 		$(this).css('color', 'blue');
 	});
 	
+Здесь мы выбираем все HTML элементы ``p`` и связываем с ними две функции - одна срабатывает при наведении мышки на них, а другая - когда мышь находится вне элемента. Из примера видно, что мы используем другой селектор под названием ``this``, который выбирает необходимый элемент, а затем изменяет его цвет на красный или синий соответственно.
+Обратите внимание, что функция ``hover()`` JQuery принимает в качестве параметров две функции (смотри http://api.jquery.com/hover/), а функция JQuery ``click()`` требует передачу события (смотри http://api.jquery.com/click/).
 
-Here, we are selecting all the ``p`` html elements, and on hover we are associated two functions, one for on hover, and the other for hover off. You can see that we are using another selector called, ``this``, which selects the element in question, and then sets it color to red or blue, respectively.
-Note, the JQuery ``hover()`` function takes two functions (see http://api.jquery.com/hover/), the JQuery ``click()`` requires the event to passed through (see http://api.jquery.com/click/).
+Попытайтесь добавить вышеприведенный код в Ваш файл ``rango-jquery.js`` и убедитесь, что он находится внутри функции ``$(document).ready()``. Что произойдет, если Вы измените ``$(this)`` на ``$(p)``?
 
-Try adding the above code your ``rango-jquery.js`` file, make sure it is within the ``$(document).ready()`` function. What happens if you change the ``$(this)`` to ``$(p)``?
-
-Hover, is an example of a mouse move event, for descriptions on other such events, see: http://api.jquery.com/category/events/mouse-events/
-
+Функция Hover - это пример события перемещения мыши; описание других подобных собитий можно найти по ссылке: http://api.jquery.com/category/events/mouse-events/
 
 
-DOM Manipulation Example
-------------------------
-In the above example, we used the ``hover`` function to assign an event handler to the on hover event, and then used the ``css`` function to change the color of the element. The ``css`` is one example of DOM manipulation, however, the stand JQuery library provides many other ways to manipulate the DOM. For example,
-we can add classes to elements, with the ``addClass`` function:
+Пример манипуляции DOM
+----------------------
+В вышеприведенном примере мы использовали функцию ``hover`` для назначения обработчику события ``hover`` и затем использовали функцию ``css`` для изменения цвета элемента. Функция ``css`` - это один из примеров манипуляции с DOM, однако, мы можем добавлять элементам классы с помощью функции ``addClass``:
 
 .. code-block:: javascript
 
     $("#about-btn").addClass('btn btn-primary')
 	
 
-This will select the element with id ``#about-btn``, and assign the classes ``btn`` and ``btn-primary`` to it. By adding these Bootstrap classes will mean the button will now appear in the bootstrap style (assuming you are using the Bootstrap toolkit).
+Этот фрагмент кода выберет элемент с идентификатором ``#about-btn`` и присвоит ему классы ``btn`` и ``btn-primary``. После добавления этих Bootstrap классов кнопке оно будет отображаться, используя Bootstrap стиль (если Вы используете набор инструментов Bootstrap).
 
-It is also possible to access the html of a particular element. For example, lets put a ``div`` in the ``about.html``:
-
+Также можно получить доступ к конкретному HTML элементу. Например, давайте разместим ``div`` в ``about.html``:
 
 .. code-block:: html 
 
 	<div id="msg">Hello</div>
 
-Then add the following JQuery to ``rango-jquery.js``:
+Затем добавим следующий JQuery код в ``rango-jquery.js``:
 
 
 .. code-block:: javascript
@@ -163,11 +150,8 @@ Then add the following JQuery to ``rango-jquery.js``:
 		 });
 
 
+По щелчку на элементе с идентификатором ``#about-btn`` мы сначала извлечем HTML код внутри элемента с идентификатором ``msg`` и добавим к нему символ "o". Затем мы изменим HTML внутри элемента, опять вызвав функцию ``html``, но в этот раз передавая ей строку ``msgstr``, чтобы заменить HTML код внутри этого элемента.
 
-On click of the element with id ``#about-btn``, we first get the html inside the element with id ``msg`` and appeand "o" to it. Then we change the html inside the element by calling the ``html`` function again, but this time passing through string ``msgstr`` to replace the html inside that element.
-
- 
-
-In this chapter we have provided a very rudimentry guide to using JQuery and incroporating it within your Django Application. From here you should be able to understand how JQuery operates and experiment with the different functions and libraries provided by JQuery and JQuery developers (see  http://jquery.com). In the next chapter we will be using the JQuery to help provide AJAX functionality within Rango.
+В этой главе дано элементарное руководство по использованию JQuery и включению его в Ваше Django приложение. Сейчас Вы должно понимать как работает JQuery и поэкспериментировать с различными функциями и библиотеками, предоставляемыми JQuery и JQuery разработчиками (смотри http://jquery.com). В следующей главе мы будем использовать JQuery для работы с AJAX в Rango.
  
 
