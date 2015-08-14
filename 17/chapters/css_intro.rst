@@ -1,34 +1,35 @@
 .. _css-course-label:
 
-A CSS Crash Course
-==================
-In web development, we use *Cascading Style Sheets (CSS)* to describe the presentation of a HTML document (i.e. its look and feel).
+Ускоренный курс по CSS
+======================
+При веб разработке мы используем *Каскадные таблицы стилей (CSS)* для описания внешнего вида HTML документа (т. е., того как пользователь видит и воспринимает его).
 
-Each element within a HTML document can be *styled*. The CSS for a given HTML element describes how it is to be rendered on screen. This is done by ascribing *values* to the different *properties* associated with an element. For example, the ``font-size`` property could be set to ``24pt`` to make any text contained within the specified HTML element to appear at 24pt. We could also set the ``text-align`` property to a value of ``right`` to make text appear within the HTML element on the right-hand side.
+Каждый элемент внутри HTML документа может быть *стилизован*. CSS для конкретного HTML элемента описывает как он должен быть выведен на экран. Для этого различным *свойствам*, связанным с элементом, присваиваются *значения*. Например, свойству ``font-size`` может быть присвоено значение ``24pt``, чтобы любой текст содержащийся внутри указанного HTML элемента имел размер 24pt. Мы также могли бы присвоить свойству ``text-align`` значение ``right``, чтобы выровнять текст внутри HTML элемента по правой стороне.
 
-.. note:: There are many, many different CSS properties that you can use in your stylesheets. Each provides a different functionality. Check out the `W3C website <http://www.w3.org/TR/CSS2/propidx.html>`_ and `HTML Dog <http://www.htmldog.com/reference/cssproperties/>`_ for lists of available properties. `pageresource.com <http://www.pageresource.com/dhtml/cssprops.htm>`_ also has a neat list of properties, with descriptions of what each one does. Check out Section :ref:`css-course-reading-label` for a more comprehensive set of links.
+.. note:: Существует большое множество различных CSS свойств, которые Вы можете использовать при стилизации. Каждое из них позволяет реализовать отдельную функциональную возможность. Просмотрите `W3C веб сайт <http://www.w3.org/TR/CSS2/propidx.html>`_ и `HTML Dog <http://www.htmldog.com/reference/cssproperties/>`_, чтобы увидеть список доступных свойств. На сайте `pageresource.com <http://www.pageresource.com/dhtml/cssprops.htm>`_ также представлен хороший список свойств с описанием что делает каждое из них. Просмотрите Раздел :ref:`css-course-reading-label`, который содержит более подробный список ссылок.
 
-CSS works by following a *select and apply pattern* - for a specified element, a set of styling properties are applied. Take a look at the following example in Figure :num:`fig-css-render` where we have some HTML containing ``<h1>`` tags. In the CSS code example, we specify that all ``h1`` are styled.  We'll come back to `selectors <http://www.w3schools.com/cssref/css_selectors.asp>`_ in Section :ref:`css-course-basic-selectors-label`. For now though, you can assume the CSS style defined will be applied to our ``<h1>`` tags. The style contains four properties:
+CSS работает следующим образом: *выбрать и применить шаблон* - для указанного элемента применяется набор стилизирующих свойств. Взгляните на следующий пример на Рисунке :num:`fig-css-render`, на котором показан некий HTML код, содержащий теги ``<h1>``. В примере CSS кода мы стилизуем все ``h1``. Мы вернемся к `селекторам <http://www.w3schools.com/cssref/css_selectors.asp>`_ в разделе :ref:`css-course-basic-selectors-label`. Пока Вы можете считать, что определенный в примере CSS стиль будет применяться к нашим тегам ``<h1>``. Стиль содержит четыре свойства:
 
-- the first property (``font-size``) sets the size of the font to 16pt;
-- the second property (``font-style``) italicises the contents of all ``<h1>`` tags within the document;
-- the third property (``text-align``) centres the text of the ``<h1>`` tags; and
-- the final property (``color``) sets the colour of the text to red via `hexadecimal code <http://html-color-codes.com/>`_ ``#FF0000``.
+- первое свойство (``font-size``) определяет размер шрифта равным 16pt;
+- второе свойство (``font-style``) выделяет курсивов содержимое всех тегов ``<h1>`` внутри документа;
+- третье свойство (``text-align``) выравнивает по центру текст тегов ``<h1>``; и
+- последнее свойство (``color``) определяет красный цвет текста для тегов с помощью `шестнадцатеричного кода <http://html-color-codes.com/>`_ ``#FF0000``.
 
-With all of these properties applied, the resultant page render can be seen in the browser in Figure :num:`fig-css-render`.
+После применения всех этих свойств, получившаяся страница отобразится в браузере в виде, показанном на рисунке :num:`fig-css-render`.
 
 .. _fig-css-render:
 
 .. figure:: ../images/css-render.png
 	:figclass: align-center
 
-	Illustration demonstrating the rendered output of the sample HTML markup and CSS stylesheet shown. Pay particular attention to the CSS example - the colours are used to demonstrate the syntax used to define styles and the property/value pairings associated with them.
+	Рисунок, показывающий как будет выглядеть в браузере HTML разметка и CSS стили из примера. Обратите особое внимание на пример CSS кода - в нем используется цветовая схема, чтобы показать синтаксис, применяемый для определения стилей и пар свойство/значение, связанных с ними.
 
-.. note:: Due to the nature of web development, *what you see isn't necessarily what you'll get*. This is because different browsers have their own way of interpreting `web standards <http://en.wikipedia.org/wiki/Web_standards>`_ and so the pages may be rendered differently. This quirk can unfortunately lead to plenty of frustration.
 
-Including Stylesheets
----------------------
-Including stylesheets in your webpages is a relatively straightforward process, and involves including a ``<link>`` tag within your HTML's ``<head>``. Check out the minimal HTML markup sample below for the attributes required within a ``<link>`` tag.
+.. note:: Из-за особенностей, характерных веб разработке, *то что Вы видите, не обязательно то, что получите*. Это связано с тем, что разные браузеры по-своему интерпретируют `веб стандарты <http://en.wikipedia.org/wiki/Web_standards>`_ и поэтому страницы могут отображаться по-разному. Это особенность, к сожалению, является довольно раздражающей.
+
+Добавление стилей
+-----------------
+Добавление стилей на Ваши страницы достаточно простой процесс и включает в себя использование тега ``<link>`` внутри Вашего HTML тега ``<head>``. Просмотрите простейший пример HTML разметки, показанный ниже, где показаны атрибуты, которые должны находиться внутри тега ``<link>``.
 
 .. code-block:: html
 	
@@ -44,55 +45,55 @@ Including stylesheets in your webpages is a relatively straightforward process, 
 	    </body>
 	</html>
 
-As can be seen from above, there are at minimum three attributes which you must supply to the ``<link>`` tag:
+Как показано выше, существует минимум три атрибута, которые должны быть внутри тега ``<link>``:
 
-- ``rel``, which allows you to specify the relationship between the HTML document and the resource you're linking to (i.e., a stylesheet);
-- ``type``, in which you should specify the `MIME type <http://en.wikipedia.org/wiki/Internet_media_type>`_ for CSS; and
-- ``href``, the attribute which you should point to the URL of the stylesheet you wish to include.
+- ``rel``, позволяющий Вам указать связь между HTML документ и ресурсом, на который Вы ссылаетесь (т. е., файл стилей - stylesheet).
+- ``type``, в котором Вы должны указать `тип MiME <http://en.wikipedia.org/wiki/Internet_media_type>`_ для CSS; и
+- ``href``, атрибут, где Вы должны указать URL файла стилей, который хотите добавить.
 
-With this tag added, your stylesheet should in included with your HTML page, and the styles within the stylesheet applied. It should be noted that CSS stylesheets are considered by Django as static media, meaning you should place them within your project's ``static`` directory.
+После добавления этого тега, Ваш файл стилей должен добавиться на Вашу HTML страницу и должны примениться стили находящиеся внутри файла. Следует отметить, что CSS файлы стилей считаются Django статическими медиа файлами - это означает, что Вы должны размещать их внутри каталога ``static`` Вашего проекта.
 
-.. note:: You can also add CSS to your HTML documents *inline*, meaning that the CSS is included as part of your HTML page. However, this isn't generally advised because it removes the nice abstraction between presentational semantics (CSS) and content (HTML). 
+.. note:: Вы также можете добавлять CSS правила просто *внутри* HTML документа, то есть CSS будет частью Вашей HTML страницы. Однако, в общем случае не рекомендуется так делать, поскольку это сводит на нет хорошее разделение между внешним видом страницы (CSS) и её содержимым (HTML).
 
 .. _css-course-basic-selectors-label:
 
-Basic CSS Selectors
+Основные CSS селекторы
+----------------------
+CSS селекторы используются для связи определенных стилей с конкретными HTML элементами. По существу CSS селектор - это *шаблон*. Здесь мы рассмотрим три вида CSS селекторов: *селекторы элементов*, *селекторы идентификаторов* и *селекторы классов*. В Разделе :ref:`css-course-links-label` мы также коснемся того, что называется *псевдо-селекторами*.
+
+Селекторы элементов
 -------------------
-CSS selectors are used to map particular styles to particular HTML elements. In essence, a CSS selector is a *pattern*. Here, we cover three basic forms of CSS selector: *element selectors*, *id selectors* and *class selectors*. In Section :ref:`css-course-links-label`, we also touch on what are known as *pseudo-selectors*.
+Используя CSS пример из Рисунка :num:`fig-css-render`, мы видим, что селектор ``h1`` соответствует любому тегу ``<h1>``. Любой селектор ссылающийся на такой тег можно назвать *селектором элементов*. Мы можем применить селекторы элементов к любому HTML элементу, такому как ``<body>``, ``<h1>``, ``<h2>``, ``<h3>``, ``<p>`` и ``<div>``. Все они могут быть стилизованы подобным образом. Тем не менее использовать селекторы элементов довольно неудобно - стили применяются ко *всем* экземплярам конкретного тега. Мы обычно хотим выбрать один или небольшое число элементов, которые нужно стилизовать, и для этого используются *селекторы идентификаторов* и *селекторы классов*.
 
-Element Selectors
------------------
-Taking the CSS example from Figure :num:`fig-css-render`, we can see that the selector ``h1`` matches to any ``<h1>`` tag. Any selector referencing a tag like this can be called an *element selector*. We can apply element selectors to any HTML element such as ``<body>``, ``<h1>``, ``<h2>``, ``<h3>``, ``<p>`` and ``<div>``. These can be all styled in a similar manner. However, using element selectors is pretty crude - styles are applied to *all* instances of a particular tag. We usually want a more fine-grained approach to selecting what elements we style, and this is where *id selectors* and *class selectors* come into play.
-
-ID Selectors
-............
-The *id selector* is used to map to a unique element on your webpage. Each element on your webpage can be assigned a unique id via the ``id`` attribute, and it is this identifier that CSS uses to latch styles onto your element. This type of selector begins with a hash symbol (``#``), followed directly by the identifier of the element you wish to match to. Check out Figure :num:`fig-css-id` for an example.
+Селекторы идентификаторов
+.........................
+*Селектор по идентификатору* используется для связи с единственным элементом на Вашей странице. Каждому элементу на Вашей странице может быть присвоен уникальный идентификатор с помощью атрибута ``id`` и именно этот идентификатор используется CSS для присвоения стилей Вашему элементу. Этот тип селекторов начинается с символа решетки (``#``), после которого идет непосредственно идентификатор элемента, которому необходимо присвоить стили. Посмотрите на Рисунок :num:`fig-css-id`, где показан пример.
 
 .. _fig-css-id:
 
 .. figure:: ../images/css-id.png
 	:figclass: align-center
 
-	An illustration demonstrating the use of an *id selector* in CSS. Note the blue header has an identifier which matches the CSS attribute ``#blue_header``.
+	Пример использования *селектора по идентификатору* в CSS. ОБратите внимание, что синий заголовок имеет идентификатор, соответствующий CSS атрибуту ``#blue_header``.
 
-Class Selectors
-...............
-The alternative option is to use *class selectors*. This approach is similar to that of *id selectors*, with the difference that you can legitimately target multiple elements with the same class. If you have a group of HTML elements that you wish to apply the same style to, use a class-based approach. The selector for using this method is to precede the name of your class with a period (``.``) before opening up the style with curly braces (``{ }``). Check out Figure :num:`fig-css-class` for an example.
+Селекторы классов
+.................
+Альтернативной возможностью является использование *селекторов классов*. Этот подход аналогичен *селекторам идентификаторов*, но разница заключается в том, что Вы можете присвоить нескольким элементам один и тот же класс. Если существует группа HTML элементов, к которым Вы хотите применить одинаковый стиль, используйте классы. Селектор при использовании этого метода начинается с точки (``.``), за которой следует название Вашего класса перед открытием стиля в фигурных скобках (``{ }``). Посмотрите на Рисунок :num:`fig-css-class`, где показан пример.
 
 .. _fig-css-class:
 
 .. figure:: ../images/css-class.png
 	:figclass: align-center
 
-	An illustration demonstrating the use of a *class selector* in CSS. The blue headers employ the use of the ``.blue`` CSS style to override the red text of the ``h1`` style.
+	Пример использования *селектора классов* в CSS. К синим заголовкам применяется CSS стиль ``.blue``, переопределяющий красный текст стиля ``h1``.
 
-.. warning:: Try to use id selectors sparingly. `Ask yourself: <http://net.tutsplus.com/tutorials/html-css-techniques/the-30-css-selectors-you-must-memorize/>`_ *do I absolutely need to apply an identifier to this element in order to target it?* If you need to apply it to more than one element, the answer will always be **no**. In cases like this, you should use a class or element selector.
+.. warning:: Не используйте часто селекторы идентификаторов. `Задайте себе вопрос: <http://net.tutsplus.com/tutorials/html-css-techniques/the-30-css-selectors-you-must-memorize/>`_ *можно ли по-другому выбрать элемент, не присваивая ему идентификатор?* Если стиль нужно применить к нескольким элементам, то ответ на вопрос всегда будет: *да, можно*. В таких случаях, Вы должны использовать селекторы классов или элементов.
 
-Fonts
------
-Due to the huge number available, using fonts has historically been a pitfall when it comes to web development. Picture this scenario: a web developer has installed and uses a particular font on his or her webpage. The font is pretty arcane - so the probability of the font being present on other computers is relatively small. A user who visits the developer's webpage subsequently sees the page rendered incorrectly as the font is not present on their system. CSS tackles this particular issue with the ``font-family`` property.
+Шрифты
+------
+В связи с огромным количеством доступных, использование шрифтов всегда связано определенными сложностями, когда дело касается веб разработки. Представьте, что веб разработчик установил и использует определенный шрифт на своем веб странице. Шрифт довольно специфичный - поэтому вероятность его наличия на других компьютерах относительно невелика. Пользователь, который посещает веб страницу разработчика следовательно видит страницу неправильно, поскольку этого шрифта нет в его системе. CSS решает эту конкретную проблему с помощью свойства ``font-family``.
 
-The value you specify for ``font-family`` can be a *list* of possible fonts - and the first one your computer or other device has installed is the font that is used to render the webpage. Text within the specified HTML element subsequently has the selected font applied. The example CSS shown below applies *Arial* if the font exists. If it doesn't, it looks for *Helvetica*. If that font doesn't exist, any available `sans-serif font <http://en.wikipedia.org/wiki/Sans-serif>`_ is applied.
+Значение, которое Вы определяете для ``font-family`` может быть *списком* возможных шрифтов - первый шрифт из списка, который установлен на Вашем компьютере или другом устройстве будет использоваться при визуализации веб страницы. В последствии к тексту внутри указанного HTML элемента будет применяться выбранный шрифт. Пример CSS кода, показанного ниже, использует шрифт *Arial*, если он существует в системе. Если нет, то производится поиск шрифта *Helvetica*. Если и его не существует, то применяется любой `шрифт без засечек <http://en.wikipedia.org/wiki/Sans-serif>`_.
 
 .. code-block:: css
 	
@@ -100,35 +101,35 @@ The value you specify for ``font-family`` can be a *list* of possible fonts - an
 	    font-family: 'Arial', 'Helvetica', sans-serif;
 	}
 
-In 1996, Microsoft started the `Core fonts for the Web <http://en.wikipedia.org/wiki/Core_fonts_for_the_Web>`_ initiative with the aim of guaranteeing a particular set of fonts to be present on all computers. Today however, you can use pretty much any font you like - check out `Google Fonts <http://www.google.com/fonts>`_ for examples of the typesets you can use and `this Web Designer Depot article <http://www.webdesignerdepot.com/2013/01/how-to-use-any-font-you-like-with-css3/>`_ on how to use such fonts.
+В 1996 году Microsoft начала компанию по созданию `основных шрифтов для Веб <http://en.wikipedia.org/wiki/Core_fonts_for_the_Web>`_, которая гарантировала бы наличие определенного набора шрифтов на всех компьютерах. В настоящее время ВЫ можете использовать практически любой шрифт, который Вам нравится - просмотрите `Google шрифты <http://www.google.com/fonts>`_, в качестве примера наборов шрифтов, которые Вы можете использовать и `эту статью с веб сайта Депо Для Веб Дизайнеров <http://www.webdesignerdepot.com/2013/01/how-to-use-any-font-you-like-with-css3/>`_ о том, как использовать такие шрифты.
 
-Colours and Backgrounds
------------------------
-Colours are important in defining the look and feel of your website. You can change the colour of any element within your webpage, ranging from background colours to borders and text. In this book, we make use of words and *hexadecimal colour codes* to choose the colours we want. As you can see from the list of basic colours in Figure :num:`fig-css-colours`, you can supply either a *hexadecimal* or *RGB (red-green-blue)* value for the colour you want to use. You can also `specify words to describe your colours <http://www.w3schools.com/cssref/css_colornames.asp>`_, such as ``green``, ``yellow`` or ``blue``.
+Цвета и задние фоны
+-------------------
+Цвета важны при определении внешнего вида Вашего веб сайта. Вы можете изменить цвет любого элемента на Вашей веб странице, начиная от цвета заднего фона до цвета границ элементов и текста. В этой книге, мы будем использовать слова и *шестнадцатеричные цветовые коды* для выбора цветов, которые мы хотим использовать. Как можно увидеть из списка базовых цветов на Рисунке :num:`fig-css-colours`, Вы можете использовать или *шестнадцатеричное* или *RGB (красное-зеленое-синие)* значение для цвета, который хотите использовать. Вы можете также `указывать слова для описания Ваших цветов <http://www.w3schools.com/cssref/css_colornames.asp>`_, например, ``green``, ``yellow`` or ``blue``.
 
-.. warning:: You must take great care when picking colours to use on your webpages. Don't select colours that don't contrast well - people simply won't be able to read them! There are many websites available that can help you pick out a good colour scheme - try `colorcombos.com <http://www.colorcombos.com/>`_ for starters.
+.. warning:: Вы должны с большой осторожностью выбирать цвета для Ваших веб страниц. Не выбирайте цвета, которые плохо контрастируют друг с другом - люди просто не смогут их прочитать! Существует много веб сайтов, которые помогут Вам выбрать хорошую цветовую схему - попробуйте `colorcombos.com <http://www.colorcombos.com/>`_ для новичков.
 
-Applying colours to your elements is a straightforward process. The property that you use depends on the aspect of the element you wish to change! The following subsections explain the relevant properties and how to apply them.
+Применение цветов к Вашим элементам простой процесс. Используемое свойство зависит от особенностей элемента, который Вы хотите изменить! В следующих подразделах поясняются соответствующие свойства и как их использовать.
 
 .. _fig-css-colours:
 
 .. figure:: ../images/css-colours.svg
 	:figclass: align-center
 	
-	Illustration of some basic colours with their corresponding hexadecimal and RGB values. Illustration adapted from `W3Schools <http://www.w3schools.com/cssref/css_colors.asp>`_.
+	Пример некоторых базовых цветов с соответствующим им шестнадцатеричными и RGB значениями. Изображение взято с сайта `W3Schools <http://www.w3schools.com/cssref/css_colors.asp>`_.
 
-There are many different websites which you can use to aid you in picking the right hexadecimal codes to enter into your stylesheets. You aren't simply limited to the nine examples above! Try out `html-color-codes.com <http://html-color-codes.com/>`_ for a simple grid of colours and their associated six character hexadecimal code. You can also try sites such as `color-hex.com <http://www.color-hex.com/color-wheel/>`_ which gives you fine-grain control over the colours you can choose.
+Существует множество различных веб сайтов, которые Вы можете использовать, чтобы выбрать правильные шестнадцатеричные коды для Ваших стилей. Вы не ограничены девятью приведенными выше примерами! Попробуйте воспользоваться `html-color-codes.com <http://html-color-codes.com/>`_, где дается простая сетка цветов и связанный с ними шестнадцатеричных код их шести символов. Вы также можете использовать сайты, такие как `color-hex.com <http://www.color-hex.com/color-wheel/>`_, где Вы можете точнее выбрать цвет с помощью цветового круга.
 
-.. note:: For more information on how colours are coded with hexadecimal, check out `this thorough tutorial <http://www.quackit.com/css/css_color_codes.cfm>`_.
+.. note:: Чтобы узнать больше о том как цвета кодируются с помощью шестнадцатеричного кода, просмотрите `этот подробное руководство <http://www.quackit.com/css/css_color_codes.cfm>`_.
 
-.. warning:: As you may have noticed, CSS uses American/International English to spell words. As such, there are a few words which are spelt slightly differently compared to their British counterparts, like ``color`` and ``center``. If you have grown up in Great Britain, double check your spelling and be prepared to spell it the *wrong way!* Hah!
+.. warning:: Как Вы возможно заменили, CSS использует американский/международную английский для написания слов. Таким образом, несколько слов пишутся немного по-другому по сравнению с их британскими аналогами, например, ``color`` и ``center``. Если Вы выросли в Великобритании, дважды проверьте правильность написания и будьте готовы писать их *не так как Вы привыкли!* Ха!
 
 .. _css-course-colours-text-label:
 
-Text Colours
+Цвета текста
 ............
-To change the colour of text within an element, you must apply the ``color`` property to the element containing the text you wish to change.
-The following CSS for example changes all the text within an element using class ``red`` to...red!
+Чтобы изменить цвет текста внутри элемента, Вы должны использовать свойство ``color`` для элемента, содержащего текст, цвет которого Вы хотите изменить.
+Следующий CSS код например изменяет весь текст внутри элемента, используя класс ``red`` на... красный!
 
 .. code-block:: css
 	
@@ -136,13 +137,12 @@ The following CSS for example changes all the text within an element using class
 	    color: #FF0000;
 	}
 
-You can alter the presentation of a small portion of text within your webpage by wrapping the text within ``<span>`` tags. Assign a class or unique identifier to the element, and from there you can simply reference the ``<span>`` tag in your stylesheet while applying the ``color`` property.
+Вы можете изменить внешний вид небольшой части текста внутри страницы, обернув его тегами ``<span>``. Назначьте класс или уникальный идентификатор элементу и затем Вы можете просто обратиться к тегу ``<span>`` из таблицы стилей, применив к нему свойство ``color``.
 
-Borders
-.......
-You can change the colour of an element's *borders*, too. We'll discuss what borders are in Section :ref:`css-course-box-model-label` - but for now, we'll show you how to apply colours to them to make everything look pretty.
-
-Border colours can be specified with the ``border-color`` property. You can supply one colour for all four sides of your border, or specify a different colour for each side. To achieve this, you'll need to supply different colours, each separated by a space.
+Цвет границ
+...........
+Вы также можете изменить цвет *границ* элемента. Мы обсудим границы в Разделе :ref:`css-course-box-model-label` - но сейчас покажем как назначить им цвета, чтобы они выглядели красиво.
+Цвета границ могут быть определены с помощью свойства ``border-color``. Вы можете назначить один цвет всем четырем сторонам Вашей границы или определить разные цвета для каждой стороны. Для этого Вам необходимо указать различные цвета через пробел.
 
 .. code-block:: css
 	
@@ -150,13 +150,13 @@ Border colours can be specified with the ``border-color`` property. You can supp
 	    border-color: #000000 #FF0000 #00FF00
 	}
 
-In the example above, we use multiple colours to specify a different colour for three sides. Starting at the top, we rotate clockwise. Thus, the order of colours for each side would be ``top right bottom left``.
+В приведенном выше примере, мы использовали разные цвета для трех сторон. Начиная с верхней, цвета границ задаются по часовой стрелке. Таким образом, порядок цветов для каждой стороны следующий: ``верхняя правая нижняя левая``.
 
-Our example applies any element with class ``some-element`` with a black top border, a red right border and a green bottom border. No left border value is supplied, meaning that the left-hand border is left transparent. To specify a color for only one side of an element's border, consider using the ``border-top-color``, ``border-right-color``, ``border-bottom-color`` and ``border-left-color`` properties where appropriate.
+В нашем примере у любого элемента с классом ``some-element`` будет черная верхняя граница, красная правая граница и зеленая нижняя граница. Для левой границы значение не указано, это означает, что левая граница остается прозрачной. Для определения цвета только для одной границы элемента, лучше использовать соответствующие свойства ``border-top-color``, ``border-right-color``, ``border-bottom-color`` и ``border-left-color``.
 
-Background Colours
+Цвет задних фонов
 ..................
-You can also change the colour of an element's background through use of the CSS ``background-color`` property. Like the ``color`` property described above, the ``background-color`` property can be easily applied by specifying a single colour as its value. Check out the example below which applies a bright green background to the entire webpage. Yuck!
+Вы можете также изменить цвет заднего фона элемента, используя свойство CSS ``background-color``. Подобно свойству ``color`` описанному Выше, свойство ``background-color`` можно указывать в виде шестнадцатеричного значения. Просмотрите пример, показанный ниже, в котором задается ярко зеленый фон для всей страницы. Какая гадость! Не используйте его.
 
 .. code-block:: css
 	
@@ -164,9 +164,9 @@ You can also change the colour of an element's background through use of the CSS
 	    background-color: #00FF00;
 	}
 
-Background Images
-.................
-Of course, a colour isn't the only way to change your backgrounds. You can also apply background images to your elements, too. We can achieve this through the ``background-image`` property.
+Изображения для заднего фона
+............................
+Конечно, цвет это не единственный способ изменить задний фон. Вы также можете назначить фоновые изображения Вашим элементам. Этого можно добиться, используя свойство ``background-image``.
 
 .. code-block:: css
 	
@@ -175,58 +175,59 @@ Of course, a colour isn't the only way to change your backgrounds. You can also 
 	    background-color: #000000;
 	}
 
-The example above makes use of ``filename.png`` as the background image for the element with identifier ``some-unique-element``. The path to your image is specified *relative to the path of your CSS stylesheet*. Our example above uses the `double dot notation to specify the relative path <http://programmers.stackexchange.com/a/186719>`_ to the image. *Don't provide an absolute path here; it won't work as you expect!* We also apply a black background colour to fill the gaps left by our background image - it may not fill the entire size of the element.
+В приведенном выше примере используется файл ``filename.png`` в качестве заднего фона для элемента с идентификатором ``some-unique-element``. Путь к Вашему изображению определяется *относительно пути к Вашему СSS файлу стилей*. В нашем примере используются `две точки для определения относительного пути <http://programmers.stackexchange.com/a/186719>`_ к изображению. *Не задавайте в этом поле абсолютный путь; он не будет работать так как Вы ожидаете!*. Мы также используем черный цвет заднего фона, чтобы заполнить промежутки между нашим фоновым изображением - поскольку оно может не полностью заполнить элемент.
 
-.. note:: By default, background images default to the top-left corner of the relevant element and are repeated on both the horizontal and vertical axes. You can customise this functionality by altering `how the image is repeated <http://www.w3schools.com/cssref/pr_background-repeat.asp>`_ with the ``background-image`` property. You can also specify `where the image is placed <http://www.w3schools.com/cssref/pr_background-position.asp>`_ by default with the ``background-position`` property.
+.. note:: По умолчанию фоновые изображения расположены в верхнем левом углу соответствующего элемента и повторяются по горизонтали и вертикали. Вы можете настроить это свойство, изменив то `как повторяется изображение <http://www.w3schools.com/cssref/pr_background-repeat.asp>`_ с помощью свойства ``background-image``. Вы можете также указать `где должно располагаться изображение <http://www.w3schools.com/cssref/pr_background-position.asp>`_  по умолчанию с помощью свойства ``background-position``.
 
 .. _css-course-positioning:
 
-Containers, Block-Level and Inline Elements
--------------------------------------------
-Throughout the crash course thus far, we've introduced you to the ``<span>`` element but have neglected to tell you what it is. All will become clear in this section as we explain *inline* and *block-level* elements.
+Контейнеры, блочные и строчные элементы
+---------------------------------------
+До этого по ходу ускоренного курса, мы использовали элемент ``<span>``, но ничего не рассказали о нем. Вам станет понятно для чего он нужен, когда мы объясним, что такое *строчные* и *блочные* элементы.
 
-A ``<span>`` is considered to be a so-called *container element*. Along with a ``<div>`` tag, these elements are themselves meaningless and are provided only for you to *contain* and *separate* your page's content in a logical manner. For example, you may use a ``<div>`` to contain markup related to a navigation bar, with another ``<div>`` to contain markup related to the footer of your webpage. As containers themselves are meaningless, styles are usually applied to help control the presentational semantics of your webpage.
+``<span>`` считается так называемым *элементом-контейнером*. Наряду с тегом ``<div>`` эти элементы сами по себе не используются и служат только для логического *размещения* и *разделения* содержимого Вашей страницы. Например, Вы можете использовать тег ``<div>`` поместив в него разметку, связанную с навигационной панелью, другой ``<div>`` может содержать разметку, связанную с футером Вашей страницы. Поскольку сами по себе контейнеры не используются, стили обычно применяются к ним для изменения внешнего вида Вашей страницы.
 
-Containers come in two flavours: *block-level elements* and *inline elements*. Check out Figure :num:`fig-css-nesting-blocks` for an illustration of the two kinds in action, and read on for a short description of each.
+Контейнеры бывают двух видов: *блочные элементы* и *строчные элементы*. Посмотрите на Рисунок :num:`fig-css-nesting-blocks`, где показано отличие между двумя видами и прочтите краткое описание к каждому.
 
 .. _fig-css-nesting-blocks:
 
 .. figure:: ../images/css-nesting-blocks.svg
 	:figclass: align-center
 	
-	Diagram demonstrating how block-level elements and inline elements are rendered by default. With block-level elements as green, note how a line break is taken between each element. Conversely, inline elements can appear on the same line beside each other. You can also nest block-level and inline elements within each other, but block-level elements cannot be nested within an inline element.
+	Рисунок, на котором показано как отображаются на экране блочные элементы и строчные элементы, по умолчанию. Обратите внимание на разрыв строки разделяющий каждый блочный элемент, залитый зеленым цветом. Наоборот строчные элементы могут находиться на одной строке рядом друг с другом. Вы можете также вкладывать блочные и строчные элементы друг в друга, но блочные элементы не могут быть вложены внутрь строчного элемента.
 
-Block-Level Elements
-....................
-In simple terms, a *block-level element* are by default rectangular in shape and spread across the entire width of the containing element. Block-level elements therefore by default appear underneath each other. The rectangular structure of each block-level element is commonly referred to as the *box model*, which we discuss in Section :ref:`css-course-box-model-label`. A typical block-level element you will use is the ``<div>`` tag, short for *division.*
+	
+Блочные элементы
+................
+Проще говоря, *блочный элемент* по умолчанию имеет прямоугольную форму и занимает всю ширину элемента контейнера. Блочные элементы таким образом по умолчанию располагаются друг под другом. Прямоугольная структура каждого блочного элемента часто называется *блочной моделью*, которую мы рассмотрим в разделе :ref:`css-course-box-model-label`. Часто используемым блочным элементом, который Вы будете применять, является тег ``<div>`` - сокращение от слова *division.* (*деление на части* - прим. переводчика).
 
-Block-level elements can be nested within other block-level elements to create a hierarchy of elements. You can also nest *inline elements* within block-level elements, but not vice-versa! Read on to find out why.
+Блочные элементы могут быть вложены в другие блочные элементы, создавая иерархию элементов. Вы также можете размещать *строчные элементы* внутри блочных, но не наоборот! Ниже объясняется почему.
 
-Inline Elements
-...............
-An *inline element* does exactly what it says on the tin. These elements appear *inline* to block-level elements on your webpage, and are commonly found to be wrapped around text. You'll find that ``<span>`` tags are commonly used for this purpose.
+Строчные элементы
+.................
+Предназначение *строчного элемента* понятно из его названия. Эти элементы *встроены* в блочные элементы на Вашей странице и часто в них оборачивается текст. Вы увидите, что для этого часто используется тег ``<span>``.
 
-This text-wrapping application was explained in Section :ref:`css-course-colours-text-label`, where a portion of text could be wrapped in ``<span>`` tags to change its colour. The corresponding HTML markup would look similar to the example below.
+Использование этих элементов для обертки текста пояснялось в Разделе :ref:`css-course-colours-text-label`, где часть текста была расположена в тегах ``<span>`` для изменения его цвета. Соответствующая HTML разметка будет выглядеть подобно той, которая показана в приведенном ниже примере.
 
 .. code-block:: html
 	
 	<div>
-	    This is some text wrapped within a block-level element. <span class="red">This text is wrapped within an inline element!</span> But this text isn't.
+	    Этот текст заключен внутри блочного элемента. <span class="red">А этот текст находится внутри строчного элемента!</span> А этот нет.
 	</div>
 
-Refer back to Figure :num:`fig-css-nesting-blocks` to refresh your mind about what you can and cannot nest before you move on.
+Опять взгянуте на Рисунок :num:`fig-css-nesting-blocks`, чтобы вспомнить, какие элементы могут находится внутри строчных, а какие нет, перед тем как продолжить.
 
-Basic Positioning
------------------
-An important concept that we have not yet covered in this CSS crash course regards the positioning of elements within your webpage. Most of the time, you'll be satisfied with inline elements appearing alongside each other, and block-level elements appearing underneath each other. These elements are said to be *positioned statically*.
+Основы позиционирования элементов
+---------------------------------
+Важным понятием, которое мы до сих пор не рассматривали в этом ускоренном CSS курсе, является позиционирование элементов на Вашей странице. Большую часть времени Вас будет устраивать то, что строчные элементы располагаются рядом друг с другом, а блочные - друг под другом. О таких элементах говорят, что они *позиционируются статически*.
 
-However, there will be scenarios where you require a little bit more control on where everything goes. In this section, we'll briefly cover three important techniques for positioning elements within your webpage: *floats*, *relative positioning* and *absolute positioning*.
+Однако, бывают ситуации, когда Вам нужно изменить порядок расположения элементов. В этом разделе, мы кратко рассмотрим три основных метода позиционирования элементов на Вашей странице: свойство *float*, *относительное позиционирование* и *абсолютное позиционирование*.
 
-Floats
-......
-CSS *floats* are one of the most straightforward techniques for positioning elements within your webpage. Using floats allows us to position elements to the left or right of a particular container - or page.
+Свойство Float
+..............
+CSS свойство *float* один из самых простых методов позиционирования элементов внутри Вашей страницы. Использование этого свойства позволяет Вам расположить элементы слева или справа относительно определенного контейнера - или страницы.
 
-Let's work through an example. Consider the following HTML markup and CSS code.
+Давайте изучим его на примере. Рассмотрим следующую HTML разметку и CSS код.
 
 .. code-block:: html
 	
@@ -251,7 +252,7 @@ Let's work through an example. Consider the following HTML markup and CSS code.
 	    border: 1px solid black;
 	}
 
-This produces the output shown below.
+Это приведет к следующему результату на экране.
 
 .. raw:: html
 	
@@ -276,8 +277,8 @@ This produces the output shown below.
 	    <span class="css-float-ex1-yellow">Span 1</span>
 	    <span class="css-float-ex1-blue">Span 2</span>
 	</div>
-	
-We can see that each element follows its natural flow: the container element with class ``container`` spans the entire width of its parent container, while each of the ``<span>`` elements are enclosed inline within the parent. Now suppose that we wish to then move the blue element with text ``Span 2`` to the right of its container. We can achieve this by modifying our CSS ``.blue`` class to look like the following example.
+
+Мы видим, что каждый элемент располагается естественным образом: элемент контейнер с классом ``container`` занимает всю ширину его родительского контейнера, тогда как каждый из ``<span>`` элементов находятся на одной строке внутри родительского. Теперь предположим, что мы хотим переместить синий элемент с текстом ``Span 2` в правую часть его контейнера. Этого можно достичь, изменив наш CSS класс ``.blue`` так, чтобы он выглядел как показано в следующем примере.
 
 .. code-block:: css
 	
@@ -287,7 +288,7 @@ We can see that each element follows its natural flow: the container element wit
 	    float: right;
 	}
 
-By applying the ``float: right;`` property and value pairing, we should then see something similar to the example shown below.
+Используя пару свойство и значение - ``float: right;``, мы должны увидеть на экране нечто похожее на то, что показано ниже в примере.
 
 .. raw:: html
 	
@@ -314,7 +315,7 @@ By applying the ``float: right;`` property and value pairing, we should then see
 	    <span class="css-float-ex2-blue">Span 2</span>
 	</div>
 
-Note how the ``.blue`` element now appears at the right of its parent container, ``.container``. We have in effect disturbed the natural flow of our webpage by artificially moving an element! What if we then also applied ``float: left`` to the ``.yellow`` ``<span>``?
+Обратите внимание как теперь элемент с классом ``.blue`` выравнивается по правому краю относительно его родительского контейнера - ``.container``. Мы фактически нарушаем естественное расположение элементов на нашей странице, искусственно перемещая элемент! Подумайте, что произойдет, если мы также применим свойство ``float: left`` к тегу ``<span>`` с классом ``.yellow``?
 
 .. raw:: html
 	
@@ -343,7 +344,7 @@ Note how the ``.blue`` element now appears at the right of its parent container,
 	    <span class="css-float-ex3-blue">Span 2</span>
 	</div>
 
-This would float the ``.yellow`` element, removing it from the natural flow of the webpage. In effect, it is not sitting on top of the ``.container`` container. This explains why the parent container does not now fill down with the ``<span>`` elements like you would expect. You can apply the ``overflow: hidden;`` property to the parent container as shown below to fix this problem. For more information on how this trick works, have a look at `this QuirksMode.org online article <http://www.quirksmode.org/css/clearing.html>`_.
+Оно выровняет элемент ``.yellow``, удалив его из естественного порядка расположения элементов на странице. Теперь он не располагается в верхней части контейнера ``.container``. Из-за этого родительский контейнер теперь не заполняется элементами ``<span>`` как этого можно было бы ожидать. Вы можете использовать свойство ``overflow: hidden;`` для родительского элемента как показано ниже, чтобы решить эту проблему. Чтобы узнать больше о том как это работает, взгляните на `эту онлайн статью QuirksMode.org <http://www.quirksmode.org/css/clearing.html>`_.
 
 .. code-block:: css
 	
@@ -379,13 +380,13 @@ This would float the ``.yellow`` element, removing it from the natural flow of t
 	    <span class="css-float-ex4-blue">Span 2</span>
 	</div>
 
-Applying ``overflow: hidden`` ensures that that our ``.container`` pushes down to the appropriate height.
+Использование свойства ``overflow: hidden`` гарантирует, что высота нашего ``.container`` изменится на соответствующую величину.
 
-Relative Positioning
-....................
-*Relative positioning* can be used if you required a greater degree of control over where elements are positioned on your webpage. As the name may suggest to you, relative positioning allows you to position an element *relative to where it would otherwise be located.* We make use of relative positioning with the ``position: relative;`` property and value pairing. However, that's only part of the story.
+Относительное позиционирование
+..............................
+*Относительное позиционирование* может использоваться, если Вам необходим ещё больше контролировать порядок расположения элементов на Вашей странице. Как следует из названия, относительное позиционирование позволяет Вам расположить элемент *относительно того места, где бы он располагался в противном случае*. Чтобы использовать относительное позиционирование назначьте пару свойство/значение ``position: relative;`` элементу. Но это ещё не всё.
 
-Let's explain how this works. Consider our previous example where two ``<span>`` elements are sitting within their container.
+Давайте покажем, как оно работает на примере. Рассмотрим наш предыдущий пример, где два ``<span>`` элемента расположены внутри своих контейнеров.
 
 .. code-block:: html
 	
@@ -411,7 +412,7 @@ Let's explain how this works. Consider our previous example where two ``<span>``
 	    border: 1px solid black;
 	}
 
-This produces the following result - just as we would expect. Note that we have artificially increased the ``height`` of our ``container`` element to 150 pixels. This will allow us more room with which to play with.
+Он дает ожидаемый результат. Обратите внимание, что мы искусственным образом увеличили ``height`` (``высоту`` - прим. переводчика) нашего элемента ``контейнера`` до 150 пикселей. Это расширяет наши возможности.
 
 .. raw:: html
 
@@ -438,7 +439,7 @@ This produces the following result - just as we would expect. Note that we have 
 	    <span class="css-rel-ex1-blue">Span 2</span>
 	</div>
 
-Now let's attempt to position our ``.blue`` ``<span>`` element relatively. First, we apply the ``position: relative;`` property and value pairing to our ``.blue`` class, like so.
+Теперь давайте попытаемся расположить наш элемент ``.blue`` ``<span>`` относительно. Сначала мы назначим пару свойство/значение ``position: relative;`` нашему классу ``.blue`` следующим образом.
 
 .. code-block:: css
 	
@@ -448,7 +449,7 @@ Now let's attempt to position our ``.blue`` ``<span>`` element relatively. First
 	    position: relative;
 	}
 
-This has no effect on the positioning of our ``.blue`` element. What it does do however is change the positioning of ``.blue`` from ``static`` to ``relative``. This paves the way for us to specify where - from the original position of our element - we now wish the element to be located at.
+Оно никак не влияет на позиционирование нашего элемента ``.blue``. Единственное что оно делает - это изменяет позиционирование элемента с классом ``.blue`` со ``static`` на ``relative``. Это позволяет нам указать где - относительно первоначальной позиции - мы хотим чтобы элемент располагался сейчас.
 
 .. code-block:: css
 	
@@ -460,7 +461,7 @@ This has no effect on the positioning of our ``.blue`` element. What it does do 
 	    top: 80px;
 	}
 
-By applying the ``left`` and ``top`` properties as shown in the example above, we are wanting the ``.blue`` element to be *pushed* 150 pixels *from the left*. In other words, we move the element 150 pixels to the right. Think about that carefully! The ``top`` property indicates that the element should be pushed 80 pixels from the *top* of the element. The result our experimentation can be seen below.
+Используя свойства ``left`` и ``top`` как показано в вышеприведенном примере, мы хотим *сдвинуть* элемент ``.blue`` на 150 пикселей *относительно левого края*. Другими словами, мы перемещаем элемент на 150 пикселей вправо. Всегда помните об этом! Свойство ``top`` означает, что элемент должен быть *сдвинут* на 80 пикселей относительно *верхнего* края элемента. Результат наших действий можно увидеть ниже.
 
 .. raw:: html
 
@@ -490,7 +491,7 @@ By applying the ``left`` and ``top`` properties as shown in the example above, w
 	    <span class="css-rel-ex2-blue">Span 2</span>
 	</div>
 
-From this behaviour, we can deduce that the properties ``right`` and ``bottom`` *push* elements from the right and bottom respectively. We can test this out by applying the properties to our ``.yellow`` class as shown below.
+Таким образом, можно сделать вывод, что свойства ``right`` и ``bottom`` *сдвигают* элементы относительно правого и нижнего края соответственно. Мы можем проверить это, применив свойства к нашему классу ``.yellow``, как показано ниже.
 
 .. code-block:: css
 	
@@ -503,7 +504,7 @@ From this behaviour, we can deduce that the properties ``right`` and ``bottom`` 
 	    bottom: 10px;
 	}
 
-This produces the following output. The ``.yellow`` container is pushed into the top left-hand corner of our container by pushing up and to the right.
+Это приводит к следующему отображению элемента на экране: контейнер ``.yellow`` сдвигается в верхний левый угол нашего контейнера, перемещаясь вверх и влево.
 
 .. raw:: html
 
@@ -536,9 +537,9 @@ This produces the following output. The ``.yellow`` container is pushed into the
 	    <span class="css-rel-ex3-blue">Span 2</span>
 	</div>
 
-.. note:: What happens if you apply both a ``top`` and ``bottom`` property, or a ``left`` and ``right`` property? Interestingly, the *first* property for the relevant axis is applied. For example, if ``bottom`` is specified before ``top``, the ``bottom`` property is used.
+.. note:: Что произойдет, если Вы примените свойства ``top`` и ``bottom`` или ``left`` и ``right`` одновременно? В этом случае применяется *первое* встречаемое свойство для соответствующей оси. Например, если свойство ``bottom`` указано перед ``top``, то используется свойство ``bottom``.
 
-We can even apply relative positioning to elements which are floated. Consider our earlier example where the two ``<span>`` elements were positioned on either side of the container by floating ``.blue`` to the right.
+Мы можем даже использовать относительно позиционирование к элементам, которые имеют свойство ``float``. Рассмотрим наш предыдущий пример, где два элемента ``<span>`` были расположены по обе стороны контейнера, задав для класса ``.blue`` свойство ``float`` со значением ``right``
 
 .. raw:: html
 
@@ -565,7 +566,7 @@ We can even apply relative positioning to elements which are floated. Consider o
 	    <span class="css-rel-ex4-blue">Span 2</span>
 	</div>
 
-We can then alter the ``.blue`` class to the following.
+Затем мы можем изменить класс ``.blue`` следующим образом.
 
 .. code-block:: css
 	
@@ -604,13 +605,13 @@ We can then alter the ``.blue`` class to the following.
 	    <span class="css-rel-ex5-blue">Span 2</span>
 	</div>
 
-This therefore means that relative positioning works from the position at which the element would have otherwise been at - regardless of any other position-changing properties being applied. Neat!
+Таким образом, это означает, что относительное позиционирование работает относительно положения, в котором элемент находился бы, если бы не использовалось свойство ``position: relative;`` - независимо от любых других свойств изменяющих его положение. Здорово!
 
-Absolute Positioning
-....................
-Our final positioning technique is *absolute positioning.* While we still modify the ``position`` parameter of a style, we use ``absolute`` as the value instead of ``relative``. In contrast to relative positioning, absolute positioning places an element *relative to its first parent element that has a position value other than static.* This may sound a little bit confusing, but let's go through it step by step to figure out what exactly happens.
+Абсолютное позиционирование
+...........................
+Последний рассматриваемый нами метод - это *абсолютное позиционирование*. Мы опять изменяем параметр ``position`` стиля, но используем значение ``absolute`` вместо ``relative``. В отличие от относительного позиционирования, абсолютное позиционирование размещает элемент *относительно его первого родительского элемента, который имеет значение ``position`` отличающееся от ``static``*. Это может быть сложно понять, поэтому давайте разберем шаг за шагом, что происходит на самом деле.
 
-First, we can again take our earlier example of the two coloured ``<span>`` elements within a ``<div>`` container. The two ``<span>`` elements are placed side-by-side as they would naturally.
+Сначала мы опять будем использовать наш предыдущий пример с двумя цветными элементами ``<span>`` внутри контейнера ``<div>``. Два элемента ``<span>`` размещаются рядом друг с другом по умолчанию.
 
 .. code-block:: html
 	
@@ -636,7 +637,7 @@ First, we can again take our earlier example of the two coloured ``<span>`` elem
 	    border: 1px solid black;
 	}
 
-This produces the output shown below. Note that we again set our ``.container`` height to an artificial value of 70 pixels to give us more room.
+Это приведет к отображению на экране показанному ниже. Обратите внимание, что мы опять искусственным образом задали высоту нашего элемента с классом ``.container`` в 70 пикселей, чтобы увеличить размер контейнера.
 
 .. raw:: html
 	
@@ -669,7 +670,7 @@ This produces the output shown below. Note that we again set our ``.container`` 
 		</div>
 	</div>
 
-We now apply absolute positioning to our ``.blue`` element.
+Теперь применим абсолютное позиционирование к нашему элементу ``.blue``.
 
 .. code-block:: css
 	
@@ -679,7 +680,7 @@ We now apply absolute positioning to our ``.blue`` element.
 	    position: absolute;
 	}
 
-Like with relative positioning, this has no overall effect on the positioning of our blue element in the webpage. We must apply one or more of ``top``, ``bottom``, ``left`` or ``right`` in order for a new position to take effect. As a demonstration, we can apply ``top`` and ``left`` properties to our blue element like in the example below.
+Как и в случае относительного позиционирования, это никак не влияет на позиционирование нашего синего элемента на странице. Мы должно использовать одно или несколько свойств ``top``, ``bottom``, ``left`` или ``right``, чтобы положение элемента изменилось. В качестве примера, мы можем применить к нашему синему элементу свойства ``top`` и ``left`` как показано ниже в примере.
 
 .. code-block:: css
 	
@@ -727,9 +728,9 @@ Like with relative positioning, this has no overall effect on the positioning of
 		</div>
 	</div>
 
-Wow, what happened here? Our blue element is now positioned outside of our container! You'll note that if you run this code within your own web browser window, the blue element appears in the top left-hand corner of the viewport. This therefore means that our ``top``, ``bottom``, ``left`` and ``right`` properties take on a slightly different meaning when absolute positioning is concerned.
+Ничего себе! Наш синий элемент теперь находится за пределами нашего контейнера! Обратите внимание, что если Вы запустите этот код в окне Вашего браузера, то синий элемент появится в верхнем левом углу окна. Таким образом, это означает, что наши свойства top``, ``bottom``, ``left`` и ``right`` имеют несколько другое значение, когда применяется абсолютное позиционирование.
 
-As our container element's position is by default set to ``position: static``, the blue and yellow elements are moving to the top left and bottom right of our screen respectively. Let's now modify our ``.yellow`` class to move the yellow ``<span>`` to 5 pixels from the bottom right-hand corner of our page. The ``.yellow`` class now looks like the example below.
+Поскольку свойство ``position`` нашего элемента контейнера по умолчанию равно ``static``, синий и желтый (после добавления свойств ``bottom`` и ``right`` - прим. переводчика) элементы перемещаются в верхний левый и правый нижний угол нашего экрана соответственно. Давайте теперь изменим наш класс ``.yellow`` и сдвинем желтый ``<span>`` на 5 пикселей от нижнего правого края нашей страницы. Класс ``.yellow`` теперь будет выглядеть как показано ниже в примере.
 
 .. code-block:: css
 	
@@ -741,7 +742,7 @@ As our container element's position is by default set to ``position: static``, t
 	    right: 5px;
 	}
 
-This produces the following result.
+Это приводит к следующему результату.
 
 .. raw:: html
 
@@ -781,7 +782,7 @@ This produces the following result.
 		</div>
 	</div>
 
-But what if we don't want our elements to be positioned absolutely in relation to the entire page? More often than not, we'll be looking to adjusting the positioning of our elements in relation to a container. If we recall our definition for absolute positioning, we will note that absolute positions are calculated *relative to the first parent element that has a position value other than static.* As our container is the only parent for our two ``<span>`` elements, the container to which the absolutely positioned elements is therefore the ``<body>`` of our HTML page. We can fix this by adding ``position: relative;`` to our ``.container`` class, just like in the example below.
+Но что если мы не хотим, чтобы наши элементы абсолютно позиционировались относительно всей страницы? Чаще всего, мы хотим изменить положение наших элементов относительно контейнера. Если мы вспомним наше определение для абсолютного позиционирования, то заметим, что абсолютные местоположения вычисляются *относительно первого родительского элемента, который имеет значение `position` отличающееся от ``static``*. Поскольку наш контейнер является единственным родителем для двух наших элементов ``<span>``, контейнер относительно которого абсолютно позиционируются элементы, таким образом, является ``<body>`` нашей HTML страницы. Мы можем изменить это, добавив ``position: relative;`` к нашему классу ``.container``, как показано в приведенном ниже примере.
 
 .. code-block:: css
 	
@@ -791,7 +792,7 @@ But what if we don't want our elements to be positioned absolutely in relation t
 	    position: relative;
 	}
 
-This produces the following result. ``.container`` becomes the first parent element with a position value of anything other than ``relative``, meaning our ``<span>`` elements latch on!
+Это приводит к следующему результату: ``.container`` становится первым родительским элементом, значение свойство ``position`` которого отличается от ``static``, поэтому позиционирование наших элементов ``<span>`` связано с ним!
 
 .. raw:: html
 
@@ -831,7 +832,7 @@ This produces the following result. ``.container`` becomes the first parent elem
 		</div>
 	</div>
 
-Our elements are now absolutely positioned in relation to ``.container``. Awesome! Let's adjust the positioning values of our two ``<span>`` elements to move them around.
+Наши элементы теперь абсолютно позиционируются относительно ``.container``. Прекрасно! Давайте теперь назначим значения для положений наших двух элементов ``<span>``, чтобы переместить их.
 
 .. code-block:: css
 	
@@ -891,38 +892,38 @@ Our elements are now absolutely positioned in relation to ``.container``. Awesom
 		</div>
 	</div>
 
-Note that we also apply ``float: right;`` to our ``.blue`` element. This is to demonstrate that unlike relative positioning, absolute positioning *ignores any other positioning properties applied to an element*. ``top: 10px`` for example will always ensure that an element appears 10 pixels down from its parent (set with ``position: relative;``), regardless of whether the element has been floated or not.
+Заметьте, что мы также применили свойство ``float: right;`` к нашему элементу с классом ``.blue``. Оно используется, чтобы показать, что в отличие от относительного позиционирования, абсолютное позиционирование *игнорирует любые другие свойства изменяющие положение элемента*. Например, пара ``top: 10px`` всегда гарантирует, что элемент опуститься на 10 пикселей вниз относительно его родителя (у которого установлено свойство ``position: relative;``), не зависимо от того имеет он свойство ``float`` или нет.
 
 .. _css-course-box-model-label:
 
-The Box Model
--------------
-When using CSS, you're never too far away from using *padding*, *borders* and *margins*. These properties are some of the most fundamental styling techniques which you can apply to the elements within your webpages. They are incredibly important and are all related to what we call the *CSS box model.*
+Блочная модель
+--------------
+При использовании CSS вы всегда будете использовать свойства *padding*, *border* и *margin*. Эти свойства являются одними из основных методов стилизации, которые Вы можете применить к элементам внутри Ваших страниц. Они невероятно важны и все связаны с тем, что мы называем *CSS блочной моделью*.
 
-Each element that you create on a webpage can be considered as a box. The `CSS box model <http://www.w3.org/TR/CSS2/box.html>`_ is defined by the `W3C <http://www.w3.org/>`_ as a formal means of describing the elements or boxes that you create, and how they are rendered in your web browser's viewport. Each element or box consists of *four separate areas*, all of which are illustrated in Figure :num:`fig-css-box-model`. The areas - listed from inside to outside - are the *content area*, the *padding area*, the *border area* and the *margin area*.
+Каждый элемент, который Вы создаете на странице, можно рассматривать как блок. `CSS блочная модель <http://www.w3.org/TR/CSS2/box.html>`_ определяется `W3C <http://www.w3.org/>`_ как формальный инструмент описания элементов или блоков, которые Вы создаёте, и указывает как они отображаются на Вашей странице. Каждый элемент или блок состоит из *четырех отдельных областей*, каждая из которых показана на Рисунке :num:`fig-css-box-model`. Области - перечисляемые начиная с внутренней, заканчивая наружной - это *область с содержимым*, *область внутреннего отступа*, *область границ* и *область внешнего отступа*.
 
 .. _fig-css-box-model:
 
 .. figure:: ../images/css-box-model.svg
 	:figclass: align-center
 	
-	An illustration demonstrating the CSS box model, complete with key showing the four areas of the model.
+	Пример, показывающий CSS блочную модель, дополненная обозначениями, указывающими на четыре области модели.
 
-For each element within a webpage, you can create a margin, apply some padding or a border with the respective properties ``margin``, ``padding`` and ``border``. Margins clear a transparent area around the border of your element, meaning margins are incredibly useful for creating a gap between elements. In contrast, padding creates a gap between the content of an element and its border. This therefore gives the impression that the element appears wider. If you supply a background colour for an element, the background colour is extended with the element's padding. Finally, borders are what you might expect them to be - they provide a border around your element's content and padding.
+Для каждого элемента на странице, Вы можете задать внешний и внутренний отступ или границу с помощью соответствующих свойств ``margin``, ``padding`` и ``border``. Внешние отступы создают прозрачную область вокруг границ Вашего элемента, поэтому они часто используются для создания зазоров между элементами. В отличие от них внутренние отступы создают зазоры между содержимым элемента и его границей. Таким образом, создаётся впечатление, что элемент стал шире. Если Вы указываете цвет фона для элемента, цвет фона распространяется и на внутренние отступы. Наконец, границы, как можно было бы ожидать - создают границу вокруг содержимого Вашего элемента и внутренних отступов.
 
-For more information on the CSS box model, check out `addedbytes excellent explanation of the model <http://www.addedbytes.com/articles/for-beginners/the-box-model-for-beginners/>`_. Heck, `why not even order a t-shirt with the box model on it <http://cssboxmodel.com/>`_?
+Чтобы узнать больше о CSS блочной модели, просмотрите `превосходное объяснение модели на сайте addedbytes <http://www.addedbytes.com/articles/for-beginners/the-box-model-for-beginners/>`_. `Почему бы даже не заказать футболку с блочной моделью <http://cssboxmodel.com/>`_?
 
-.. warning:: As you may gather from examining Figure :num:`fig-css-box-model`, the width of an element isn't defined simply by the value you enter as the element's ``width``. Rather, you should always consider the width of the border and padding on both sides of your element. This can be represented mathematically as:
-	
+.. warning:: Как можно понять из Рисунка :num:`fig-css-box-model`, ширина элемента определяется не значением, которое Вы ввели в свойство ``width`` элемента. Также всегда нужно учитывать ширину границы и внутренних отступов с обеих сторон Вашего элемента. Математически её можно представить как:
+
 	``total_width = content_width + left padding + right padding + left border + left margin + right margin``
 
-	Don't forget this. You'll save yourself a lot of trouble if you don't!
+	Не забывайте об этом. Это позволит Вам избежать множества проблем.
 
-Styling Lists
--------------
-Lists are everywhere. Whether you're reading a list of learning outcomes for a course or a reading a list of times for the train, you know what a list looks like and appreciate its simplicity. If you have a list of items on a webpage, why not use a HTML list? Using lists within your webpages - `according to Brainstorm and Raves <http://brainstormsandraves.com/articles/semantics/structure/>`_ - promotes good HTML document structure, allowing text-based browsers, screen readers and other browsers that do not support CSS to render your page in a sensible manner.
+Стилизация списков
+------------------
+Списки постоянно используются в повседневной жизни. Когда Вы читаете список оценок за курс или расписание времен прибытия/отбытия поездов Вы знаете как выглядит список и оцениваете его за простоту. Если у Вас есть список элементов на странице, почему бы не использовать HTML список? Использование списков на Ваших страницах - ` в соответствии со статьёй на сайте Brainstorm and Raves <http://brainstormsandraves.com/articles/semantics/structure/>`_ - приводит к хорошей структуре HTML документа, что позволяет текстовым браузерам, программам для чтения с экрана или другим браузерам, которые не поддерживают CSS, правильно отображать Вашу страницу.
 
-Lists however don't look particularly appealing to end-users. Take the following HTML list that we'll be styling as we go along trying out different things.
+Тем не менее списки не выглядят привлекательно для конечных пользователей. Рассмотрим следующий HTML список, который мы будем стилизовать, применяя к нему различные свойства.
 
 .. code-block:: html
 	
@@ -932,7 +933,7 @@ Lists however don't look particularly appealing to end-users. Take the following
 	    <li>Two Scoops of Django</li>
 	</ul>
 
-Rendered without styling, the list looks pretty boring.
+Без стилизации список выглядит довольно серо.
 
 .. raw:: html
 	
@@ -953,7 +954,7 @@ Rendered without styling, the list looks pretty boring.
 		</ul>
 	</div>
 
-Let's make some modifications. First, let's get rid of the ugly bullet points. With our ``<ul>`` element already (and conveniently) set with class ``sample-list``, we can create the following style.
+Давайте сделаем некоторые изменения. Сначала давайте избавимся от некрасивых маркеров. Учитывая, что наш элемент ``<ul>`` (что удобно) имеет класс ``sample-list``, мы можем создать следующий стиль.
 
 .. code-block:: css
 	
@@ -961,7 +962,7 @@ Let's make some modifications. First, let's get rid of the ugly bullet points. W
 	    list-style-type: none;
 	}
 
-This produces the following result. Note the now lacking bullet points!
+Это приводит к следующему результату. Обратите внимание на отсутствие маркеров!
 
 .. raw:: html
 	
@@ -979,7 +980,7 @@ This produces the following result. Note the now lacking bullet points!
 		</ul>
 	</div>
 
-Let's now change the orientation of our list. We can do this by altering the ``display`` property of each of our list's elements (``<li>``). The following style maps to this for us.
+Теперь давайте изменим ориентацию нашего списка. Мы можем сделать это, изменив свойство ``display`` каждого элемента нашего списка (``<li>``). Это осуществляет следующий стиль.
 
 .. code-block:: css
 	
@@ -987,7 +988,7 @@ Let's now change the orientation of our list. We can do this by altering the ``d
 	    display: inline;
 	}
 
-When applied, our list elements now appear on a single line, just like in the example below.
+После это применения, элементы нашего списка теперь находятся на одной строке, как показано ниже в примере.
 
 .. raw:: html
 	
@@ -1011,7 +1012,7 @@ When applied, our list elements now appear on a single line, just like in the ex
 	</div>
 	</div>
 
-While we may have the correct orientation, our list now looks awful. Where does one element start and the other end? It's a complete mess! Let's adjust our list element style and add some contrast and padding to make things look nicer.
+Хотя мы задали ему правильную ориентацию, теперь наши список выглядит ужасно. Где начинается один элемент, а другой кончается? Полная неразбериха! Давайте изменим стиль элемента нашего списка и добавим цвета и внутренние отступы, чтобы они выглядели красивее.
 
 .. code-block:: css
 	
@@ -1022,7 +1023,7 @@ While we may have the correct orientation, our list now looks awful. Where does 
 	    padding: 10px;
 	}
 
-When applied, our list looks so much better - and quite professional, too!
+После применения стиля, наш список выглядит намного лучше - а также сделанным профессионально!
 
 .. raw:: html
 
@@ -1049,22 +1050,22 @@ When applied, our list looks so much better - and quite professional, too!
 	</div>
 	</div>
 
-From the example, it is hopefully clear that lists can be easily customised to suit the requirements of your webpages. For more information and inspiration on how to style lists, you can check out some of the selected links below.
+Из примера понятно, что списки можно легко стилизировать согласно требованиям для Ваших страниц. Чтобы узнать больше и вдохновиться тем, как можно стилизировать списки, Вы можете просмотреть некоторые из ссылок, приведенных ниже.
 
-* Have a look at `this excellent tutorial on styling lists on A List Apart <http://alistapart.com/article/taminglists/>`_.
-* Have a look at `this about.com article which demonstrates how to use your own bullets <http://webdesign.about.com/od/css/a/aa012907.htm>`_!
-* Check out `this advanced tutorial from Web Designer Wall <http://webdesignerwall.com/tutorials/advanced-css-menu>`_ which uses graphics to make awesome looking lists. In the tutorial, the author uses Photoshop - you could try using a simpler graphics package if you don't feel confident with Photoshop.
-* `This awesome site compilation from devsnippets.com <http://devsnippets.com/article/styling-your-lists.html>`_ provides some great inspiration and tips on how you can style lists.
+* Обратите внимание на это `прекрасное учебное пособие по стилизации списков на сайте A List Apart <http://alistapart.com/article/taminglists/>`_.
+* Обратите внимание на `эту статью на сайте about.com, в которой показано как можно применить свои собственные маркеры для списка <http://webdesign.about.com/od/css/a/aa012907.htm>`_!
+* Просмотрите `это продвинутое учебное пособие на сайте Web Designer Wall <http://webdesignerwall.com/tutorials/advanced-css-menu>`_, в котором используется графика, чтобы создать превосходно выглядящие списки. В этом пособии автор использует Photoshop - но Вы можете попытаться использовать более простой графический пакет, если плохо знаете Photoshop.
+* `Эта прекрасная подборка сайтов от devsnippets.com <http://devsnippets.com/article/styling-your-lists.html>`_ вдохновит Вас и даст советы как Вы можете стилизовать списки.
 
-The possibilities of styling lists is endless! You could say it's a never-ending list...
+Возможности стилизации списков бесконечны! Они представляют собой бесконечный список...
 
 .. _css-course-links-label:
 
-Styling Links
--------------
-CSS provides you with the ability to easily style hyperlinks in any way you wish. You can change their colour, their font or any other aspect that you wish - and you can even change how they look when you hover over them!
+Стилизация ссылок
+-----------------
+CSS предоставляет Вам возможность легко стилизировать гиперссылки по Вашему желанию. Вы можете изменить их цвет, шрифт или любой другое свойство, которое захотите - Вы можете даже изменить их вид при наведении на них!
 
-Hyperlinks are represented within a HTML page through the ``<a>`` tag, which is short for *anchor*. We can apply styling to all hyperlinks within your webpage as shown in following example.
+Гиперссылки представляются внутри HTML страницы с помощью тега ``<a>``, который является сокращением от *anchor*. Мы можем применить стилизацию ко всем гиперссылкам на Вашей странице, как показано в следующем примере.
 
 .. code-block:: css
 	
@@ -1073,7 +1074,7 @@ Hyperlinks are represented within a HTML page through the ``<a>`` tag, which is 
 	    text-decoration: none;
 	}
 
-Every hyperlink's text colour is changed to red, with the default underline of the text removed. If we then want to change the ``color`` and ``text-decoration`` properties again when a user hovers over a link, we can create another style using the so-called `pseudo-selector <http://css-tricks.com/pseudo-class-selectors/>`_ ``:hover``. Our two styles now look like the example below.
+Цвет текста каждой гиперссылки изменится на красный, а стандартное подчеркивание текста при наведении исчезнет. Если мы хотим изменить свойства ``color`` и ``text-decoration`` опять при наведении пользователем на ссылку, мы можем создать другой стиль, используя так называемый `псевдо-селектор <http://css-tricks.com/pseudo-class-selectors/>`_ ``:hover``. Наши два стиля теперь будут выглядеть, как показано ниже в примере.
 
 .. code-block:: css
 	
@@ -1087,7 +1088,7 @@ Every hyperlink's text colour is changed to red, with the default underline of t
 	    text-decoration: underline;
 	}
 
-This produces links as shown below. Hover over them to see them change!
+Это приведет к ссылкам показанным ниже. Наведите указатель мыши на них, чтобы увидеть, как они изменятся!
 
 .. raw:: html
 
@@ -1113,7 +1114,7 @@ This produces links as shown below. Hover over them to see them change!
 		<a href="http://2scoops.org/">Two Scoops of Django</a>
 	</div>
 
-You may not however wish for the same link styles across the entire webpage. For example, your navigation bar may have a dark background while the rest of your page has a light background. This would necessitate having different link stylings for the two areas of your webpage. The example below demonstrates how you can apply different link styles by using a slightly more complex CSS style selector.
+Тем не менее, Вы можете не захотеть использовать один и тот же стиль ссылок для всей страницы. Например, Ваша навигационная панель может иметь темный фон, а остальная страница - светлый. Это потребует различных стилей ссылок для двух областей на Вашей странице. Пример, показанный ниже, демонстрирует как Вы можете назначить разные стили для ссылок, используя немного более сложный селектор для CSS стилей.
 
 .. code-block:: css
 	
@@ -1144,7 +1145,7 @@ You may not however wish for the same link styles across the entire webpage. For
 	    text-decoration: underline;
 	}
 
-We can then construct some simple markup to demonstrate these classes.
+Затем мы создаем простую разметку, чтобы показать, как выглядят эти классы.
 
 .. code-block:: html
 	
@@ -1156,7 +1157,7 @@ We can then construct some simple markup to demonstrate these classes.
 	    <a href="http://www.bing.co.uk/">Bing Search</a>
 	</div>
 
-The resultant output looks similar to the example shown below. Again, hover over the links to see them change!
+Полученный результат будет поход на пример, показанный ниже. Опять наведите курсор мыши на ссылки, чтобы увидеть, как они изменятся!
 
 .. raw:: html
 
@@ -1212,37 +1213,36 @@ The resultant output looks similar to the example shown below. Again, hover over
 		</div>
 	</div>
 
-With a small amount of CSS, you can make some big changes in the way your webpages appear to end users.
+Используя небольшой фрагмент CSS кода, Вы можете сильно изменить внешний вид Вашей страницы и то как она будет отображаться конечным пользователям.
 
-The Cascade
+Каскадность
 -----------
-It's worth pointing out where the *Cascading* in *Cascading Style Sheets* comes into play. You may have noticed in the example rendered output in Figure :num:`fig-css-render` that the red text is **bold**, yet no such property is defined in our ``h1`` style. This is a perfect example of what we mean by *cascading styles*. Most HTML elements have associated with them a *default style* which web browsers apply. For ``<h1>`` elements, the `W3C website provides a typical style that is applied <http://www.w3.org/TR/html-markup/h1.html#h1-display>`_. If you check the typical style, you'll notice that it contains a ``font-weight: bold;`` property and value pairing, explaining where the **bold** text comes from. As we define a further style for ``<h1>`` elements, typical property/value pairings *cascade* down into our style. If we define a new value for an existing property/value pairing (such as we do for ``font-size``), we *override* the existing value. This process can be repeated many times - and the property/value pairings at the end of the process are applied to the relevant element. Check out :num:`fig-css-cascading` for a graphical representation of the cascading process.
+Стоит отметить, какую роль играет слово *Каскадные* в словосочетании *Каскадные таблицы стилей*. Вы должно быть заметили что в примере, снимок экрана которого показан на рисунке :num:`fig-css-render`, красный текст является **полужирным**, хотя такое свойство не определено в нашем стиле ``h1``. Это прекрасный пример того, что имеется ввиду под *каскадными стилями*. Большинство HTML элементов имеют связанный с ними *стиль по умолчанию*, который используются веб-браузеры. Для элементов ``<h1>`` `применяется стандартный стиль, который предоставляет веб-сайт W3C <http://www.w3.org/TR/html-markup/h1.html#h1-display>`_. Если Вы просмотрите стандартный стиль, то заметите, что они содержит пару свойство/значение ``font-weight: bold;``, поясняющее откуда взялся **полужирный** текст. После того как мы определили дополнительные стиль для элементов ``<h1>``, стандартные пары свойство/значение *каскадно* подставляются в наш стиль. Если мы определили новое значение для существующей пары (например, как мы сделали для ``font-size``), то мы *перезаписываем* существующее значение. Этот процесс может быть повторен многократно - все пары свойство/значение в конце процесса применяются к соответствующему элементу. На Рисунке :num:`fig-css-cascading` показано графическое представление процесса каскадирования.
 
 .. _fig-css-cascading:
 
 .. figure:: ../images/css-cascading.png
 	:figclass: align-center
 
-	Illustration demonstrating the *cascading* in *Cascading Style Sheets* at work. Take note of the ``font-size`` property in our ``h1`` style - it is overridden from the default value. The cascading styles produce the resultant style, shown on the right of the illustration.
+	Пример *каскадности* в *Каскадных таблицах стилей*. Примите к сведению, что свойство ``font-size`` в нашем стиле ``h1`` - перезаписывает значение по умолчанию. Каскадные стили приводят к окончательному стилю, который показан в правой части рисунка.
 
 .. _css-course-reading-label:
 
-Additional Reading
-------------------
-What we've discussed in this section is by no means a definitive guide to CSS. There are `300-page books <http://www.amazon.co.uk/Professional-CSS-Cascading-Sheets-Design/dp/047017708X>`_ devoted to CSS alone! What we have provided you with here is a very brief introduction showing you the very basics of what CSS is and how you can use it.
+Дополнительная литература
+-------------------------
+То, что мы рассмотрели в этом разделе нельзя считать полным руководством по CSS. Существуют 300 страничные книги <http://www.amazon.co.uk/Professional-CSS-Cascading-Sheets-Design/dp/047017708X>`_ посвященные только CSS! Здесь представлено только очень краткое введение, показывающее базовые основы CSS и как их можно использовать.
 
-As you develop your web applications, you'll undoubtedly run into issues and frustrating problems with styling web content. This is part of the learning experience, and you still have a bit to learn. We strongly recommend that you invest some time trying out several online tutorials about CSS - there isn't really any need to buy a book (unless you want to).
+При разработке веб-приложений, Вы несомненно столкнетесь с проблемами, связанными со стилизацией веб-содержимого. Материал представленный здесь является частью процесса обучения и Вам всё ещё есть чему учиться. Мы настоятельно рекомендуем Вам потратить некоторое время на изучение нескольких онлайн пособий по CSS - на самом деле не обязательно покупать книгу (если только Вы сами этого не хотите).
 
-- The *W3C* `provides a neat tutorial on CSS <http://www.w3.org/Style/Examples/011/firstcss.en.html>`_, taking you by the hand and guiding you through the different stages required. They also introduce you to several new HTML elements along the way, and show you how to style them accordingly.
+На сайте *W3C* `находится хорошее пособие по CSS <http://www.w3.org/Style/Examples/011/firstcss.en.html>`_, в котором пошагово объясняются различные необходимые части CSS. В нём также вводятся несколько новых для Вас HTML элементов и показывается как Вы можете стилизовать их.
 
-- `W3Schools also provides some cool CSS tutorials <http://www.w3schools.com/css/css_examples.asp>`_. Instead of guiding you through the process of creating a webpage with CSS, *W3Schools* has a series of mini-tutorials and code examples to show you to to achieve a particular feature, such as setting a background image. We highly recommend that you have a look here.
+На сайте `W3Schools также существует несколько интересных CSS пособий <http://www.w3schools.com/css/css_examples.asp>`_. Вместо того, чтобы направлять Вас в процессе создания веб-страницы с CSS, на сайте *W3Schools* находятся ряд мини-уроков и примеров кода, которые покажут Вам как добиться желаемого результата, например, настроить фоновое изображение. Мы настоятельно рекомендуем Вам просмотреть их.
 
-- `html.net has a series of lessons on CSS <http://html.net/tutorials/css/>`_ which you can work through. Like W3Schools, the tutorials on *html.net* are split into different parts, allowing you to jump into a particular part you may be stuck with.
+На сайте `html.net существует серия уроков по CSS <http://html.net/tutorials/css/>`_, которые Вы можете пройти. Как и на сайте W3Schools уроки на *html.net* разбиты на части, что позволяет Вам перейти к определенной части, которая Вам интересна.
 
-- It's also worth having a look at `CSSeasy.com <http://csseasy.com/>`_'s collection of tutorials, providing you with the basics on how to develop different kinds of page layouts.
+Также стоит просмотреть коллекцию учебных пособий на сайте `CSSeasy.com <http://csseasy.com/>`, в которых даются основы по разработке различных макетов страниц.
 
-This list is by no means exhaustive, and a quick web search will indeed yield much more about CSS for you to chew on. Just remember: CSS can be tricky to learn, and there may be times where you feel you want to throw your computer through the window. We say this is pretty normal - but take a break if you get to that stage. We'll be tackling some more advanced CSS stuff as we progress through the tutorial in the next few sections.
+Это далеко не весь список и воспользовавшись поиском в Интернете Вы найдете намного больше информации о CSS. Просто запомните: некоторые особенности CSS достаточно трудны для понимания и будут возникать моменты, когда Вам захочется выкинуть Ваш компьютер в окно. Это вполне нормально - просто отдохните прежде чем продолжать. Мы рассмотрим некоторые более сложные особенности CSS в этом учебном пособии в следующих нескольких разделах.
 
-.. note:: With an increasing array of devices equipped with more and more powerful processors, we can make our web-based content do more. To keep up, `CSS has constantly evolved <http://www.w3schools.com/css3/css3_intro.asp>`_ to provide new and intuitive ways to express the presentational semantics of our SGML-based markup. To this end, support `for relatively new CSS properties <http://www.quackit.com/css/css3/properties/>`_ may be limited on several browsers, which can be a source of frustration. The only way to reliably ensure that your website works across a wide range of different browsers and platforms is to `test, test and test some more! <http://browsershots.org/>`_
-
+.. note:: С увеличением числа устройств, оснащенных всё более и более мощными процессорами, мы можем всё больше манипулировать веб-содержимым страницы. Чтобы не отставать от прогресса, `CSS постоянно эволюционирует <http://www.w3schools.com/css3/css3_intro.asp>`_, предоставляя всё новые и интуитивно понятные способы описания внешнего вида нашей SGML разметки. Из-за этого `поддержка относительно новых CSS свойств <http://www.quackit.com/css/css3/properties/>`_ может осуществляться не всеми браузерами, что конечно разочаровывает. Единственный способ гарантировать, что Ваш веб-сайт будет работать на различных браузерах и платформах - это проводить `тесты, тесты и ещё раз тесты! <http://browsershots.org/>`_.
 
