@@ -1,8 +1,8 @@
-Summary
-=======
+Резюме
+======
 
-In this book, we have gone through the process of web development from specification to deployment. Along the way we have shown how to use the Django framework to construct the models, views and templates associated with a web application. We have also demonstrated how toolkits and services like Bootstrap, JQuery, Bing Search, PythonAnywhere, etc can be integrated within an application. However, the road doesn't stop here. While, as we have only painted the broad brush strokes of a web application - as you have probably noticed there are lots of improvements that could be made to Rango - and these finer details often take a lot more time to complete as you polish the application. By developing your application on a firm base and good setup you will be able to construct up to 80% of your site very rapidly and get a working demo online.
+В этой книге мы рассмотрели процесс веб-разработки от постановки ТЗ до развертывания готового приложения. По ходу мы показали, как использовать фреймворк Django для создания моделей, представлений и шаблонов, связанных с веб-приложением. Мы также показали как набор инструментов и служб, таких как Bootstrap, JQuery, Bing Search, PythonAnywhere и т. д. могут быть интегрированы в приложение. Тем не менее, Вы не должны останавливаться на достигнутом. Мы рассмотрели только основные направления создания веб-приложения - и как Вы уже заменили существует множество улучшений, которые можно внести в Rango - и при доработке приложения часто требуется намного больше времени, чтобы их реализовать. При разработке приложения, имея хорошие базовые значения и хорошо настроенное окружение, Вы сможете реализовать до 80% Вашего сайта очень быстро и запустить в онлайне рабочую предварительную версию приложения.
 
-In future versions of this book we intend to provide some more details on various aspects of the framework, along with covering the basics of some of the other fundamental technologies associated with web development. If you have any suggestions or comments about how to improve the book please get in touch.
+В последующих версиях этой книги мы намерены более подробно рассмотреть различные особенности фреймворка, а также некоторые другие фундаментальные технологии, связанные с веб-разработкой. Если у Вас есть предложения или советы о том как улучшить эту книгу, пожалуйста, свяжитесь с нами.
 
-Please report any bugs, problems, etc, or submit change requests via GitHub: https://github.com/leifos/tango_with_django_book/tree/master/17 
+Сообщайте о любых багах, проблемах и т. д. или отправляйте запросы через GitHub: https://github.com/leifos/tango_with_django_book/tree/master/17
