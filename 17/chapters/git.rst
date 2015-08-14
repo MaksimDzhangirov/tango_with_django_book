@@ -1,141 +1,142 @@
 .. _git-crash-course:
 
-A Git Crash Course
-------------------
-We strongly recommend that you spend some time familiarising yourself with a version control system. For your benefit, this section provides you with a crash course in how to use `Git <http://en.wikipedia.org/wiki/Git_(software)>`_, one of the many version control systems available. Originally developed by `Linus Torvalds <http://en.wikipedia.org/wiki/Linus_Torvalds>`_, Git is today very popular, and is used by open-source and closed-source projects alike.
+Ускоренный курс по Git
+----------------------
+Мы настоятельно рекомендуем Вам потратить некоторое время на самостоятельное ознакомление с системой контроля версий. Для удобства в этом разделе дается ускоренный курс по использованию `Git <http://en.wikipedia.org/wiki/Git_(software)>`_, одной из многих доступных систем контроля версий. Первоначально разработанная `Линусом Торвальдсом <http://en.wikipedia.org/wiki/Linus_Torvalds>`_, Git сегодня очень популярная система и используется в проектах как с открытым, так и закрытым исходным кодом.
 
-This tutorial demonstrates at a high level how Git works, explains the basic commands that you can use, and provides an explanation of Git's workflow.
+В этом учебном пособии показано как работает Git на высоком уровне, объясняются основные команды, которые Вы можете использовать и даются пояснения к стандартной последовательности действий в Git.
 
-Why Use Version Control?
-************************
-As your software engineering skills develop, you will find that you are able to plan and implement ever more complex solutions to ever more complex problems. As a rule of thumb, the larger the problem specification, the more code you have to write. The more code you write, the greater the emphasis you should put on software engineering practices. Such practices include the use of design patterns and the DRY (don't repeat yourself) principle.
+Почему нужно использовать систему контроля версий?
+**************************************************
+По мере роста Ваших навыков разработки программного обеспечения, Вы увидите, что можете планировать и реализовывать решения для все более сложных задач. Как правило, чем больше ТЗ задачи, тем больше кода нужно написать. Чем больше кода Вы пишите, тем больше внимания нужно уделять практическим особенностям проектирования программного обеспечения. К ним относятся использование шаблонов проектирования и принципа DRY (не повторяться).
 
-Most projects have many files and many people working on those files. This is a recipe for chaos. Have you ever encountered one or more of the following situations:
+Большинство проектов состоят из множества файлов и много людей могут работать с этими файлами, что приводит к беспорядку. Вы когда-либо сталкивались с одной или несколькими из следующих ситуаций:
 
-* Made a change to code, realised it was a mistake and wanted to go back?
-* Lost code (through a faulty drive), or had a backup that was too old?
-* Had to maintain multiple versions of a product (perhaps for different organisations)?
-* Wanted to see the difference between two (or more) versions of your codebase?
-* Wanted to show that a particular change broke of fixed a piece of code?
-* Wanted to submit a change (patch) to someone else's code?
-* Wanted to see how much work is being done (where it was done, when it was done, or who did it)?
-* Wanted to experiment with a new feature without interfering without working code?
+* Делали изменения в коде, понимали, что они были ошибочными и хотели бы откатить изменения?
+* Потеряли код (из-за неисправности жесткого диска) или имели слишком старую резервную копию?
+* Должны были поддерживать несколько версий программного кода (возможно для разных организаций)?
+* Хотели бы посмотреть на различия в двух (или более) версиях Вашего базового кода?
+* Хотели бы показать, что конкретное изменение сломало или исправило определенную часть кода?
+* Хотели бы изменить (создать патч) какой-либо чужой код?
+* Хотели бы посмотреть какая часть работы сделана (где было сделано, когда было сделано или кто это сделал)?
+* Хотели бы поэкспериментировать с новой функцией, не вмешиваясь в рабочий код?
 
-Using a version control system makes your life easier in *all* of the above cases. While using version control systems at the beginning may seem like a hassle it will pay off later - so get into the habit now.
+Использование системы контроля версий упрощает работу во *всех* вышеприведенных случаях. Хотя использование системы контроля версиями сначала может показаться хлопотным, все окупится позже - пусть её использование войдет в привычку.
 
-Git on Windows
+Git на Windows
 **************
-Like Python, Git doesn't come as part of a standard Windows installation. However, Windows implementations of the version control system can be downloaded and installed. You can download the official Windows Git client from the Git `website <http://git-scm.com/download/win>`_. The installer provides the ``git`` command line program, which we use in this crash course.
+Как и Python, Git не входит в стандартную установку Windows. Тем не менее, могут быть загружены и установлены реализации систем контроля версий для Windows. Вы можете загрузить официальный клиент Git для Windows с `веб-сайта Git <http://git-scm.com/download/win>`_. В установку входит программа для работы с командной строкой ``git``, которую мы будем использовать в этом ускоренном курсе.
 
-You can also download a program called *TortoiseGit*, a graphical extension to the Windows Explorer shell. The program provides a really nice right-click Git context menu for files. This makes version control really easy to use. You can `download TortoiseGit from here <https://code.google.com/p/tortoisegit/>`_. Although we do not cover TortoiseGit in this crash course, many tutorials exist online for it. Check `this TortoiseGit tutorial <http://robertgreiner.com/2010/02/getting-started-with-git-and-tortoisegit-on-windows/>`_ if you are interested in using it.
+Вы также можете скачать программу под названием *TortoiseGit*, графическое расширение оболочки Windows Explorer. Программа предоставляет действительное хорошее контекстное меню Git, вызываемое нажатием правой кнопки мыши на файлах. Это действительно упрощает использование системы контроля версий. Вы можете `скачать TortoiseGit отсюда <https://code.google.com/p/tortoisegit/>`_. Хотя мы не рассматриваем TortoiseGit в этом ускоренном курсе, по нему существуют многие учебные пособия онлайн. Просмотрите `этот учебный курс по TortoiseGit <http://robertgreiner.com/2010/02/getting-started-with-git-and-tortoisegit-on-windows/>`_, если Вы хотите использовать его.
 
-The Git System
-**************
-Essentially, Git comprises of four separate storage locations: your *workspace*, the local *index*, the *local repository* and the *remote repository*. As the name may suggest, the remote repository is stored on some remote server - and is the only part of Git stored outwith your computer. This is considered a huge advantage of Git - you can make changes to your local repository when you may not have Internet access, and then apply those changes to the remote repository at a later stage.
+Система Git
+***********
+По существу Git состоит из четырех отдельных мест хранения: Вашего *рабочего каталога*, локального *индекса*, *локального репозитория* и *удаленного репозитория*. Как можно предположить из названия, удаленный репозиторий хранится где-то на удаленном сервере - и это единственная часть Git, которая хранится за пределами Вашего компьютера. Это считается большим преимуществом Git - Вы можете изменять Ваш локальный репозиторий, пока у Вас нет доступа к Интернету, а затем, позднее, передать эти изменения в удаленный репозиторий.
 
-.. note:: We keep repeating the word *repository*, but what do we actually mean by that? In the context of version control systems, consider a repository as a form of data structure that contains a set of *commit objects*, and a set of references to commit objects, called *heads*. You can find out more about what these are on `this Git tutorial <http://www.sbf5.com/~cduan/technical/git/git-1.shtml>`_ - and we will be explaining what the terminology for head means later on.
 
-For now though, the following bullet points provide an explanation of each part of the Git system.
+.. note:: Мы используем слово *репозиторий*, но что мы действительно имеем в виду? В контексте систем контроля версий, репозиторием считается форма структуры данных, которая содержит набор *объектов commit* и набор ссылок на эти объекты, называемые *heads*. Вы можете узнать больше о них из `этого учебного пособия по Git http://www.sbf5.com/~cduan/technical/git/git-1.shtml>`_ - мы объясним, что означает термин head позднее.
 
-* As already explained, the *remote repository* is the copy of your project's repository stored on some remote server. This is particularly important for Git projects that have more than one contributor - you require a central place to store all the work that your team members produce. If you're feeling adventurous, you can set up a Git server on a computer with Internet access and a properly configured firewall (check out `this Git server tutorial <http://www.seifeet.com/2012/11/centos-63-configuring-git-server.html>`_, for example), or use one of many services providing free Git repositories. One of the most widely-used services available today is `GitHub <https://github.com/>`_. In fact, this book has a Git `repository <https://github.com/leifos/tango_with_django>`_ on GitHub!
+В элементах приведенного ниже списка дается пояснение каждой части системы Git.
 
-* The *local repository* is a copy of the remote repository. The key difference however is that the local repository is stored on your own computer. It is to this repository you make all your additions, changes and deletions. When you reach a particular milestone, you can then push all your local changes to the remote repository. From there, you can instruct your team members to retrieve your changes. This concept is known as *pulling* from the remote repository, and we will explain that in a bit more detail later.
+* Как уже говорилось, *удаленный репозиторий* - это копия репозитория Вашего проекта, хранящаяся на некотором удаленном сервере. Это особенно важно для Git проектов, над которыми работает несколько человек - Вам необходимо место для хранения работы всех членов команды. Если Вы не боитесь трудностей, то можете настроить сервер Git на компьютере с доступом в Интернет и правильно настроенным брандмауэром (для этого обратитесь, например, к `этому учебному пособию по настройке Git сервера <http://www.seifeet.com/2012/11/centos-63-configuring-git-server.html>`) или используйте одну из многих сайтов, предоставляющих бесплатное хранение Git репозиториев. Одним из наиболее широко используемых сайтов, доступных сегодня является `GitHub <https://github.com/>`_. На самом деле это книга тоже имеет Git `репозиторий <https://github.com/leifos/tango_with_django>`_  на GitHub!
 
-* The *index* is technically part of the local repository. The index stores a list of files that you want to be managed with version control. This is explained in more detail in the commands and workflow section. You can have a look `here <http://stackoverflow.com/questions/4084921/what-does-the-git-index-exactly-contains>`_ to see a discussion on what exactly a Git index contains.
+* *Локальный репозиторий* - это копия удаленного репозитория. Ключевым различием является то, что локальным репозиторий хранится на Вашем собственном компьютере. Именно в этом репозитории Вы производите все операции добавления, изменения и удаления файлов. Когда Вы достигли определенного этапа в создании приложения, Вы можете передать все Ваши локальные изменения в удаленный репозиторий. После этого Вы можете попросить членов Вашей команды скачать репозиторий с Вашими изменениями. Эта концепция называется *pulling* из удаленного репозитория и мы объясним её немного подробнее позднее.
 
-* The final aspect of Git is your *workspace*. Think of this folder or directory as the place on your computer where you make changes to your version controlled files. From within your workspace, you can add new files or modify or remove previously existing ones. From there, you then instruct Git to update the repositories to reflect the changes you make in your workspace. This is important - *don't modify code inside the local repository - only ever edit files in your workspace.* The local repository contains a load of files that Git uses to keep track of your version controlled content. If you start messing around with these files, you'll more than likely break something!
+* *Индекс* - это специальная часть локального репозитория. Индекс хранит список файлов, с которыми должна работать система контроля версий. Его назначение поясняется подробнее в разделах описания команд и последовательности действий при работе с Git. Можете просмотреть эту `ссылку <http://stackoverflow.com/questions/4084921/what-does-the-git-index-exactly-contains>`_ на обсуждение о том, что именно хранится в индексе Git.
 
-Next, we'll be looking at how to get your Git workspace set up. We'll also discuss the basic workflow you should use when using Git.
+* Последняя часть Git - это Ваш *рабочий каталог*. Считайте эту папку или каталог местом на Вашем компьютере, где Вы можете вносить изменения в файлы Вашего репозитория. В Ваш рабочий каталог Вы можете добавлять новые файлы, изменять или удалять существующие. Отсюда Вы указываете Git обновить репозитории, чтобы отразить изменения, внесенные в рабочий каталог. Важно *не изменять код внутри локального репозитория, а только редактировать файлы в Вашем рабочем каталоге*. Локальный репозиторий содержит множество файлов, которые Git использует для отслеживания Вашего содержимого, управляемого системой контроля версий. Если Вы попытаетесь изменить что-то в этих файлах, Вы скорее всего что-нибудь испортите!
 
-Setting up Git
-**************
-Setting up your Git workspace is a straightforward process. Once everything is set up, you will begin to make sense of the directory structure that Git uses. Assume that you have signed up for a new account on `GitHub <https://github.com/>`_ and `created a new repository on the service <https://help.github.com/articles/create-a-repo>`_ for your project. With your remote repository setup, follow these steps to get your local repository and workspace setup on your computer. We'll assume you will be working from your ``<workspace>`` directory.
+Далее мы рассмотрим как настроить Ваш рабочий каталог для Git. Мы также обсудим основную последовательность действий, которую Вы должны использовать при работе с Git.
 
-#. Open a terminal and navigate to your home directory (e.g. ``cd ~``).
-#. *Clone* the remote repository - or in other words, make a copy of it. Check out how to do this below.
-#. Navigate into the newly created directory. That's your workspace in which you can add files to be version controlled!
+Настраиваем Git
+***************
+Настроить Ваш рабочий каталог  для работы с Git просто. После того как все настроено, Вы начнете разбираться со структурой каталогов, которую использует Git. Предположим, что ВЫ зарегистрировали новую учетную запись на `GitHub <https://github.com/>`_ и `создали новый репозиторий на сайте <https://help.github.com/articles/create-a-repo>`_ для Вашего проекта. После настройки Вашего удаленного репозитория, выполните следующие действия, чтобы получить локальный репозиторий и настроенное рабочий каталог на Вашем компьютере. Мы будем предполагать, что Вы будете работать в Вашем каталоге ``<рабочего пространства>``.
+
+#. Откройте терминал и перейдите в Ваш домашний каталог (например, ``cd ~``);
+#. *Осуществите клонирование* удаленного репозитория - или другими словами, создайте его копию. Посмотрите как это сделать ниже.
+#. Перейдите в созданный каталог. Это Ваш рабочий каталог, в который Вы можете добавлять файлы, контролируемые Git!
 
 .. _requirements-git-clone-label:
 
-How to Clone a Remote Repository
-................................
-Cloning your repository is a straightforward process with the ``git clone`` command. Supplement this command with the URL of your remote repository - and if required, authentication details, too. The URL of your repository varies depending on the provider you use. If you are unsure of the URL to enter, it may be worth querying it with your search engine or asking someone in the know.
+Как осуществить клонивароние удаленного репозитория
+...................................................
+Клонирование Вашего репозитория - это простой процесс, осуществляемый с помощью команды ``git clone``. Дополните эту команду URL Вашего удаленного репозитория - и если необходимо также параметры аутентификации. URL Вашего репозитория меняется в зависимости от сайта, который Вы используете, для хранения репозиториев. Если Вы не уверены какой URL надо ввести, стоит запросить его формат с помощью поисковика или спросить у кого-то кто знает.
 
-For GitHub, try the following command, replacing the parts below as appropriate:
+Для GitHub, попробуйте использовать следующую команду, заменив соответствующим образом приведенные ниже части:
 
 ``$ git clone https://<USERNAME>:<PASSWORD>@github.com/<OWNER>/<REPO_NAME>.git <workspace>``
 
-where you replace
-	- ``<USERNAME>`` with your GitHub username;
-	- ``<PASSWORD>`` with your GitHub password;
-	- ``<OWNER>`` with the username of the person who owns the repository;
-	- ``<REPO_NAME>`` with the name of your project's repository; and
-	- ``<workspace>`` with the name for your workspace directory. Although optional, we will specify it here to create the ``<workspace>`` directory.
+где Вы заменяете
+	- ``<USERNAME>`` на имя Вашей учетной записи GitHub;
+	- ``<PASSWORD>`` на пароль Вашей учетной записи GitHub;
+	- ``<OWNER>`` на имя пользователя, который является владельцем репозитория;
+	- ``<REPO_NAME>`` на название репозитория Вашего проекта; и
+	- ``<workspace>`` на название для Вашего рабочего каталога. Его указывать не обязательно, но мы укажем его здесь, чтобы создать каталог ``<рабочего пространства>``.
 
-If all is successful, you should see some positive messages in your terminal or Command Prompt alerting you to the fact that the clone has been successful.
+Если все прошло успешно, то Вы должны увидеть несколько сообщений в Вашем терминале или командной строке, уведомляющих о том, что клон репозитория был успешно создан.
 
-The Directory Structure
-.......................
-Once you have cloned your remote repository onto your local computer, navigate into the directory with your terminal, Command Prompt or GUI file browser. If you have cloned an empty repository the workspace directory should appear empty. This directory is therefore your blank workspace with which you can begin to add files for your project.
+Структура каталога
+..................
+После того как Вы создали копию Вашего удаленного репозитория на Вашем локальном компьютере, перейдите в каталог, используя терминал, командную строку или графический браузер файлов. Если Вы создали копию пустого репозитория рабочий каталог должен быть пустым. Таким образом, этот каталог является Вашим пустым рабочим пространством, в которое Вы можете начать добавлять файлы Вашего проекта.
 
-However, the directory isn't blank at all! On closer inspection, you will notice a hidden directory called ``.git``. Stored within this directory are both the local repository and index. Do not alter the contents of the ``.git`` directory. Doing so could damage your Git setup - and break version control functionality. *Your newly-created workspace directory therefore contains the workspace, local repository and index.*
+Тем не менее, каталог совсем не пустой! При внимательном рассмотрении, Вы заметите скрытый каталог под названием ``.git``. В нём хранится локальный репозиторий и индекс. Не изменяйте содержимое каталога ``.git``. Это может привести к выходу из строя системы контроля версий для этого репозитория. *Таким образом вновь созданный рабочий каталог содержит рабочий каталог, локальный репозиторий и индекс*.
 
-Final Tweaks
-............
-With your workspace setup, now would be a good time to make some final tweaks. Here, we discuss two cool features you can try which could make your life (and your team members') a little bit easier.
+Заключительные настройки
+........................
+После настройки Вашего рабочего каталога, самое время осуществить некоторые заключительные настройки. Здесь мы рассмотрим две полезные функции, которые облегчат жизнь Вам (и членам Вашей команды).
 
-When using your Git repository as part of a team, any changes you make will be associated with the username you use to access your remote Git repository. However, you can also specify your full name and e-mail address to be included with changes that are made by you on the remote repository. This is really easy to do. Simply open a Command Prompt/terminal and navigate to your workspace. From there, issue two commands: one to tell Git your full name, and the other to tell Git your e-mail address.
+При использовании Вашего Git репозитория Вами как членом команды, любые сделанные Вами изменения будут связаны с именем пользователя, который Вы используете для доступа к Вашему удаленному Git репозиторию. Тем не менее, Вы также можете указать Ваше полное имя и адрес электронной почты, которые будут включены в изменения, сделанные Вами, в удаленном репозитории. Это очень просто сделать. Просто откройте командную строку/терминал и перейдите в Ваш рабочий каталог. Из него выполните две команды: одна сообщит Git Ваше полное имя, а вторая - Ваш адрес электронной почты.
 
 ``$ git config user.name "John Doe"``
 
 ``$ git config user.email "johndoe123@me.com"``
 
-Obviously, replace the example name and e-mail address with your own. We don't want random commits from some guy called John Doe! How unlucky would it be if you were actually called John Doe?
+Очевидно, что Вам нужно заменить фамилию, имя и адрес электронной почты на Ваш собственный. Мы не хотим, чтобы изменения в репозиторий вносил кто-то по имени John Doe! Но вдруг Вас действительно зовут John Doe?
 
-Anyway, moving on to the second feature. Git provides you with the capability to stop - or ignore - particular files from being added to version control. For example, you may not wish a file containing unique keys to access web services from being added to version control. If the file were to be added to the remote repository, anyone could theoretically access the file by cloning the repository.
+В любом случае перейдем к рассмотрению второй функции. Git позволяет Вам не включать - или игнорировать - определенные файлы, чтобы они не добавлялись в систему контроля версий. Например, Вы можете не захотеть добавлять файл, содержащий уникальные ключи, в систему контроля, которая доступна публично с веб сайта. Если такой файл добавлен в удаленный репозиторий, то любой человек сможет теоретически получить доступ к нему создав копию репозитория.
 
-With Git, files can be ignored by including them in the ``.gitignore`` file. This file which should reside in the root of your workspace. When adding files to version control, Git parses this file. If a file that is being added to version control is listed within ``.gitignore``, the file is ignored. Each line of ``.gitignore`` should be a separate file entry. Check out the following example:
+Используя Git, файлы могут быть проигнорированы, если добавить их в файл ``.gitignore``. Этот файл должен находится в корне Вашего рабочего каталога. При добавлении файлов в систему контроля версий, Git анализирует этот файл. Если файл, который добавляется в систему контроля версий, содержится в ``.gitignore``, то он игнорируется. Информация о каждом новом игнориуермом файле или файловый шаблон для нескольких файлов должна размещаться на отдельной строке в ``.gitignore``. Просмотрите следующие примеры:
 
 ``config/api_keys.py``
 
 ``*.pyc``
 
-In this example file, there are two entries. The first one prompts git to ignore the file ``api_keys.py`` residing within the ``config`` directory. The second entry prompts Git to ignore *all* instance of files with a ``.pyc`` extension. This is really cool: you can use *wildcards* to make generic entries if you need to!
+В этом примере в файле две строки. В первой сообщается, что Git должен игнорировать файл ``api_keys.py`` , находящийся в каталоге ``config``. Во второй - что Git должен игнорировать *все* файлы с расширением ``.pyc``. Это действительно здорово: Вы можете использовать шаблоны, создав правило для нескольких файлов, если необходимо!
 
-Basic Commands and Workflow
-***************************
-With your repository cloned and ready to go on your local computer, you're ready to get to grips with the Git workflow. This section shows you the basic Git workflow - and the associated Git commands you can issue.
+Основные команжы и последовательность действий при работе с Git
+***************************************************************
+После создания копии Вашего репозитория и настройки его на Вашем локальном компьютере, можно приступать к освоению последовательности действий при работе с Git. В этом разделе рассматривается основная последовательность действий при работе с Git и связанные с ней команды, вводимые Вами. 
 
 .. _fig-git-sequence:
 
 .. figure:: ../images/git-sequence.svg
 	:figclass: align-center
 	
-	A diagram depicting the basic workflow and associated commands of interacting with a Git repository.
+	Схема, изображающая основную последовательность действий и соответствующие команды взаимодействия с Git репозиторием.
 
-We have provided a pictorial representation of the basic Git workflow in Figure :num:`fig-git-sequence`. Match each of the numbers in the blue circles to the numbered descriptions below.
+На рисунке :num:`fig-git-sequence` показано графическое представление основной последовательности действий при работе с Git. Каждое из чисел в синих кружках соответствует номеру в списке, приведенному ниже.
 
-1. Starting Off
-...............
-Before you can start work on your project, you must prepare Git for your forthcoming geek session. If you haven't yet sorted out your project's Git workspace, you'll need to ``clone`` the repository to obtain a copy of all of its files. Check out Section :ref:`requirements-git-clone-label` for more information on how to achieve this.
+1. Начинаем работу
+..................
+Прежде чем Вы сможете начать работать над Вашим проектом, Вы должны подготовить Git к предстоящему циклу работы. Если Вы до сих пор не создали рабочий каталог Git для Вашего проекта, Вам необходимо ``clone`` (``клонировать``) репозиторий, чтобы получить копии всех файлов. Просмотрите раздел :ref:`requirements-git-clone-label`, чтобы получить больше информации о том как это сделать.
 
-If you have previously made a clone of the remote repository, it's good practice to get into the habit of updating you local copy by using the ``git pull`` command. This 'pulls' changes from the remote repository. By doing this, you'll be working from the same page as your team members, which will help keep the issue of conflicting file contents from making your life a nightmare.
+Если Вы уже создали копию удаленного репозитория, хорошей привычкой считается обновление Вашей локальной копии, используя команду ``git pull``. Она ``извлекает`` изменения из удаленного репозитория. Сделав это, Вы будете работать с той же версией файлов, что и члены Вашей команды, что позволит отслеживать конфликты в файлах, оберегая Вас от кошмарных проблем, связанных с использованием разных версий файлов.
 
-2. Doing Some Work!
-...................
-Once your workspace has been updated with the latest changes, the onus is on you to do some work! Within your workspace, you can take existing files and modify them. You can delete them too, or add new files to be version controlled.
+2. Работаем внутри рабочего каталога!
+.....................................
+После того как Вы обновили Ваш рабочий каталог с учетом последних внесенных в него изменений, вся ответственность за сделанную Вами работу ложится на Вас. Из рабочего каталога Вы можете загрузить существующие файлы и изменять их. Также Вы можете удалять их или добавлять новые файлы, причем за всем этим следит система контроля версий.
 
-It's not all plain sailing, however. You must be aware that as you work away, you need to keep Git up-to-date on the list of files you have added, removed or updated by modifying the *local index*. The list of files stored within the local index are then used to perform your next *commit*, which we'll be discussing in the next step. To keep Git informed, there are several Git commands which let you update the local index. Three of the commands are near-identical to those that were discussed in Chapter :ref:`requirements-label`, with the addition of a ``git`` prefix.
+Тем не менее, не все так просто как кажется. Вы должны знать, что во время Вашей работы, необходимо периодически сообщать Git о списке файлов, которые были добавлены, удалены или изменены Вами, модифицируя *локальный индекс*. Список файлов, хранящийся в локальном индексе затем используется для осуществления Вашего следующего *коммита*, который мы будем рассматривать ниже. Чтобы сообщать Git об изменениях, существует несколько Git команд, которые позволяют Вам обновлять локальный индекс. Эти команды почти идентичны тем, которые рассматривались в Главе :ref:`requirements-label`, но к ним спереди добавляется слово ``git``.
 
-- The first command ``git add`` allows you to request Git to add a particular file to the next commit for you. A common newbie mistake is to assume that ``git add`` is used for adding new files to your repository only - *this is not the case! You must tell Git what modified files you wish to commit, too!* The command can be used in the fashion ``git add <filename>``, where ``<filename>`` is the name of the file you wish to add to your next commit. Multiple files and directories can be added with the command ``git add .`` - `but be careful with this <http://stackoverflow.com/a/16969786>`_!
+- Первая команда ``git add`` позволяет Вам указать Git, что необходимо добавить определенный файл в Ваш следующий коммит. Часто встречающаяся ошибка новичков заключается в том, что они предполагают, что ``git add`` используется только для добавления новых файлов в Ваш репозиторий - *но это не так! Вы должны также использовать эту команду, что указать Git коммит каких существующих модифицированных файлов Вы хотите совершить!* Команда может использовать следующим образом ``git add <filename>``, где ``<filename>`` - это имя файла, который Вы хотите добавить в Ваш следующий коммит. С помощью команды ``git add .`` можно добавить несколько файлов и каталогов - `но необходимо с осторожностью использовать эту возможность <http://stackoverflow.com/a/16969786>`_!
 
-- ``git mv`` performs the same function as the Unix ``mv`` command - it moves files. The only difference between the two is that ``git mv`` updates the local index for you before moving the file. Specify the filename with the syntax ``git mv <filename>``. For example, with this command you can move files to a different directory within your repository. This will be reflected in your next commit.
+- ``git mv`` выполняет ту же функцию, что и команда Unix ``mv`` - перемещает файлы. Единственное отличие между двумя командами заключается в том, что ``git mv`` обновляет локальный индекс перед перемещением файлов. Используя эту команду необходимо указывать имя файлв следующим образом ``git mv <filename>``. Например, с помощью этой команды Вы можете переместить файлы в другой каталог в пределах Вашего репозитория. Это изменение будет отражено в следующем коммите.
 
-- ``git cp`` allows you to make a copy of a file or directory while adding references to the new files into the local index for you. The syntax is the same as ``git mv`` above where the filename or directory name is specified thus: ``git cp <filename>``.
+- ``git cp`` позволяет создать копию файла или каталога, добавляя ссылки на новые файлы в локальный индекс. Синтаксис команды такой же как и для ``git mv``, указанной Выше, где имя файла или каталога задается следующим образом: ``git cp <filename>``.
 
-- The command ``git rm`` adds a file or directory delete request into the local index. While the ``git rm`` command does not delete the file straight away, the requested file or directory is removed from your filesystem and the Git repository upon the next commit. The syntax is the same as the above commands, where a filename can be specified thus: ``git rm <filename>``. Note that you can add a large number of requests to your local index in one go, rather than removing each file manually. For example, ``git rm -rf media/`` creates delete requests in your local index for the ``media/`` directory. The ``r`` switch enables Git to *recursively* remove each file within the ``media/`` directory, while ``f`` allows Git to *forcibly* remove the files. Check out the `Wikipedia page <http://en.wikipedia.org/wiki/Rm_(Unix)#Options>`_ on the ``rm`` command for more information.
+- Команда ``git rm`` добавляет запрос на удаление файла или каталога в локальный индекс. Хотя команда ``git rm`` не удаляет файл сразу, указанный файл или каталог удаляется из Вашей файловой системы и Git репозитория при следующем коммите. Синтаксис команды такой же как и для приведенных выше команд, где имя файла может быть определено следующим образом: ``git rm <filename>``. Учтите, что вы можете добавить множество запросов на удаление в Ваш локальный индекс, а не удалять каждый файл вручную. Например, команда ``git rm -rf media/`` создает запросы на удаление в Вашем локальном индексе каталога ``media/``. Ключ ``r`` позволяет Git *рекурсивно* удалить каждый файл внутри каталога ``media/``, а ``f`` позволяет Git *не запрашивать подтверждения операции* при удалении файлов. Просмотрите `страницу Wikipedia <http://en.wikipedia.org/wiki/Rm_(Unix)#Options>`_ о команде ``rm``, чтобы узнать больше о ней.
 
-Lots of changes between commits can make things pretty confusing. You may easily forgot what files you've already instructed Git to remove, for example. Fortunately, you can run the ``git status`` command to see a list of files which have been modified from your current working directory, but haven't been added to the local index for processing. Check out typical output from the command below to get a taste of what you can see.
+Множество изменений, сделанных между коммитами, могут сильно запутать порядок операций с файлами. Например, Вы можете просто забыть какие файлы Вы уже указали удалить Git. К счастью Вы можете вызывать команду ``git status``, чтобы увидеть список файлов, которые были изменены в Вашем текущем рабочем каталоге, но ещё не добавлены в локальный индекс для обработки. Ниже приведен стандартный вывод для этой команды, чтобы Вы представляли, что Вы можете увидеть.
 
 .. code-block:: python
 	
@@ -158,65 +159,64 @@ Lots of changes between commits can make things pretty confusing. You may easily
 	#	modified:   images/git-sequence.pdf
 	#	modified:   omnigraffle/git-sequence.graffle
 	#
+ 
+Чтобы получить больше информации об этой полезной команде, просмотрите `официальную документацию по Git <http://git-scm.com/docs/git-status>`_.
 
-For further information on this useful command, check out the `official Git documentation <http://git-scm.com/docs/git-status>`_.
+3. Осуществляем коммит Ваших изменений
+......................................
+Мы использовали слово *коммит* несколько раз ранее - но что оно обозначает? В Git коммит обозначает сохранение изменений - которые перечислены в локальном индексе - то есть, которые сделаны в Вашем рабочем каталоге. Чем чаще Вы совершаете коммит, тем больше у Вас возможностей вернуться к старой версии Вашего кода, если что-то пошло не так! Старайтесь часто совершать коммит - но не совершайте его для не полной или не рабочей версии определенного модуля или функции! Существует множество онлайновых тем, посвященных идеальному времени для совершения коммита - `просмотрите эту страницу на Stack Overflow <http://stackoverflow.com/questions/1480723/dvcs-how-often-and-when-to-commit-changes>`_, где приводится мнение нескольких разработчиков.
 
-3. Committing your Changes
-..........................
-We've mentioned *committing* several times in the previous step - but what on earth does it mean? In the world of Git, committing is when you save changes - which are listed in the local index - that you have made within your workspace. The more often you commit, the greater the number of opportunities you'll have to revert back to an older version of your code if things go disastrously wrong! Make sure you commit often - but don't commit an incomplete or broken version of a particular module or function! There's a lot of online discussion about when the ideal time to commit is - `have a look on this Stack Overflow page <http://stackoverflow.com/questions/1480723/dvcs-how-often-and-when-to-commit-changes>`_ for the opinions of several developers.
+Для совершения коммита выполните команду ``git commit``. Любые изменения в существующих файлах, которые Вы передали в индекс, будут сохранены системой контроля версий. Кроме того, системой контроля версий будут выполнены все запросы на копирование, удаление, перемещение или добавление файлов, отраженные в локальном репозитории. Когда Вы совершаете коммит, Вы обновляете *HEAD* Вашего локального репозитория. HEAD по существу является "последним коммитом из всех выполненных" - просмотрите эту `страницу Stack Overflow <http://stackoverflow.com/questions/2304087/what-is-git-head-exactly>`_, чтобы узнать больше.
 
-To commit, you issue the ``git commit`` command. Any changes to existing files that you have indexed will be saved to version control at this point. Additionally, any files that you've requested to be copied, removed, moved or added to version control via the local index will be undertaken at this point. When you commit, you are updating the *HEAD* of your local repository. The HEAD is essentially the *latest commit at the top of the pile* - have a look at `this Stack Overflow page <http://stackoverflow.com/questions/2304087/what-is-git-head-exactly>`_ for more information.
+При совершении коммита очень полезно для Вас и членов Вашей команды пояснять почему Вы совершили данный коммит. когда Вы совершаете коммит, если хотите, Вы можете добавить к нему дополнительное сообщение - хотя мы настоятельно рекомендуем всегда добавлять его. Вместо простого вызова ``git commit``, запускайте следующую улучшенную команду:
 
-As part of a commit, it's incredibly useful to your future self and others to explain why you committed when you did. You can supply an optional message with your commit if you wish to do so - though we highly recommend it. Instead of simply issuing ``git commit``, run the following amended command.
+``$ git commit -m "Изменен файл helpers.py; добавлена функция преобразования Unicode, str_to_unicode()."``
 
-``$ git commit -m "Updated helpers.py to include a Unicode conversion function, str_to_unicode()."``
+Из вышеприведенного примера, видно, что используя ключ ``-m`` с последующей строкой, можно добавить сообщение к Вашему коммиту. Старатесь описать как можно подробнее что Вы сделали, но не пишите слишком много. Люди часто хотят сразу понять что Вы сделали, а не читать длинное сочинение. В то же время, сообщение не должно быть бессмысленным. Просто написав ``Изменен helpers.py`` может сообщить разработчику какой файл Вы изменели, но ему потребуется время, чтобы понять что именно Вы изменили.
 
-From the example above, you can see that using the ``-m`` switch followed by a string provides you with the opportunity to append a message to your commit. Be as explicit as you can, but don't write too much. People want to see at a glance what you did, and do not want to be bored with a long essay. At the same time, don't be too vague. Simply specifying ``Updated helpers.py`` may tell a developer what file you modified, but they will require further investigation to see exactly what you changed.
+.. note:: Хотя часто совершать коммиты хорошо, убедитесь, что Вы написали на самом деле *работающий код* перед коммитом. Это может звучать глупо, но многие не задумываются об этом. Коммит неработающего кода, может разозлить членов Вашей команды, если им придется осуществлять откат к версии Вашего кода проекта, который окажется не рабочим!
 
-.. note:: Although frequent commits may be a good thing, you will want to ensure that what you have written actually *works* before you commit. This may sound silly, but it's an incredibly easy thing to not think about. Committing code which doesn't actually work can be infuriating to your team members if they then rollback to a version of your project's codebase which is broken!
+4. Синхронизация Вашего репозитория
+...................................
+После того как Вы совершили коммит Вашего локального репозитория и зафиксировали Ваши изменения, Вы почти готовы послать свои коммиты в удаленный репозиторий, *передав* Ваши изменения. Тем не менее, что если кто-то в Вашей команде передал свои изменения до Вас? Это означает, что Ваш локальный репозиторий не синхронизирован с удаленным, поэтому выполнить любую команду ``git push`` будет очень сложно!
 
-4. Synchronising your Repository
-................................
-After you've committed your local repository and committed your changes, you're just about ready to send your commits to the remote repository by *pushing* your changes. However, what if someone within your group pushes their changes before you do? This means your local repository will be out of sync with the remote repository, making any ``git push`` command very difficult to do!
+Поэтому желательно всегда проверять были ли изменен удаленный репозиторий перед его обновлением. Команда ``git pull`` загрузит любые изменения из удаленного репозитория и попытается поместить их в Ваш локальный репозиторий. Если не было сделано никаких изменений, Вы спокойно можете передать Ваши. Если изменения были сделаны и не могут быть легко устранены, Вы должны проделать определенную работу.
 
-It's therefore always a good idea to check whether changes have been made on the remote repository before updating it. Running a ``git pull`` command will pull down any changes from the remote repository, and attempt to place them within your local repository. If no changes have been made, you're clear to push your changes. If changes have been made and cannot be easily rectified, you'll need to do a little bit more work.
+В таком случае Вы можете *объединить* изменения из удаленного репозитория. После выполнения команды ``git pull`` откроется текстовый редактор, в котором Вы сможете добавить комментарий, объясняющий почему необходимо объединение. При сохранении текстового документа, Git объединит изменения в удаленном репозитории с Вашим локальным репозиторием.
 
-In scenarios such as this, you have the option to *merge* changes from the remote repository. After running the ``git pull`` command, a text editor will appear in which you can add a comment explaining why the merge is necessary. Upon saving the text document, Git will merge the changes in the remote repository to your local repository.
+.. note:: Если Вы используете Mac или Linux, то вероятно откроется текстовый редактор `vi <http://en.wikipedia.org/wiki/Vi>`_. Если Вы никогда не использовали vi раньше, то просмотрите `эту страницу, содержащую список базовых команд <http://www.cs.colostate.edu/helpdocs/vi.html>`_ на веб-сайте кафедры компьютерных наук Государственного Университета Колорадо. Если Вам не нравится vi, `Вы можете изменить текстовый редактор, используемый по умолчанию <http://git-scm.com/book/en/Customizing-Git-Git-Configuration#Basic-Client-Configuration>`_, который вызывает Git. В ОС Windows скорее всего будет запускаться Notepad.
 
-.. note:: If you do see a text editor on your Mac or Linux installation, it's probably the `vi <http://en.wikipedia.org/wiki/Vi>`_ text editor. If you've never used vi before, check out `this helpful page containing a list of basic commands <http://www.cs.colostate.edu/helpdocs/vi.html>`_ on the Colorado State University Computer Science Department website. If you don't like vi, `you can change the default text editor <http://git-scm.com/book/en/Customizing-Git-Git-Configuration#Basic-Client-Configuration>`_ that Git calls upon. Windows installations most likely will bring up Notepad.
+5. Передача Вашего коммита(ов)
+..............................
+*Pushing*  - это фраза, используемая Git для описания процесса передачи любых изменений в Вашем локальном репозитории в удаленный репозиторий. Таким образом, Ваши изменения становятся доступны всем членам Вашей команды, которые могут их получить, выполнив команду ``git pull`` в своих собственных локальных рабочих каталогах. Команда ``git push`` не вызывается так часто как команда ``commit`` *Вы совершаете один или несколько коммитов перед использованием команды push*. Вы можете выполнять команду push раз в день, если завершена определенная функциональная часть или по запросу от члена команды, который нуждается в обновленной версии Вашего кода. 
 
-5. Pushing your Commit(s)
-.........................
-*Pushing* is the phrase used by Git to describe the sending of any changes in your local repository to the remote repository. This is the way in which your changes become available to your other team members, who can then retrieve them by running the ``git pull`` command in their respective local workspaces. The ``git push`` command isn't invoked as often as committing - *you require one or more commits to perform a push.* You could aim for one push per day, when a particular feature is completed, or at the request of a team member who is desperately after your updated code.
-
-To push your changes, the simplest command to run is:
+Чтобы передать Ваши изменения, в простейшем случае выполните команду:
 
 ``$ git push origin master``
 
-As explained on `this Stack Overflow question and answer page <http://stackoverflow.com/questions/7311995/what-is-git-push-origin-master-help-with-gits-refs-heads-and-remotes>`_, this command instructs the ``git push`` command to push your local master branch (where your changes are saved) to the *origin* (the remote server from which you originally cloned). If you are using a more complex setup involving `branching and merging <http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging>`_, alter ``master`` to the name of the branch you wish to push.
+Как поясняется на `этой странице вопросов и ответов Stack Overflow <http://stackoverflow.com/questions/7311995/what-is-git-push-origin-master-help-with-gits-refs-heads-and-remotes>`_, эта команда передаст вашу локальную основную ветку (где сохранены Ваши изменения) в *origin* (удаленный сервер, из которого осуществлялось первоначальное копирование). Если Вы используете более сложную настройку, включающую `ветвление и слияние <http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging>`_, измените ``master`` на название ветки, в которую Вы хотите передать изменения.
 
-If what you are pushing is particularly important, you can also optionally alert other team members to the fact they should really update their local repositories by pulling your changes. You can do this through a *pull request.* Issue one after pushing your latest changes by invoking the command ``git request-pull master``, where master is your branch name (this is the default value). If you are using a service such as GitHub, the web interface allows you to generate requests without the need to enter the command. Check out `the official GitHub website's tutorial <https://help.github.com/articles/using-pull-requests>`_ for more information.
+Если то, что Вы передаёте очень важно, то Вы можете опционально предупредить других членов команды о том, что они должны обновить их локальные репозитории, загрузив Ваши изменения. Для этого осуществите *pull request.* Выполните его после передачи Ваших последних изменений, используя команду ``git request-pull master``, где master - это название Вашей ветки (master - это значение по умолчанию). Если Вы используете GitHub, то веб-интерфейс позволяет создавать запросы без необходимости вводить команду. Просмотрите `официальное учебное пособие на веб-сайте GitHub <https://help.github.com/articles/using-pull-requests>`_, чтобы узнать больше.
 
-Recovering from Mistakes
-************************
-This section presents a solution to a coder's worst nightmare: what if you find that your code no longer works? Perhaps a refactoring went terribly wrong, someone changed something, or everything is so terribly messed up you have no idea what happened. Whatever the reason, using a form of version control always gives you a last resort: rolling back to a previous commit. This section details how to do just that. We follow the information given from `this Stack Overflow <http://stackoverflow.com/questions/2007662/rollback-to-an-old-commit-using-git>`_ question and answer page.
+Восстановление работы при возникновении ошибок
+**********************************************
+В этом разделе представлено решение для худшего кошмара программиста: что делать, если Ваш код перестал работать? Возможно рефакторинг кода был проведен неправильно, кто-то что-то изменил или все так запутанно, что Вы не знаете что произошло. Независимо от причины, используя одну из систем контроля версий у Вас всегда есть возможность откатить изменения до предыдущего коммита. В этом разделе подробно описано как это сделать. Мы используем информацию, приведенную на этой странице вопросов и ответов `Stack Overflow <http://stackoverflow.com/questions/2007662/rollback-to-an-old-commit-using-git>`_.
 
-.. warning:: You should be aware that this guide will rollback your workspace to a previous iteration. Any uncommitted changes that you have made will be lost, with a very slim chance of recovery! Be wary. If you are having a problem with only one file, you could always view the different versions of the files for comparison. Have a look `at this Stack Overflow page <http://stackoverflow.com/a/3338145>`_ to see how to do that.
+.. warning:: Предупреждаем, что действия, показанные ниже, откатят Ваш рабочий каталог в состояние до одного из предыдущих состояний. Любые незафиксированные изменения, которые Вы сделали будут потеряны со призрачными шансами на восстановление! Будьте осторожны. Если у Вас возникли проблемы только с одним файлом, Вы всегда можете просмотреть разные версии файлов для сравнения. Просмотрите `эту страницу Stack Overflow <http://stackoverflow.com/a/3338145>`_, чтобы увидеть как это сделать.
 
-Rolling back your workspace to a previous commit involves two distinct steps:
+Откат Вашего рабочего каталога до предыдущего коммита включает в себя два действия:
+- определение к какому коммиту необходимо вернуться; и
+- выполнение откат.
 
-- determining which commit to roll back to; and
-- performing the rollback.
-
-To determine what commit to rollback to, you can make use of the ``git log`` command. Issuing this command within your workspace directory will provide a list of recent commits that you made, your name and the date at which you made the commit. Additionally, the message that is stored with each commit is displayed. This is where it is highly beneficial to supply commit messages that provide enough information to explain what is going on. Check out the following output from a ``git log`` invocation below to see for yourself.
+Чтобы определить к какому коммиту нужно откатиться, Вы можете использовать команду ``git log``. Выполнив эту команду внутри Вашего рабочего каталога, Вы получите список недавних коммитов, которые Вы сделали, Ваше имя и дату, когда Вы сделали коммит. Кроме того, отображается сообщение, хранящееся вместе с каждым коммитом. Из-за этого весьма полезно снабжать коммиты сообщениями, которые содержат достаточно информации, чтобы можно было понять что было изменено. Просмотрите следующий вывод при вызове команды ``git log``, показанный ниже.
 
 ::
 
-	commit 88f41317640a2b62c2c63ca8d755feb9f17cf16e                      <- Commit hash
-	Author: John Doe <someaddress@domain.com>                            <- Author
-	Date:   Mon Jul 8 19:56:21 2013 +0100                                <- Date/time
+	commit 88f41317640a2b62c2c63ca8d755feb9f17cf16e                      <- хеш коммита
+	Author: John Doe <someaddress@domain.com>                            <- Автор
+	Date:   Mon Jul 8 19:56:21 2013 +0100                                <- Дата/время
 
-	    Nearly finished initial version of the requirements chapter      <- Message
+	    Nearly finished initial version of the requirements chapter      <- Сообщение
 
 	commit f910b7d557bf09783b43647f02dd6519fa593b9f
 	Author: John Doe <someaddress@domain.com>
@@ -236,30 +236,29 @@ To determine what commit to rollback to, you can make use of the ``git log`` com
 
 	    Initial commit
 
-From this list, you can choose a commit to rollback to. For the selected commit, you must take the commit hash - the long string of letters and numbers. To demonstrate, the top (or HEAD) commit hash in the example output above is ``88f41317640a2b62c2c63ca8d755feb9f17cf16e``. You can select this in your terminal and copy it to your computer's clipboard.
+Из этого списка Вы можете выбрать коммит, к которому нужно откатиться. Для выбранного коммита нужно определить хеш коммита - длинную строку из бук и цифр. Например, хеш верхнего (или HEAD) коммита в выводе из вышеприведенного примера равен ``88f41317640a2b62c2c63ca8d755feb9f17cf16e``. Вы можете выбрать его в Вашем терминале и скопировать его в буфер обмена компьютера.
 
-With your commit hash selected, you can now rollback your workspace to the previous revision. You can do this with the ``git checkout`` command. The following example command would rollback to the commit with hash ``88f41317640a2b62c2c63ca8d755feb9f17cf16e``.
+После того как Вы выбрали хеш коммита, теперь ВЫ можете откатить Ваш рабочий каталог до предыдущей версии. Вы можете сделать это с помощью команды ``git checkout``. Команда в следующей примера осуществляет откат к коммиту с хешем ``88f41317640a2b62c2c63ca8d755feb9f17cf16e``.
 
 ``$ git checkout 88f41317640a2b62c2c63ca8d755feb9f17cf16e .``
 
-Make sure that you run this command from the root of your workspace, and do not forget to include the dot at the end of the command! The dot indicates that you want to apply the changes to the entire workspace directory tree. After this has completed, you should then immediately commit with a message indicating that you performed a rollback. Push your changes and alert your team members. From there, you can start to recover from the mistake by putting your head down and getting on with your project.
+Убедитесь, что Вы запускаете эту команду из корня Вашего рабочего каталога и не забудьте добавить точку на конце команды! Точка обозначает, что Вы хотите применить изменения ко всему дереву рабочего каталога. После этого Вы должны сразу же сделать коммит с сообщением, в котором говорится, что Вы выполнили откат. Передайте изменения в удаленный репозиторий и предупредите членов Вашей команды. После этого, восстановив работоспособность приложения, Вы можете сосредоточится и начать работать над проектом.
 
-Exercises
-*********
-If you haven't undertaken what we've been discussing in this chapter already, you should go through everything now to ensure your system and repository is ready to go.
+Упражнения
+**********
+Если Вы не проделали действия, описанные в этой главе, сделайте это сейчас, чтобы убедиться, что Ваша система и репозиторий готовы к работе.
 
-First, ensure that you have setup your environment correctly. Install all of the prerequisites, including Python 2.7.5 and Django 1.7. Django should be installed by Pip, the package manager.
+Сначала убедитесь, что Вы правильно настроили Ваше окружение. Установите всё необходимо, в том числе Python 2.7.5 и Django 1.7. Django должно быть установлено с помощью Pip, менеджера пакетов.
 
-Once that is complete, create a new Git repository on Github for your project. To try out the commands, you can create a new file ``readme.md`` in the root of your workspace. The file `will be used by GitHub <https://help.github.com/articles/github-flavored-markdown>`_ to provide information on your project's GitHub homepage.
+После этого создайте новый Git репозиторий на Github для Вашего проекта. Чтобы попрактиковаться с командами, Вы можете создать новый файл ``readme.md`` в корне Вашего рабочего каталога. Файл `будет использоваться GitHub <https://help.github.com/articles/github-flavored-markdown>`_, для предоставления информации на странице GitHub Вашего проекта.
 
-- Create the file, and write some introductory text to your project.
-- Add the file to the local index upon completion of writing, and commit your changes.
-- Push the new file to the remote repository and observe the changes on the GitHub website.
+- Создайте файл и введите некоторый предварительный текст для Вашего проекта.
+- Добавьте файл в локальный индекс после завершения ввода и осуществите коммит Ваших изменений.
+- Передайте новый файл в удаленный репозиторий и пронаблюдайте за изменениями на веб-сайте GitHub.
 
-Once you have completed these basic steps, you can then go back and edit the file some more. Add, commit and push - and then try to revert to the initial version to see if it all works as expected.
+Как только Вы завершили эти основные шаги, Вы можете продолжить редактировать файл. Добавьте в него ещё информации, осущесвите коммит, передайте данные в удаленный репозиторий - и затем попытайтесь откатиться к первоначальной версии, чтобы проверить, что всё работает, как ожидалось.
 
+После выполнения этих упражнений, единственное, что ещё нужно обсудить - это окружение, которое Вы только что настроили. Хотя оно может подходить Вам сейчас, что если другому приложению Python понадобиться другая версия для запуска? В этом случае необходимо использовать `виртуальные окружения <http://simononsoftware.com/virtualenv-tutorial/>`_. Виртуальные окружения позволяют сосуществовать нескольким установкам интерпретатора Python и связанным с ним пакетами не конфликтуя друг с другом. Мы не будем вдаваться в подробности о них в этой главе, но Вы должны использовать виртуальное окружение, когда дело доходит до развертывания Вашего приложения. Пока `прочитайте эту статью <http://dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_, чтобы узнать, что они собой представляют и о преимуществах их использования.
 
-Upon completion of these exercises, all that is left for us to discuss is the environment you just setup. While all may be good just now, what if you have another Python application that requires a different version to run? This is where the concept of `virtual environments <http://simononsoftware.com/virtualenv-tutorial/>`_ comes into play. Virtual environments allow multiple installations of Python and their relevant packages to exist in harmony, without disrupting one another. This is the generally accepted approach to configuring a Python setup nowadays. We don't go into much detail about them in this chapter now but you will be using a virtual environment when it comes to deploying your application. For now though, `check out this article <http://dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_ to read up on what they are, and how they can benefit you.
-
-.. note:: There are many more advanced aspects of Git that we have not covered here, such as branching and merging. There are many fantastic tutorials available online if you are interested in taking your super-awesome version control skills a step further. For more details about such features take a look at this `tutorial on getting started with Git <http://veerasundar.com/blog/2011/06/git-tutorial-getting-started/>`_, the `Git Guide <http://rogerdudler.github.io/git-guide/>`_ or `Learning about Git Branching <http://pcottle.github.io/learnGitBranching/>`_.
+.. note:: Существует множество более сложных особенностей Git, которые мы не рассмотрели здесь, например ветвление и слияние. Существует много замечательных учебных пособий доступных онлайн, если Вы заинтересованы в совершенствовании Ваших навыков работы с системами контроля версий. Чтобы узнать больше о таких особенностях просмотрите на это `учебное пособие для начинающих работать с Git <http://veerasundar.com/blog/2011/06/git-tutorial-getting-started/>`_, `руководство по Git <http://rogerdudler.github.io/git-guide/>`_ или `Изучаем ветвление в Git <http://pcottle.github.io/learnGitBranching/>`_.
 
