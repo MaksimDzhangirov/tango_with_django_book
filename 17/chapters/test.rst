@@ -1,36 +1,31 @@
 .. _test-chapter:
 
-Automated Testing
-=================
+Автоматизированное тестирование
+===============================
+Хорошей привычкой считается написание и разработка тестов. Значительная часть проектирования программного обеспечения связана с написанием и разработкой тестов и тестовых наборов, гарантирующих надежную работу программного обеспечения. Конечно, большую часть времени мы слишком заняты созданием программы, не заботясь о том, насколько надежно она работает. Или слишком самонадеянно полагаем, что она не откажет.
 
-It is good practice to get into the habit of writing and developing tests. A lot of software engineering is about writing and developing tests and test suites in order to ensure the software is robust. Of course, most of the time, we are too busy trying to build things to bother about making sure that they work. Or too arrogant to believe it would fail.
+В соответствии с `учебным пособием по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial05/>`_, существует множество причин, почему необходимо добавлять тесты в приложение:
 
-According to the `Django Tutorial  <https://docs.djangoproject.com/en/1.7/intro/tutorial05/>`_, there are numerous reasons why you should include tests:
+* Тесты помогут Вам сэкономить время: изменение в сложной системе может привести к сбоям в непредсказуемых местах.
+* Тесты не только выявляют проблемы, но и могут предотвращать их: тесты показывают, где код не соответствует требованиям.
+* Тесты могут сделать Ваш код более привлекательным: "Код без тестов нарушает дизайн" - так говорит Яков Каплан-Мос - один из первоначальных разработчиков Django.
+* Тесты упрощают совместную работу: они гарантируют, что Ваши коллеги случайно не нарушат правильную работу Вашего кода.
 
-* Test will save you time: a change in a complex system can cause failures in unpredictable places.
-* Tests dont just identify problems, they prevent them: tests show where the code is not meeting expectations.
-* Test make your code more attractive: "Code without tests is broken by design", Jacob Kaplan-Moss, One of Django's original developers.
-* Tests help teams work together: they make sure your team doesn't inadvertently break your code.
+Согласно руководству по Python `<http://docs.python-guide.org/en/latest/writing/tests/>`_, существует ряд общих правил, которым Вы должны стараться следовать при написании тестов. Ниже приведены некоторые основные правила:
 
+* Тесты должны проверять работоспособность какой-то одной функции;
+* Тесты должны иметь четкую цель;
+* Тесты должны быть независимыми;
+* Создавайте тесты перед написанием кода и перед переносом Вашего кода на удаленный репозиторий;
+* Еще лучше создать хук, который проверяет код перед передачей на удаленный репозиторий;
+* Для тестов используйте длинные и описывающие назначение названия .
 
-
-According to the Python Guide `<http://docs.python-guide.org/en/latest/writing/tests/>`_, there are a number of general rules you should try to follow when writing tests. Below are some main rules:
-
-* Tests should focus on one small bit of functionality
-* Tests should have a clear purpose
-* Tests should be independent. 
-* Run your tests, before you code, and before your commit and push your code.
-* Even better create a hook that tests code on push.
-* Use long and descriptive names for tests.
-
-
-.. note:: Currently this chapter provides the very basics of testing and follows a similar format to the `Django Tutorial  <https://docs.djangoproject.com/en/1.7/intro/tutorial05/>`_, with some additional notes. We hope to expand this further in the future.
+.. note:: В настоящее время в этой главе представлен минимум сведений о тестировании и она имеет форма аналогичный `учебному пособию по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial05/>`_, с некоторыми дополнительными примечаниями. Мы надеемся расширить её в будущем.
 
 
-Running Tests
--------------
-
-In built in Django is machinery to test the applications built. You can do this by issuing the following command:
+Запускаем тесты
+---------------
+В Django существует встроенный механизм для тестирования создаваемых приложений. Чтобы запустить тест, выполните следующую команду:
 
 .. code-block:: guess
 
@@ -44,17 +39,13 @@ In built in Django is machinery to test the applications built. You can do this 
 	OK
 	Destroying test database for alias 'default'...
 	
-	
-This will run through the tests associated with the rango application. At the moment, nothing much happens. That is because you may have noticed the file ``rango/tests.py`` only contains an import statement. Everytime you create an application, Django automatically creates such a file to encourage you to write tests. 
+Она запустит тесты, связанные с приложением Rango. В настоящий момент ничего не произойдет. Это связано с тем, что как Вы наверное заметили файл ``rango/tests.py`` содержит только оператор импорта. Каждый раз, когда Вы создаете приложение, Django автоматически создает такой файл, мотивируя Вас написать тесты.
 
-From this output, you might also notice that a database called ``default`` is referred to. When you run tests, a temporary database is constructed, which your tests can populate, and perform operations on. This way your testing is performed independently of your live database. 
+Из сообщений в окне терминала видно, что происходит запрос к базе данных ``default``. При запуске тестов создается временная база данных, которую Ваши тесты могут заполнить и над которой они могут осуществлять операции. Таким образом, Ваше тестирование происходит независимо, не затрагивая информацию в реальной базе данных.
 
-
-
-Testing the models in Rango
----------------------------
-
-Ok, lets create a test. In the Category model, we want to ensure that views are either zero or positive, because the number of views, let's say, can never be less than zero. To create a test for this we can put the following code into ``rango/tests.py``:
+Тестирование моделей в Rango
+----------------------------
+Давайте создадим тест. В модели Category мы хотим убедиться, что количество просмотров или равно нулю или является положительным числом, поскольку оно никогда не может быть меньше нуля. Чтобы создать тест, мы можем добавить следующий код в ``rango/tests.py``:
 
 .. code-block:: python
 
@@ -68,19 +59,15 @@ Ok, lets create a test. In the Category model, we want to ensure that views are 
 	    def test_ensure_views_are_positive(self):
 
 	        """
-			ensure_views_are_positive should results True for categories where views are zero or positive
+			функция ensure_views_are_positive должна возвращать True для категорий, у которых число просмотров равно нулю или положительное
 	        """
 			cat = Category(name='test',views=-1, likes=0)
 			cat.save()
 			self.assertEqual((cat.views >= 0), True)
 
+Первое, что Вы должны заметить, если не писали тесты раньше, это то, что мы должны наследовать тест от класса TestCase. Название метода в классе также следует принятому соглашению, что все тесты начинаются со слова ``test_`` и также содержат некоторое проверяемое предположение. Здесь мы проверяем, что значения равны с помощью метода ``assertEqual``, но существуют и другие виды предположений. Смотри документацию к Python по тестированию модулей, https://docs.python.org/2/library/unittest.html, чтобы узнать о других командах (т. е., ``assertItemsEqual``, ``assertListEqual``, ``assertDictEqual`` и т. д.). Механизм тестирования Django создан на основе механизма для языка Python, но также предоставляет ряд других предположений и особых случаев тестирования.
 
-
-The first thing you should notice, if you have not written tests before, is that we have to inherit from TestCase. The naming over the method in the class also follows a convention, all tests start with ``test_`` and they also contain some type of assertion, which is the test. Here we are check if the values are equal, with the ``assertEqual`` method, but other types of assertions are also possible. See the Python Documentation on unit tests, https://docs.python.org/2/library/unittest.html for other commands (i.e. ``assertItemsEqual``, ``assertListEqual``, ``assertDictEqual``, etc). Django's testing machinery is derived from Python's but also provides an number of other asserts and specific test cases.
-
-
-Now lets run test:
-
+Теперь давайте запустим тест:
 
 .. code-block::  guess
 
@@ -103,21 +90,18 @@ Now lets run test:
 	FAILED (failures=1)
 	
 
+Как видно этот тест был пройден не удачно. Это связано с тем, что модель не проверяет является ли значение ``количество просмотров`` меньше нуля или нет. Поскольку мы действительно хотим гарантировать, что значения не нулевые, нужно изменить модель для того, чтобы это требование выполнялось. Сделаем это сейчас, добавив в модели Catgegory метод ``save()``, который проверяет значение количества просмотров и обновляет его соответствующим образом.
 
-As we can see this test fails. This is because the model does not check whether the value is less than zero or not. Since we really want to ensure that the values are non-zero, we will need to update the model, to ensure that this requirement is fulfilled. Do this now by adding some code to the Catgegory models, ``save()`` method, that checks the value of views, and updates it accordingly.
+Как только Вы обновите Вашу модель, Вы можете перезапустить тест и посмотреть проходит ли теперь его Ваш код. Если нет, найдите ошибку и опять запустите тест.
 
-
-Once you have updated your model, you can now re-run the test, and see if your code now passes it. If not, try again.
-
-Let's try adding another test, that ensures an appropriate slug line is created i.e. one with dashes, and in lowercase. Add the following code to ``rango/tests.py``:
+Давайте попытаемся добавить другой тест, который гарантирует, что создана соответствующая строка slug, т. е., состоящая из дефисов и символов в нижнем регистре. Добавьте следующий код в ``rango/tests.py``:
 
 .. code-block:: python
 
 
 	   def test_slug_line_creation(self):
 	   		"""
-			slug_line_creation checks to make sure that when we add a category an appropriate slug line is created
-			i.e. "Random Category String" -> "random-category-string"
+			Функция slug_line_creation проверяет, была ли создана при добавлении категории соответствующая строка slug, т. е., например, строка "Random Category String" должна преобразовываться в "random-category-string"
 			"""
 
 			cat = cat('Random Category String')
@@ -125,15 +109,13 @@ Let's try adding another test, that ensures an appropriate slug line is created 
 			self.assertEqual(cat.slug, 'random-category-string')
 
 
-Does your code still work?
+Прошел ли Ваш код проверку на работоспособность после запуска этого теста?
 
+Тестирование представлений
+--------------------------
+До сих пор мы писали тесты, предназначенные для проверки целостности данных, хранящихся в моделях. Django также предоставляет механизмы тестирования для проверки представлений. Для этого он имитирует клиента, который изнутри вызывает Django представление через URL. В тесте у Вас есть доступ к ответу сервера на запрос (включая HTML код) и словарю контекста.
 
-
-Testing Views
--------------
-So far we have writtent tests that focus on ensuring the integrity of the data housed in the models. Django also provides testing mechanisms to test views. It does this with a mock client, that internally makes a calls a django view via the url. In the test you have access to the response (including the html) and the context dictionary. 
-
-Let's create a test that checks that when the index page loads, it displays the message that ``There are no categories present``, when the Category model is empty. 
+Давайте создадим тест, который проверяет, что при загрузке главной страницы, она отображает сообщение ``There are no categories present``, когда модель Category не содержит категорий.
 
 .. code-block:: python
 
@@ -144,7 +126,7 @@ Let's create a test that checks that when the index page loads, it displays the 
 
 	    def test_index_view_with_no_categories(self):
 	        """
-	        If no questions exist, an appropriate message should be displayed.
+	        Если не существует категорий, то должно выводиться соответствующее сообщение.
 	        """
 	        response = self.client.get(reverse('index'))
 	        self.assertEqual(response.status_code, 200)
@@ -152,12 +134,9 @@ Let's create a test that checks that when the index page loads, it displays the 
 	        self.assertQuerysetEqual(response.context['categories'], [])
 	
 
- 
-First of all, the django ``TestCase`` has access to a ``client`` object, which can make requests. Here, it uses the helper function ``reverse`` to look up the url of the ``index`` page. Then it tries to get that page, where the ``response`` is stored. The test then checks a number of things: did the page load ok? Does the response, i.e. the html contain the phrase "There are no categories present.", and does the context dictionary contain an empty categories list. Recall that when you run tests, a new database is created, which by default is not populated.
+Прежде всего класс Django ``TestCase`` имеет доступ к объекту ``client``, который может создавать запросы. Здесь он использует вспомогательную функцию ``reverse``, для поиска URL страницы ``index``. Затем он пытается получить эту страницу, в которой находится ``response``. Тест осуществляет несколько проверок: загрузилась ли страница с кодом статуса 200 OK? Содержит ли ответ от сервера, т. е., HTML код фразу "There are no categories present." и содержит ли словарь контекста пустой список категорий. Вспомните, что когда Вы запускаете тесты, создается новая база данных, которая по умолчанию не заполняется.
 
-
-Let's now check the resulting view when categories are present. First add a helper method.
-
+Давайте теперь проверим представление в случае, когда существуют категории. Сначала добавьте вспомогательный метод.
 
 .. code-block:: python
 
@@ -171,14 +150,14 @@ Let's now check the resulting view when categories are present. First add a help
     	return c
 
 
-Then add another method to the ``class IndexViewTests(TestCase)``:
+Затем другой метод в ``класс IndexViewTests(TestCase)``:
 
 
 .. code-block:: python	
 
     def test_index_view_with_categories(self):
         """
-        If no questions exist, an appropriate message should be displayed.
+        Если не существует категорий, то должно выводиться соответствующее сообщение.
         """
 
         add_cat('test',1,1)
@@ -193,28 +172,24 @@ Then add another method to the ``class IndexViewTests(TestCase)``:
         num_cats =len(response.context['categories'])
         self.assertEqual(num_cats , 4)
 
-
-In this test, we populate the database with four categories, and then check if the page loads, if it contains the text ``tmp test temp`` and if the number of categories is equal to 4.
-
+В этом тесте мы заполняем базу данных четырьмя категориями и затем проверяем загрузилась ли страница с кодом статуса 200 OK, содержит ли она текст ``tmp test temp`` и равно ли число категорий четырем.
 
 #TODO(leifos): add in some tests showing how to test different forms i.e. login etc.
 
-Testing the Rendered Page
--------------------------
+Тестирование выдаваемой страницы
+--------------------------------
 #TODO(leifos): add an example using either Django's test client and/or Selenium, which is are "in-browser" frameworks to test the way the HTML is rendered in a browser.
 
 
-Coverage Testing
-----------------
-Code coverage measures how much of your code base has been tested, and how much of your code has been put through its paces via tests. You can install a package called ``coverage`` via with ``pip install coverage`` which automatically analyses how much code coverage you have. Once you have ``coverage`` installed, run the following command:
+Покрытие кода тестами
+---------------------
+Покрытие кода определяет насколько Ваш код был протестирован и какая часть Вашего кода успешно прошла тесты. Вы можете установить пакет ``coverage`` с помощью команды ``pip install coverage``, который автоматически анализирует Ваше покрытие кода. После установки пакета ``coverage``, запустите следующую команду:
 
 .. code-block:: guess
 
 	$ coverage run --source='.' manage.py test rango
 	
-
-This will run through all the tests and collect the coverage data for the rango application. To see the coverage report you need to then type:
-
+Она выполнит все тесты и выдаст данные о покрытии для приложения Rango. Чтобы увидеть отчет о покрытии, введите:
 
 .. code-block:: guess
 
@@ -245,21 +220,17 @@ This will run through all the tests and collect the coverage data for the rango 
 	TOTAL                                        310    206    34%
 	
 
+Из приведенного выше отчета видно, что критически части кода не были протестированы, т. е., ``rango/views``. Чтобы узнать больше об использовании пакета ``coverage`` посетите страницу http://nedbatchelder.com/code/coverage/ .
 
-We can see from the above report that critical parts of the code have not been tested, ie. ``rango/views``. For more details about using the package ``coverage`` visit: http://nedbatchelder.com/code/coverage/ 
+Упражнения
+----------
 
+* Допустим, что мы хотим расширить модель ``Page``, добавив в неё два дополнительных поля ``last_visit`` (дата последнего посещения страницы) и ``first_visit`` (дата первого посещения страницы), имеющие тип ``timedate``;
+	* Измените модель, добавив эти два поля;
+	* Обновите функции ``add page`` и ``goto``.
+	* Добавьте тест, проверяющий, что дата последнего посещения страницы или первого посещения страницы не в будущем.
+	* Добавьте тест, гарантирующий что дата последнего посещения страницы равна или позже даты первого посещения страницы.
+	* Просмотрите `Пятую часть официального учебного пособия по Django <https://docs.djangoproject.com/en/1.7/intro/tutorial05/>`_, которая поможет создать эти тесты.
 
-
-
-Exercises
----------
-
-* Lets say that we want to extend the ``Page`` to include two additional fields, ``last_visit`` and ``first_visit`` which will be of type ``timedate``.
-	* Update the model to include these two fields
-	* Update the add page functionality, and the goto functionality.
-	* Add in a test to ensure the last visit or first visit is not in the future
-	* Add in a test to ensure that the last visit equal to or after the first visit.
-	* Run through  `Part Five of the official Django Tutorial  <https://docs.djangoproject.com/en/1.7/intro/tutorial05/>`_ to help develop these tests.
-	 
-* Check out the `tutorial on test driven development by Harry Percival <http://www.tdd-django-tutorial.com>`_.
+* Просмотрите `учебное пособие по технике разработки с помощью тестирования Гарри Песивала <http://www.tdd-django-tutorial.com>`_.
 
