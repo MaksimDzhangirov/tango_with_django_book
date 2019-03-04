@@ -1,6 +1,6 @@
 The Tango with Django Book Repository
 
-Русская версия учебного пособия "How To Tango With Django 1.7".
+Русская версия учебного пособия "How To Tango With Django 1.7". Новая версия пособия для Django 2.0 доступна по [ссылке](https://github.com/MaksimDzhangirov/tango_with_django_2).
 
 Оригинал можно найти по адресу http://www.tangowithdjango.com/book17/index.html или на Github https://github.com/leifos/tango_with_django_book.
 
@@ -28,7 +28,7 @@ The Tango with Django Book Repository
 10. Работа с шаблонами
 11. Cookies и сессии
 12. Аутентификация пользователя с помощью Django-Registration-Redux
-13. Использование Bootstrapp в приложении Rango
+13. Использование Bootstrap в приложении Rango
 14. Теги шаблонов
 15. Добавляем функциональные возможности: внешний поиск
 16. Создаем Rango Tango! Упражнения
